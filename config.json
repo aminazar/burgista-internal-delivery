@@ -1,6 +1,6 @@
 {
   "development": {
-    "initDb":   "",
+    "initDb":   "postgres",
     "database": "burgista_ida",
     "pgConnection": "postgres://postgres@localhost:5432/"
   },
