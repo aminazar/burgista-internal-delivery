@@ -63,12 +63,19 @@ genericSelect = (tableName,isTest)=> {
 
 let tablesWithSqlCreatedByHelpers = [
   {
+    name: 'units',
+    insert: true,
+    update: true,
+    select: true,
+    idColumn: 'unit_id',
+  },
+  {
     name: 'users',
     insert: true,
     update: true,
     select: true,
     idColumn: 'uid',
-  },
+  }
 ];
 
 tablesWithSqlCreatedByHelpers.forEach((table)=>{

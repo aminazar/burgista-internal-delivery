@@ -18,13 +18,20 @@ function sql(file) {
 */
 module.exports = {
   users: {
-    create: sql('users/create.sql'),
-    drop:   sql('users/drop.sql'),
-    get:    sql('users/get.sql'),
+    create:       sql('users/create.sql'),
+    drop:         sql('users/drop.sql'),
+    get:          sql('users/get.sql'),
   },
   db: {
-    create: sql('db/create.sql'),
-    drop:   sql('db/drop.sql'),
-    test:   sql('db/test.sql'),
+    create:       sql('db/create.sql'),
+    drop:         sql('db/drop.sql'),
+    test:         sql('db/test.sql'),
+  },
+  units: {
+    create:       sql('units/create.sql'),
+    drop:         sql('units/drop.sql'),
+    getByName:    sql('units/get.by.name.sql'),
+    getById:      sql('units/get.by.id.sql'),
+    getByUsername:sql('units/get.by.username.sql')
   }
 };
