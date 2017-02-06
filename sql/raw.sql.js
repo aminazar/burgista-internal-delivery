@@ -30,8 +30,6 @@ module.exports = {
   units: {
     create:       sql('units/create.sql'),
     drop:         sql('units/drop.sql'),
-    getByName:    sql('units/get.by.name.sql'),
-    getById:      sql('units/get.by.id.sql'),
-    getByUsername:sql('units/get.by.username.sql')
+    get:          sql('units/get.sql'),
   }
 };

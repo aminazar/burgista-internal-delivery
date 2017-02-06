@@ -1,0 +1,1 @@
+select * from units where lower(username)=lower(${username})
