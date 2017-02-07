@@ -17,11 +17,6 @@ function sql(file) {
  * Use the same direcoty name for nesting the queries here.
  */
 module.exports = {
-  users: {
-    create:   sql('users/create.sql'),
-    drop:     sql('users/drop.sql'),
-    get:      sql('users/get.sql'),
-  },
   db: {
     create:   sql('db/create.sql'),
     drop:     sql('db/drop.sql'),
