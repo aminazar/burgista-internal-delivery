@@ -43,13 +43,13 @@ app.use(session(sess));
 //Passport:
 app.use(passport.initialize());
 app.use(passport.session());
-passport.serializeUser(lib.User.serialize);
-passport.deserializeUser(lib.User.deserialize);
+passport.serializeUser(lib.Unit.serialize);
+passport.deserializeUser(lib.Unit.deserialize);
 passport.use(new passLocal(
   {
     passReqToCallback: true,
   },
-  lib.User.passportLocalStrategy
+  lib.Unit.passportLocalStrategy
 ));
 
 app.use('/', index);

@@ -49,12 +49,12 @@ router.get('/', function(req, res) {
 });
 //Login API
 router.post('/login', passport.authenticate('local', {}), (req,res)=>res.sendStatus(200));
-router.post('/loginCheck', apiResponse('User', 'loginCheck', false, ['body.username', 'body.password']));
+router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
 router.get('/logout', (req,res)=>{req.logout();res.sendStatus(200)});
-//User API
-router.put('/user', apiResponse('User', 'insert', true, ['body']));
-router.get('/user', apiResponse('User', 'select', true));
-router.post('/user/:uid', apiResponse('User', 'update', true, ['params.uid','body']));
-router.delete('/user/:uid', apiResponse('User', 'delete', true, ['params.uid']));
+//Unit API
+router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
+router.get('/unit', apiResponse('Unit', 'select', true, ['query.isBranch']));
+router.post('/unit/:uid', apiResponse('Unit', 'update', true, ['params.uid','body']));
+router.delete('/unit/:uid', apiResponse('Unit', 'delete', true, ['params.uid']));
 
 module.exports = router;

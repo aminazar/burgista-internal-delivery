@@ -8,8 +8,8 @@ describe('SqlTable abstract class',()=>{
   let instance;
   let spies = {};
   beforeAll(done=>{
-    instance = new SqlTable('users','uid',true);
-    ['get','add','update'].forEach(e=>spies[e]=spyOn(instance.sql.users,e));
+    instance = new SqlTable('units','uid',true);
+    ['get','add','update'].forEach(e=>spies[e]=spyOn(instance.sql.units,e));
     done();
   });
   it("should throw error without table name",()=>{
@@ -33,12 +33,12 @@ describe('SqlTable abstract class',()=>{
     expect(test).toThrowError(TypeError,"exportData is not implemented");
   });
 
-  it("should call sql.users.get on load",()=>{
+  it("should call sql.units.get on load",()=>{
     instance.load({x:'y'}).then(()=>{}).catch(()=>{});
-    expect(instance.sql.users.get).toHaveBeenCalledWith({x:'y'});
+    expect(instance.sql.units.get).toHaveBeenCalledWith({x:'y'});
   });
 
-  it("should call exportData and sql.users.add on save where uid is not defined",done=>{
+  it("should call exportData and sql.units.add on save where uid is not defined",done=>{
     spies.exportData = spyOn(instance,'exportData');
     spies.exportData.and.callFake(()=>new Promise(resolve=>resolve({name:'amin'})));
     spies.add.and.callFake(data=>new Promise(resolve=>resolve({uid:'xyz'})));
@@ -46,7 +46,7 @@ describe('SqlTable abstract class',()=>{
     instance.save()
       .then(()=>{
         expect(instance.exportData).toHaveBeenCalled();
-        expect(instance.sql.users.add).toHaveBeenCalledWith({name:'amin'});
+        expect(instance.sql.units.add).toHaveBeenCalledWith({name:'amin'});
         expect(instance.uid).toBe('xyz');
         done();
       })
@@ -55,7 +55,7 @@ describe('SqlTable abstract class',()=>{
         done();
         });
   });
-  it("should call exportData and sql.users.add on save and work with plain object instead of promise",done=>{
+  it("should call exportData and sql.units.add on save and work with plain object instead of promise",done=>{
     spies.exportData = spyOn(instance,'exportData');
     spies.exportData.and.callFake(()=>{return {name:'amin'}});
     spies.add.and.callFake(data=>new Promise(resolve=>resolve({uid:10})));
@@ -64,7 +64,7 @@ describe('SqlTable abstract class',()=>{
     instance.save()
       .then(()=>{
         expect(instance.exportData).toHaveBeenCalled();
-        expect(instance.sql.users.add).toHaveBeenCalledWith({name:'amin'});
+        expect(instance.sql.units.add).toHaveBeenCalledWith({name:'amin'});
         expect(instance.uid).toBe(10);
         done();
       })
@@ -73,7 +73,7 @@ describe('SqlTable abstract class',()=>{
         done();
       });
   });
-  it("should call sql.users.update on save and work with plain object instead of promise",done=>{
+  it("should call sql.units.update on save and work with plain object instead of promise",done=>{
     spies.exportData = spyOn(instance,'exportData');
     spies.exportData.and.callFake(()=>{return {name:'amin'}});
     spies.add.and.callFake(data=>new Promise(resolve=>resolve({uid:10})));
@@ -81,7 +81,7 @@ describe('SqlTable abstract class',()=>{
     instance.save()
       .then(()=>{
         expect(instance.exportData).toHaveBeenCalled();
-        expect(instance.sql.users.update).toHaveBeenCalledWith({name:'amin'},10);
+        expect(instance.sql.units.update).toHaveBeenCalledWith({name:'amin'},10);
         expect(instance.uid).toBe(10);
         done();
       })
