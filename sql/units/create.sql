@@ -3,5 +3,5 @@ CREATE TABLE units(
     name varchar(40) not null unique,
     username varchar(40) not null unique,
     secret varchar(256) not null,
-    branch_or_prep boolean not null
+    is_branch boolean not null
 )

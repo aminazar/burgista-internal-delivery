@@ -25,7 +25,7 @@ describe("Test 'units' table", () => {
       name: 'Ali Alavi',
       username: 'aalavi',
       secret: 'qwerty',
-      branch_or_prep: true
+      is_branch: true
     })
       .then((res) => {
         expect(typeof res.uid).toBe('number');
@@ -86,7 +86,7 @@ describe("Test 'units' table", () => {
         name: 'Taghi Alavi',
         username: 'aalavi',
         secret: 'qwerty',
-        branch_or_prep: true
+        is_branch: true
       })
         .then((res) => {
           fail('Have not add new record with exist username');
@@ -104,7 +104,7 @@ describe("Test 'units' table", () => {
         name: 'Ali Alavi',
         username: 'test',
         secret: 'qwerty',
-        branch_or_prep: true
+        is_branch: true
       })
         .then((res) => {
           fail('Have not add new record with exist name');
@@ -149,7 +149,7 @@ describe("Test 'units' table", () => {
       name: 'Ali Alavi',
       username: 'test',
       secret: 'qwerty',
-      branch_or_prep: true
+      is_branch: true
     })
       .then((res) => {
         expect(typeof res.uid).toBe('number');
@@ -167,7 +167,7 @@ describe("Test 'units' table", () => {
       name: 'firstBranch',
       username: 'john',
       secret: 'qwerty',
-      branch_or_prep: true
+      is_branch: true
     })
       .then((res) => {
         expect(typeof res.uid).toBe('number');
@@ -177,7 +177,7 @@ describe("Test 'units' table", () => {
           name: 'secondBranch',
           username: 'jack',
           secret: 'qwerty',
-          branch_or_prep: true
+          is_branch: true
         })
           .then((result) => {
             expect(typeof result.uid).toBe('number');
@@ -200,7 +200,7 @@ describe("Test 'units' table", () => {
       name: 'firstPrep',
       username: 'joe',
       secret: 'qwerty',
-      branch_or_prep: true
+      is_branch: false
     })
       .then((res) => {
         expect(typeof res.uid).toBe('number');

@@ -20,7 +20,7 @@ describe("User model", ()=> {
           name: name,
           username: username.toLowerCase(),
           secret: pwd,
-          branch_or_prep: type
+          is_branch: type
         })
           .then(res=> {
             uid = res.uid;
@@ -168,7 +168,7 @@ describe("User model", ()=> {
     u.username = username.toLowerCase() + '.x';
     u.name = name;
     u.secret = pwd;
-    u.branch_or_prep = type;
+    u.is_branch = type;
 
     u.save()
       .then(()=> {

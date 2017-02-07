@@ -29,6 +29,8 @@ describe("REST API", ()=>{
         u = new lib.User(true);
         u.username = 'amin';
         u.password = 'test';
+        u.name = 'amin';
+        u.is_branch = false;
         sql.test.units.create()
           .then(() => {
             u.save()
