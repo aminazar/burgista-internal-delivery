@@ -3,6 +3,23 @@ const base_url = "http://localhost:3000/api/";
 const test_query = '?test=tEsT';
 const lib = require('../lib');
 const sql = require('../sql');
+let req = request.defaults({jar: true});//enabling cookies
+
+let resExpect = (res, statusCode) => {
+  if(res.statusCode !== statusCode){
+    let jres = JSON.parse(res.body);
+    let msg = jres.Message ? jres.Message : jres;
+    expect(res.statusCode).toBe(statusCode,`Expected response code ${statusCode}, received ${res.statusCode}. Server response: ${msg}`);
+    if(jres.Stack) {
+      let err = new Error();
+      err.message = jres.Message;
+      err.stack = jres.Stack;
+      console.log(`Server responds with unexpected error:`, err);
+    }
+    return false;
+  }
+  return true;
+};
 
 describe("REST API", ()=>{
   describe("root", ()=>{
@@ -12,20 +29,18 @@ describe("REST API", ()=>{
         done();
       })
     });
-
-    afterEach((done) => {
-      sql.test.units.drop()
-          .then(() => done())
-          .catch((err) => console.log(err.message));
-    })
   });
   describe("user", ()=>{
     let uid;
+    let adminUid;
+    let u;
+    let a;
     let teardown=false;
     let setup=true;
 
     beforeEach(done=>{
       if(setup) {
+        sql.test.users.drop().then(()=>{}).catch(()=>{});
         u = new lib.User(true);
         u.username = 'amin';
         u.password = 'test';
@@ -37,7 +52,16 @@ describe("REST API", ()=>{
               .then(id => {
                 uid = id;
                 setup=false;
-                done();
+                a = new lib.User(true);
+                a.username = 'Admin';
+                a.password = 'atest';
+                a.name = '';
+                a.is_branch=false;
+                a.save()
+                  .then(aid=>{
+                    adminUid = aid;
+                    done();
+                  })
               })
           })
           .catch(err => {
@@ -82,6 +106,112 @@ describe("REST API", ()=>{
       });
     });
 
+
+    it("logins as admin", done => {
+      req.post({url: base_url + 'login' + test_query, form:{username:'admin',password:'atest'}}, (err,res)=>{
+        expect(res.statusCode).toBe(200);
+        done();
+      })
+    });
+   it("allows admin to list all users",done => {
+     req.get(base_url + 'user' + test_query, (err,res)=>{
+       expect(res.statusCode).toBe(200);
+       let data = JSON.parse(res.body);
+       expect(data.length).toBe(2);
+       expect(data.map(r=>r.uid)).toContain(adminUid);
+       expect(data.map(r=>r.name)).toContain('admin');
+       done();
+     })
+   });
+   it("allows admin to update a username", done => {
+     req.post({url: base_url + 'user/' + uid + test_query, form:{username:'aminazar'}}, (err,res)=>{
+       expect(res.statusCode).toBe(200);
+       done();
+     })
+   });
+   it("allows admin to update a username - checking that update happened", done =>{
+     req.post({url: base_url + 'loginCheck' + test_query, form:{username:'aminazar',password:'test'}}, (err,res)=>{
+       expect(res.statusCode).toBe(200);
+       done();
+     })
+    });
+    it("allows admin to update a password", done => {
+      req.post({url: base_url + 'user/' + uid + test_query, form:{password:'test2'}}, (err,res)=>{
+        expect(res.statusCode).toBe(200);
+        done();
+      })
+    });
+    it("allows admin to update a password - checking that update happened", done =>{
+      req.post({url: base_url + 'loginCheck' + test_query, form:{username:'aminazar',password:'test2'}}, (err,res)=>{
+        expect(res.statusCode).toBe(200);
+        done();
+      })
+    });
+    it("allows admin to update both username and password", done => {
+      req.post({url: base_url + 'user/' + uid + test_query, form:{username:'amin2', password:'test3'}}, (err,res)=>{
+        expect(res.statusCode).toBe(200);
+        done();
+      })
+    });
+    it("allows admin to update both username and password - checking that update happened", done =>{
+      req.post({url: base_url + 'loginCheck' + test_query, form:{username:'amin2',password:'test3'}}, (err,res)=>{
+        expect(res.statusCode).toBe(200);
+        done();
+      })
+    });
+    it("allows admin to delete a user", done => {
+      req.delete({url: base_url + 'user/' + uid + test_query, form:{username:'amin2',password:'test3'}}, (err,res)=> {
+        expect(res.statusCode).toBe(200);
+        done();
+      });
+    });
+    it("allows admin to delete a user - check it happened", done => {
+      req.get(base_url + 'user' + test_query, (err,res)=>{
+        if(resExpect(res,200)) {
+          let data = JSON.parse(res.body);
+          expect(data.length).toBe(1);
+          expect(data[0].uid).toBe(adminUid);
+          expect(data[0].name).toBe('admin');
+        }
+        done();
+      })
+    });
+    it("allows admin to add a new user", done => {
+      req.put({url: base_url + 'user' + test_query, form:{username:'ali',password:'tes'}}, function(err,res){
+        if(resExpect(res,200)) {
+          uid = JSON.parse(res.body);
+          expect(uid).toBeTruthy();
+        }
+        done();
+      });
+    });
+    it("allows admin to add a new user - checking it happened", done => {
+      req.get(base_url + 'user' + test_query, (err,res)=>{
+        if(resExpect(res,200)){
+          let data = JSON.parse(res.body);
+          expect(data.length).toBe(2);
+          expect(data.map(r => r.name)).toContain('ali');
+          expect(data.map(r => r.uid)).toContain(uid);
+        }
+        done();
+      });
+    });
+    it("logs out a user", done => {
+      req.get(base_url + 'logout' + test_query, (err,res) => {
+        expect(res.statusCode).toBe(200);
+        done();
+      });
+    });
+    it("logs out a user - checking it happened", done => {
+      req.get(base_url + 'user' + test_query, (err,res)=>{
+        expect(res.statusCode).toBe(403);
+        done();
+      });
+    });
+    it("tears down",()=>{
+      teardown=true;
+      expect(teardown).toBeTruthy();
+    });
     afterEach((done)=>{
       if(uid&&teardown)
         sql.test.units.drop().then(()=>done()).catch(err=>{console.log(err.message);done()});

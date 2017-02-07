@@ -61,12 +61,20 @@ genericSelect = (tableName, isTest)=> {
   };
 };
 
+genericDelete = (tableName,idColumn,isTest)=>{
+  let db = chooseDb(tableName,isTest);
+  return (id)=> {
+    return db.query(`delete from ${tableName} where ${idColumn}=` + id)
+  }
+}
+
 let tablesWithSqlCreatedByHelpers = [
   {
     name: 'units',
     insert: true,
     update: true,
-    select: true,
+    select: false,
+    delete: true,
     idColumn: 'uid',
   },
   {
@@ -98,6 +106,11 @@ tablesWithSqlCreatedByHelpers.forEach((table)=> {
   if (table.select) {
     wrappedSQL[table.name].select = genericUpdate(table.name, false);
     wrappedSQL.test[table.name].select = genericUpdate(table.name, true);
+  }
+
+  if(table.delete){
+    wrappedSQL[table.name].delete       = genericDelete(table.name, table.idColumn, false);
+    wrappedSQL.test[table.name].delete  = genericDelete(table.name, table.idColumn, true);
   }
 });
 
