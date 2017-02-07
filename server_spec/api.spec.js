@@ -74,7 +74,7 @@ describe("REST API", ()=>{
       })
     });
     it("doesn't save a new user if it is not admin", done => {
-      request.put({url: base_url + 'user' + test_query, form:{username:'amin',password:'tes'}}, function(err,res){
+      request.put({url: base_url + 'user' + test_query, form:{username:'amin2',password:'tes'}}, function(err,res){
         expect(res.statusCode).toBe(403);
         done();
       });
@@ -133,7 +133,7 @@ describe("REST API", ()=>{
       })
     });
     it("allows admin to delete a user", done => {
-      req.delete({url: base_url + 'user/' + uid + test_query, form:{username:'amin2',password:'test3'}}, (err,res)=> {
+      req.delete(base_url + 'user/' + uid + test_query, (err,res)=> {
         expect(res.statusCode).toBe(200);
         done();
       });
@@ -147,6 +147,42 @@ describe("REST API", ()=>{
         expect(data[0].name).toBe('admin');
         done();
       })
+    });
+    it("allows admin to add a new user", done => {
+      req.put({url: base_url + 'user' + test_query, form:{username:'ali',password:'tes'}}, function(err,res){
+        expect(res.statusCode).toBe(200);
+        if(res.statusCode!==200){
+          console.log(res.body);
+          done();
+        }
+        else {
+          uid = JSON.parse(res.body);
+          expect(uid).toBeTruthy();
+          done();
+        }
+      });
+    });
+    it("allows admin to add a new user - checking it happened", done => {
+      req.get(base_url + 'user' + test_query, (err,res)=>{
+        expect(res.statusCode).toBe(200);
+        let data = JSON.parse(res.body);
+        expect(data.length).toBe(2);
+        expect(data.map(r=>r.name)).toContain('ali');
+        expect(data.map(r=>r.uid)).toContain(uid);
+        done();
+      });
+    });
+    it("logs out a user", done => {
+      req.get(base_url + 'logout' + test_query, (err,res) => {
+        expect(res.statusCode).toBe(200);
+        done();
+      });
+    });
+    it("logs out a user - checking it happened", done => {
+      req.get(base_url + 'user' + test_query, (err,res)=>{
+        expect(res.statusCode).toBe(403);
+        done();
+      });
     });
     it("tears down",()=>{
       teardown=true;
