@@ -1,1 +1,1 @@
-select * from units where is_branch = ${is_branch}
+select uid, name, username, is_branch from units where is_branch = ${is_branch}
