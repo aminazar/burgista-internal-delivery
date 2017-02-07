@@ -167,7 +167,7 @@ describe("User model", ()=> {
 
     u.username = username.toLowerCase() + '.x';
     u.name = name;
-    u.secret = pwd;
+    u.password = pwd;
     u.is_branch = type;
 
     u.save()
@@ -179,21 +179,5 @@ describe("User model", ()=> {
         expect(err.message).toContain('duplicate key value');
         done();
       });
-  });
-
-  it("shoule leave empty secret for empty password", ()=> {
-    expect(u.secret).toBe('');
-  });
-
-  it("should fail to match empty password", done=> {
-    u.checkPassword()
-      .then(()=> {
-        fail('succeeded!');
-        done();
-      })
-      .catch(err=> {
-        expect(err.message).toBe('No password is set up');
-        done();
-      })
   });
 });

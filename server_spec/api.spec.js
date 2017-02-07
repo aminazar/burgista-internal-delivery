@@ -7,7 +7,11 @@ let req = request.defaults({jar: true});//enabling cookies
 
 let resExpect = (res, statusCode) => {
   if(res.statusCode !== statusCode){
-    let jres = JSON.parse(res.body);
+    let jres='';
+    try {
+      jres = res.body ? JSON.parse(res.body) : '';
+    }
+    catch(err){}
     let msg = jres.Message ? jres.Message : jres;
     expect(res.statusCode).toBe(statusCode,`Expected response code ${statusCode}, received ${res.statusCode}. Server response: ${msg}`);
     if(jres.Stack) {
@@ -40,34 +44,39 @@ describe("REST API", ()=>{
 
     beforeEach(done=>{
       if(setup) {
-        sql.test.users.drop().then(()=>{}).catch(()=>{});
-        u = new lib.User(true);
-        u.username = 'amin';
-        u.password = 'test';
-        u.name = 'amin';
-        u.is_branch = false;
-        sql.test.units.create()
-          .then(() => {
-            u.save()
-              .then(id => {
-                uid = id;
-                setup=false;
-                a = new lib.User(true);
-                a.username = 'Admin';
-                a.password = 'atest';
-                a.name = '';
-                a.is_branch=false;
-                a.save()
-                  .then(aid=>{
-                    adminUid = aid;
-                    done();
-                  })
-              })
-          })
-          .catch(err => {
-            console.log(err.message);
-            done();
-          });
+        sql.test.units.drop().then(()=> {
+          u = new lib.User(true);
+          u.username = 'amin';
+          u.password = 'test';
+          u.name = 'amin';
+          u.is_branch = false;
+          sql.test.units.create()
+            .then(() => {
+              setup = false;
+              u.save()
+                .then(id => {
+                  uid = id;
+                  a = new lib.User(true);
+                  a.username = 'Admin';
+                  a.password = 'atest';
+                  a.name = '';
+                  a.is_branch = false;
+                  a.save()
+                    .then(aid=> {
+                      adminUid = aid;
+                      done();
+                    })
+                })
+                .catch(err => {
+                  console.log(err.message);
+                  done();
+                })
+            })
+            .catch(err => {
+              console.log(err.message);
+              done();
+            });
+        }).catch(()=>{});
       }
       else{
         done();
@@ -101,7 +110,6 @@ describe("REST API", ()=>{
     it("doesn't save a new user if it is not admin", done => {
       request.put({url: base_url + 'user' + test_query, form:{username:'amin',password:'tes'}}, function(err,res){
         expect(res.statusCode).toBe(403);
-        teardown=true;
         done();
       });
     });
@@ -115,11 +123,12 @@ describe("REST API", ()=>{
     });
    it("allows admin to list all users",done => {
      req.get(base_url + 'user' + test_query, (err,res)=>{
-       expect(res.statusCode).toBe(200);
-       let data = JSON.parse(res.body);
-       expect(data.length).toBe(2);
-       expect(data.map(r=>r.uid)).toContain(adminUid);
-       expect(data.map(r=>r.name)).toContain('admin');
+       if(resExpect(res,200)) {
+         let data = JSON.parse(res.body);
+         expect(data.length).toBe(2);
+         expect(data.map(r=>r.uid)).toContain(adminUid);
+         expect(data.map(r=>r.username)).toContain('admin');
+       }
        done();
      })
    });
@@ -171,13 +180,13 @@ describe("REST API", ()=>{
           let data = JSON.parse(res.body);
           expect(data.length).toBe(1);
           expect(data[0].uid).toBe(adminUid);
-          expect(data[0].name).toBe('admin');
+          expect(data[0].username).toBe('admin');
         }
         done();
       })
     });
     it("allows admin to add a new user", done => {
-      req.put({url: base_url + 'user' + test_query, form:{username:'ali',password:'tes'}}, function(err,res){
+      req.put({url: base_url + 'user' + test_query, form:{username:'ali',password:'tes', name: 'ali', is_branch: true}}, function(err,res){
         if(resExpect(res,200)) {
           uid = JSON.parse(res.body);
           expect(uid).toBeTruthy();
@@ -190,7 +199,7 @@ describe("REST API", ()=>{
         if(resExpect(res,200)){
           let data = JSON.parse(res.body);
           expect(data.length).toBe(2);
-          expect(data.map(r => r.name)).toContain('ali');
+          expect(data.map(r => r.username)).toContain('ali');
           expect(data.map(r => r.uid)).toContain(uid);
         }
         done();
@@ -213,7 +222,7 @@ describe("REST API", ()=>{
       expect(teardown).toBeTruthy();
     });
     afterEach((done)=>{
-      if(uid&&teardown)
+      if(teardown)
         sql.test.units.drop().then(()=>done()).catch(err=>{console.log(err.message);done()});
       else done();
     });

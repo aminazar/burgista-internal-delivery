@@ -1,1 +1,1 @@
-select uid,name from users
+select uid,name,username,is_branch from units

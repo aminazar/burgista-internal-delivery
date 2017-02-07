@@ -1,1 +1,1 @@
-select * from units where lower(branch_or_prep) = lower(${type})
+select * from units where lower(is_branch) = lower(${is_branch})
