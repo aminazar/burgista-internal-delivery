@@ -3,27 +3,86 @@
  */
 const env = require('./env');
 const sql = require('./sql');
+const Unit = require('./lib/unit.model');
 
-function dbTestCreate(){
-  sql.db.create({dbName: env.test_db_name},true)
-    .then(res=>{
-      console.log(res);
-      process.exit();
+function dbTestCreate() {
+  return new Promise((resolve, reject) => {
+    sql.db.create({dbName: env.test_db_name}, true)
+      .then(res=> {
+        resolve();
+        // console.log(res);
+        // process.exit();
+      })
+      .catch(err=> {
+        reject(err);
+        // console.log(err.message);
+        // process.exit();
+      });
+  });
+}
+
+function prodTablesCreate() {
+  return new Promise((resolve, reject) => {
+    sql.units.create()
+      .then((u_res) => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+function adminRowCreate() {
+  return new Promise((resolve, reject) => {
+    var unit = new Unit();
+
+    var data = {
+      name: 'admin',
+      username: 'admin',
+      password: 'admin',
+      is_branch: false
+    };
+
+    unit.insert(data)
+      .then((res) => {
+        resolve();
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+function createTblsDbs(msg) {
+  console.log(msg);
+  prodTablesCreate()
+    .then(() => {return adminRowCreate();})
+    .then(() => {
+      if(env.isDev)
+        return dbTestCreate();
+      else
+        process.exit();
     })
-    .catch(err=>{
+    .then(() => process.exit())
+    .catch((err) =>{
       console.log(err.message);
       process.exit();
     });
 }
-if(env.isDev)
+
+if (env.isDev) {
   sql.db.create({dbName: env.db_name})
-    .then(res=>{
-      console.log(res);
-      if(env.isDev)
-        dbTestCreate();
+    .then(res=> {
+      createTblsDbs(res);
+      // console.log(res);
+      // if (env.isDev)
+      //   dbTestCreate();
     })
-    .catch(err=>{
-      console.log(err.message);
-      if(env.isDev)
-        dbTestCreate();
+    .catch(err=> {
+      createTblsDbs(err.message);
+      // console.log(err.message);
+      // if (env.isDev)
+      //   dbTestCreate();
     });
+}

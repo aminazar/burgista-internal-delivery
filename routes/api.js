@@ -48,7 +48,26 @@ router.get('/', function(req, res) {
   res.send('respond with a resource');
 });
 //Login API
-router.post('/login', passport.authenticate('local', {}), (req,res)=>res.sendStatus(200));
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if(err){
+      console.log(err.message);
+      res.sendStatus(err.number);
+    }
+
+    if(!user)
+      res.sendStatus(500);
+
+    req.login(user, (error) => {
+      if(error)
+        res.sendStatus(500);
+
+      res.sendStatus(200);
+    });
+
+  })(req, res, next);
+});
+// router.post('/login', passport.authenticate('local', {}), (req,res)=>res.sendStatus(200));
 router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
 router.get('/logout', (req,res)=>{req.logout();res.sendStatus(200)});
 //Unit API
