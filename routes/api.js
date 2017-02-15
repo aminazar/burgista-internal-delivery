@@ -48,9 +48,10 @@ router.get('/', function(req, res) {
   res.send('respond with a resource');
 });
 //Login API
-router.post('/login', passport.authenticate('local', {}), (req,res)=>res.sendStatus(200));
+router.post('/login', passport.authenticate('local', {}), (req,res)=>res.status(200).send(req.user.username));
 router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
 router.get('/logout', (req,res)=>{req.logout();res.sendStatus(200)});
+router.get('/validUser',(req,res)=>{req.user ? res.status(200).send(req.user.username) : res.sendStatus(400);});
 //Unit API
 router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
 router.get('/unit', apiResponse('Unit', 'select', true, ['query.isBranch']));
