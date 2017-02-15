@@ -7,7 +7,7 @@ const pgp = require('pg-promise')(options);
 const app = require('express')();
 let env = app.get('env');
 if(env==='test')
-  env='development';
+  env = 'development';
 const isProd = env==='production';
 const isDev  = env==='development';
 const config = require('./config.json')[env];
