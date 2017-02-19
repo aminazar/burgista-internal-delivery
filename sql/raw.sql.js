@@ -28,5 +28,11 @@ module.exports = {
     get:      sql('units/get.sql'),
     getUnits: sql('units/get.units.sql'),
     select:   sql('units/select.sql'),
-  }
+  },
+  products: {
+    create:      sql('products/create.sql'),
+    drop:        sql('products/drop.sql'),
+    getByUnitId: sql('products/getByUnitId.sql'),
+    getByName:   sql('products/getByName.sql'),
+  },
 };
