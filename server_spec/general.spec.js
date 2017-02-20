@@ -13,11 +13,11 @@ describe("Express Server", function() {
       });
     });
 
-    it("contains 'Welcome to Express'", function(done) {
-      request.get(base_url, function(error, response, body) {
-        expect(body).toContain('Welcome to Express');
-        done();
-      });
-    });
+    // it("contains 'Welcome to Express'", function(done) {
+    //   request.get(base_url, function(error, response, body) {
+    //     expect(body).toContain('Welcome to Express');
+    //     done();
+    //   });
+    // });
   });
 });
