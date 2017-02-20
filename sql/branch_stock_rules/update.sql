@@ -4,5 +4,5 @@ SET max = ${max}
     , start_date = ${start_date}
     , end_date = ${end_date}
     , date_rule = ${date_rule}
-    , multiples = ${multiples}
+    , usage = ${usage}
 WHERE pid = ${pid} and uid = ${uid}

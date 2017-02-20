@@ -37,7 +37,7 @@ describe('Product model', () => {
           default_max: 3,
           default_min: 1,
           default_date_rule: 'FREQ=WEEKLY;BYDAY=MO,FR',
-          default_multiples: 2
+          default_usage: 2
         });
       })                       //Add a product to products table
       .then((res) => {
@@ -91,7 +91,8 @@ describe('Product model', () => {
     const data = {
       max: 5,
       min: 2,
-      multiples: 1
+      mon_multiple: 2,
+      usage: 1
     };
 
     product.update(data, product_id, unit_id)
@@ -110,6 +111,7 @@ describe('Product model', () => {
     Product.select(unit_id)
       .then((res) => {
         expect(res[0].default_max).toBe(5);
+        expect(res[0].default_mon_multiple).toBe(2);
         Product.test = false;
         done();
       })
