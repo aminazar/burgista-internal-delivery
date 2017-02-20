@@ -95,6 +95,13 @@ describe("Test 'branch_stock_rules' table", () => {
         start_date: null,
         end_date: null,
         date_rule: 'FREQ=WEEKLY;BYDAY=MO,FR',
+        mon_multiple: null,
+        tue_multiple: null,
+        wed_multiple: null,
+        thu_multiple: null,
+        fri_multiple: null,
+        sat_multiple: null,
+        sun_multiple: null,
         usage: 1,
         pid: product_id,
         uid: unit_id
