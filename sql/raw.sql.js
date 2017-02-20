@@ -28,5 +28,19 @@ module.exports = {
     get:      sql('units/get.sql'),
     getUnits: sql('units/get.units.sql'),
     select:   sql('units/select.sql'),
-  }
+  },
+  products: {
+    create:      sql('products/create.sql'),
+    drop:        sql('products/drop.sql'),
+    getByUnitId: sql('products/getByUnitId.sql'),
+    getByName:   sql('products/getByName.sql'),
+  },
+  branch_stock_rules: {
+    create:             sql('branch_stock_rules/create.sql'),
+    drop:               sql('branch_stock_rules/drop.sql'),
+    get:                sql('branch_stock_rules/get.sql'),
+    getByUnitProductId: sql('branch_stock_rules/getByUnitProductId.sql'),
+    update:             sql('branch_stock_rules/update.sql'),
+    delete:             sql('branch_stock_rules/delete.sql'),
+  },
 };

@@ -37,7 +37,7 @@ function apiResponse(className, functionName, adminOnly=false, reqFuncs=[]){
         })
         .catch(err=> {
             console.log(`${className}/${functionName}: `, err.message);
-            res.status(err.number||500)
+            res.status(err.status||500)
               .send(err.message || err);
           });
     }
