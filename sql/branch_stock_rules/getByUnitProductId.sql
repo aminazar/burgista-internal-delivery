@@ -1,0 +1,1 @@
+select * from branch_stock_rules where pid = ${pid} and uid = ${uid}
