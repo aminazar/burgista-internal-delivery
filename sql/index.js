@@ -77,6 +77,15 @@ let tablesWithSqlCreatedByHelpers = [
     delete: true,
     idColumn: 'uid',
   },
+
+  {
+    name: 'last_login',
+    insert: true,
+    update: true,
+    select: false,
+    delete: false,
+    idColumn: 'uid',
+  }
 ];
 
 tablesWithSqlCreatedByHelpers.forEach((table)=> {

@@ -28,5 +28,13 @@ module.exports = {
     get:      sql('units/get.sql'),
     getUnits: sql('units/get.units.sql'),
     select:   sql('units/select.sql'),
+  },
+  last_login: {
+    create:   sql('last_login/create.sql'),
+    drop:     sql('last_login/drop.sql'),
+    insert:   sql('last_login/insert.sql'),
+    delete:   sql('last_login/delete.sql'),
+    select: sql('last_login/select.sql'),
+    get_login_uid: sql('last_login/get_login_uid.sql'),
   }
 };

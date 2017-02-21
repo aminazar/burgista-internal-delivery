@@ -52,10 +52,16 @@ router.post('/login', passport.authenticate('local', {}), (req,res)=>res.status(
 router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
 router.get('/logout', (req,res)=>{req.logout();res.sendStatus(200)});
 router.get('/validUser',(req,res)=>{req.user ? res.status(200).send(req.user.username) : res.sendStatus(400);});
+
 //Unit API
 router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
 router.get('/unit', apiResponse('Unit', 'select', true, ['query.isBranch']));
 router.post('/unit/:uid', apiResponse('Unit', 'update', true, ['params.uid','body']));
 router.delete('/unit/:uid', apiResponse('Unit', 'delete', true, ['params.uid']));
+
+//******************************
+//last_login API
+
+//******************************
 
 module.exports = router;

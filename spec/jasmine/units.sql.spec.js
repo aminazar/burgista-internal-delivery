@@ -213,9 +213,9 @@ describe("Test 'units' table", () => {
       });
   });
 
-  afterAll((done) => {
-    if (unit_id)
-      sql.test.units.drop()
+afterAll((done) => {
+  if (unit_id)
+    sql.test.units.drop()
         .then(() => {
           done();
         })
@@ -223,7 +223,7 @@ describe("Test 'units' table", () => {
           console.log(err.message);
           done();
         });
-    else
-      done();
-  });
+  else
+    done();
+});
 });
