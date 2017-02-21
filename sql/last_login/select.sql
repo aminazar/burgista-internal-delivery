@@ -1,0 +1,1 @@
+select * from last_login

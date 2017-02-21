@@ -1,0 +1,1 @@
+insert into last_login values (${login_uid}, ${login_date_time})

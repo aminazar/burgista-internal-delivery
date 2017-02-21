@@ -1,0 +1,1 @@
+select login_uid from last_login where uid = ${uid}
