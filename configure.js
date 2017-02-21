@@ -25,6 +25,9 @@ function prodTablesCreate() {
   return new Promise((resolve, reject) => {
     sql.units.create()
       .then((u_res) => {
+        return sql.products.create();
+      })
+      .then((p_res) => {
         resolve();
       })
       .catch((err) => {
