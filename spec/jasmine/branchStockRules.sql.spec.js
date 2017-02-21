@@ -40,7 +40,7 @@ describe("Test 'branch_stock_rules' table", () => {
           default_max: 3,
           default_min: 1,
           default_date_rule: 'FREQ=WEEKLY;BYDAY=MO,FR',
-          default_multiples: 2
+          default_usage: 2
         });
       })             //Add a product to products table
       .then((res) => {
@@ -59,7 +59,7 @@ describe("Test 'branch_stock_rules' table", () => {
       uid: unit_id,
       max: 3,
       min: 2,
-      multiples: 1
+      usage: 1
     })
       .then((res) => {
         expect(typeof res.bsrid).toBe('number');
@@ -95,7 +95,14 @@ describe("Test 'branch_stock_rules' table", () => {
         start_date: null,
         end_date: null,
         date_rule: 'FREQ=WEEKLY;BYDAY=MO,FR',
-        multiples: 1,
+        mon_multiple: null,
+        tue_multiple: null,
+        wed_multiple: null,
+        thu_multiple: null,
+        fri_multiple: null,
+        sat_multiple: null,
+        sun_multiple: null,
+        usage: 1,
         pid: product_id,
         uid: unit_id
       })

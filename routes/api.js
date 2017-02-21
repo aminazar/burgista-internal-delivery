@@ -57,5 +57,10 @@ router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
 router.get('/unit', apiResponse('Unit', 'select', true, ['query.isBranch']));
 router.post('/unit/:uid', apiResponse('Unit', 'update', true, ['params.uid','body']));
 router.delete('/unit/:uid', apiResponse('Unit', 'delete', true, ['params.uid']));
+//Product API
+router.put('/product', apiResponse('Product', 'insert', true, ['body']));
+router.get('/product', apiResponse('Product', 'select', false, ['query.uid']));
+router.post('/product/:pid', apiResponse('Product', 'update', false, ['body', 'params.pid', 'query.uid']));
+router.delete('/product/:pid', apiResponse('Product', 'delete', false, ['body', 'params.pid', 'query.uid']));
 
 module.exports = router;

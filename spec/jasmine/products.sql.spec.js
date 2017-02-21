@@ -33,7 +33,7 @@ describe("Test 'products' table", () => {
       });
   });
 
-  it('should add a new product to table (with default_multiple value)', (done) => {
+  it('should add a new product to table (with default_usage value)', (done) => {
     sql.test.products.add({
       prep_unit_id: unit_id,
       code: 'FO01',
@@ -43,7 +43,8 @@ describe("Test 'products' table", () => {
       default_max: 3,
       default_min: 1,
       default_date_rule: 'FREQ=WEEKLY;BYDAY=MO,FR',
-      default_multiples: 2
+      default_mon_multiple: 2,
+      default_usage: 2
     })
       .then((res) => {
         expect(typeof res.pid).toBe('number');
@@ -56,7 +57,7 @@ describe("Test 'products' table", () => {
       })
   });
 
-  it('should add a new product to table (without default_multiple value)', (done) => {
+  it('should add a new product to table (without default_usage value)', (done) => {
     sql.test.products.add({
       prep_unit_id: unit_id,
       code: 'KS01',
@@ -80,7 +81,8 @@ describe("Test 'products' table", () => {
   it('should get last product inserted', (done) => {
     sql.test.products.getByName({name: 'Ketchup Sauce'})
       .then((res) => {
-        expect(res[0].default_multiples).toBe(1);
+        expect(res[0].default_mon_multiple).toBe(1);
+        expect(res[0].default_usage).toBe(1);
         done();
       })
       .catch((err) => {
@@ -165,7 +167,7 @@ describe("Test 'products' table", () => {
         fail(err.message);
         done();
       })
-  })
+  });
 
   afterAll((done) => {
     if(product_id){
