@@ -213,9 +213,21 @@ describe("Test 'units' table", () => {
       });
   });
 
-afterAll((done) => {
-  if (unit_id)
-    sql.test.units.drop()
+  it('should delete a specific row', (done) => {
+    sql.test.units.delete(unit_id)
+      .then((res) => {
+        expect(res).toBeTruthy();
+        done();
+      })
+      .catch((err) => {
+        fail(err.message);
+        done();
+      })
+  });
+
+  afterAll((done) => {
+    if (unit_id)
+      sql.test.units.drop()
         .then(() => {
           done();
         })
@@ -223,7 +235,7 @@ afterAll((done) => {
           console.log(err.message);
           done();
         });
-  else
-    done();
-});
+    else
+      done();
+  });
 });

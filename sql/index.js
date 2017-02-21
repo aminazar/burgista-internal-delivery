@@ -86,6 +86,22 @@ let tablesWithSqlCreatedByHelpers = [
     delete: false,
     idColumn: 'uid',
   }
+  {
+    name: 'products',
+    insert: true,
+    update: true,
+    select: true,
+    delete: true,
+    idColumn: 'pid',
+  },
+  {
+    name: 'branch_stock_rules',
+    insert: true,
+    update: false,
+    select: true,
+    delete: false,
+    idColumn: 'bsrid',
+  },
 ];
 
 tablesWithSqlCreatedByHelpers.forEach((table)=> {
@@ -106,8 +122,8 @@ tablesWithSqlCreatedByHelpers.forEach((table)=> {
   }
 
   if (table.select) {
-    wrappedSQL[table.name].select = genericUpdate(table.name, false);
-    wrappedSQL.test[table.name].select = genericUpdate(table.name, true);
+    wrappedSQL[table.name].select = genericSelect(table.name, false);
+    wrappedSQL.test[table.name].select = genericSelect(table.name, true);
   }
 
   if(table.delete){

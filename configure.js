@@ -54,7 +54,7 @@ function adminRowCreate() {
   });
 }
 
-function createTblsDbs(msg) {
+function setupMainDatabase(msg) {
   console.log(msg);
   prodTablesCreate()
     .then(() => {return adminRowCreate();})
@@ -74,13 +74,13 @@ function createTblsDbs(msg) {
 if (env.isDev) {
   sql.db.create({dbName: env.db_name})
     .then(res=> {
-      createTblsDbs(res);
+      setupMainDatabase(res);
       // console.log(res);
       // if (env.isDev)
       //   dbTestCreate();
     })
     .catch(err=> {
-      createTblsDbs(err.message);
+      setupMainDatabase(err.message);
       // console.log(err.message);
       // if (env.isDev)
       //   dbTestCreate();

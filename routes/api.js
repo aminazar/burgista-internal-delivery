@@ -6,10 +6,15 @@ const passport = require('passport');
 /* GET api listing. */
 function apiResponse(className, functionName, adminOnly=false, reqFuncs=[]){
   let args = Array.prototype.slice.call(arguments, 4);
-  let deepFind = function(obj, path){
-    path = path.split('.');
+  let deepFind = function(obj, pathStr){
+    let path = pathStr.split('.');
     let len=path.length;
     for (let i=0; i<len; i++){
+      if(typeof obj === 'undefined') {
+        let err = new Error(`Bad request: request.${pathStr} is not found at '${path[i]}'`);
+        err.status = 400;
+        throw(err);
+      }
       obj = obj[path[i]];
     }
     return obj;
@@ -48,20 +53,19 @@ router.get('/', function(req, res) {
   res.send('respond with a resource');
 });
 //Login API
-router.post('/login', passport.authenticate('local', {}), (req,res)=>res.status(200).send(req.user.username));
+router.post('/login', passport.authenticate('local', {}), apiResponse('Unit', 'afterLogin', false, ['user.username','user.is_branch']));
 router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
 router.get('/logout', (req,res)=>{req.logout();res.sendStatus(200)});
-router.get('/validUser',(req,res)=>{req.user ? res.status(200).send(req.user.username) : res.sendStatus(400);});
-
+router.get('/validUser',apiResponse('Unit', 'afterLogin', false, ['user.username','user.is_branch']));
 //Unit API
 router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
 router.get('/unit', apiResponse('Unit', 'select', true, ['query.isBranch']));
 router.post('/unit/:uid', apiResponse('Unit', 'update', true, ['params.uid','body']));
 router.delete('/unit/:uid', apiResponse('Unit', 'delete', true, ['params.uid']));
-
-//******************************
-//last_login API
-
-//******************************
+//Product API
+router.put('/product', apiResponse('Product', 'insert', true, ['body']));
+router.get('/product', apiResponse('Product', 'select', false, ['query.uid']));
+router.post('/product/:pid', apiResponse('Product', 'update', false, ['body', 'params.pid', 'query.uid']));
+router.delete('/product/:pid', apiResponse('Product', 'delete', false, ['body', 'params.pid', 'query.uid']));
 
 module.exports = router;

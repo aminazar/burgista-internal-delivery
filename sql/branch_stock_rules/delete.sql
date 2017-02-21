@@ -1,0 +1,1 @@
+DELETE FROM branch_stock_rules WHERE uid = ${uid} AND pid = ${pid}
