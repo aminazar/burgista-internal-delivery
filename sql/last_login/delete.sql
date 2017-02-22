@@ -1,1 +1,1 @@
-delete from last_login where login_uid = ${login_uid} and ( uid <> ${uid} )
+delete from last_login where login_uid = ${login_uid} and ( lid <> ${lid} ) returning lid

@@ -13,6 +13,10 @@ describe("Unit model", ()=> {
   const pwd = 'testPwd';
   const isBranch = true;
 
+  let lid;
+  const login_uid = 1;
+  const login_date_time = '2020-02-22';
+
   beforeAll(done=> {
     sql.test.units.create()
       .then(() => {
@@ -22,10 +26,20 @@ describe("Unit model", ()=> {
           secret: pwd,
           is_branch: isBranch
         })
-          .then(res=> {
-            uid = res.uid;
+      .then(res=> {
+        uid = res.uid;
+        sql.test.last_login.create()
+        .then(() => {
+          sql.test.last_login.add({
+            login_uid : login_uid,
+            login_date_time : login_date_time
+          })
+          .then(res =>{
+            lid = res.lid;
             done();
+          })
           });
+        });
       })
       .catch(err => {
         console.log(err.message);
@@ -181,14 +195,61 @@ describe("Unit model", ()=> {
       });
   });
 
+  // it("should insert a new row into last_login table only after successful login", done=> {
+  //   sql.test.units.create()
+  //     .then((data)=> {
+  //       expect(data.username).toBe(username.toLowerCase());
+  //       done();
+  //     })
+  //     .catch(err=> {
+  //       fail(err.message);
+  //       done();
+  //     });
+  // });
   afterAll((done) => {
-    sql.test.units.drop()
-      .then(() => {
-        done();
-      })
-      .catch((err) => {
-        console.log(err.message);
-        done();
-      });
+    if(lid) {
+      sql.test.last_login.drop()
+        .then(() => {
+          if(uid) {
+            sql.test.units.drop()
+              .then(() => {
+                done();
+              })
+              .catch((err) => {
+                console.log(err.message);
+                fail(err.message);
+                done();
+              });
+          }
+          else
+            done();
+        })
+        .catch((err) => {
+          console.log(err.message);
+          fail(err.message);
+          done();
+        });
+    }
+    else
+      done();
   });
+
 });
+
+
+
+
+
+
+
+
+// afterAll((done) => {
+//   sql.test.units.drop()
+//     .then(() => {
+//       done();
+//     })
+//     .catch((err) => {
+//       console.log(err.message);
+//       done();
+//     });
+// });

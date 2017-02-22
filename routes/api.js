@@ -52,8 +52,8 @@ function apiResponse(className, functionName, adminOnly=false, reqFuncs=[]){
 router.get('/', function(req, res) {
   res.send('respond with a resource');
 });
-//Login API
-router.post('/login', passport.authenticate('local', {}), apiResponse('Unit', 'afterLogin', false, ['user.username','user.is_branch']));
+//Login API & last login API
+router.post('/login', passport.authenticate('local', {}), apiResponse('Unit', 'saveDateAfterLogin', false, ['user.username','user.is_branch','user.uid']));
 router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
 router.get('/logout', (req,res)=>{req.logout();res.sendStatus(200)});
 router.get('/validUser',apiResponse('Unit', 'afterLogin', false, ['user.username','user.is_branch']));

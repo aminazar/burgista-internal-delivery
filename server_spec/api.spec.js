@@ -126,6 +126,7 @@ describe("REST API", ()=> {
     it("logins as admin", done => {
       req.post({url: base_url + 'login' + test_query, form: {username: 'admin', password: 'atest'}}, (err, res)=> {
         expect(res.statusCode).toBe(200);
+        //************ss
         done();
       })
     });

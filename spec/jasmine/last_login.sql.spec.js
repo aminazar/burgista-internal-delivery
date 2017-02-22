@@ -6,7 +6,7 @@ const sql = require('../../sql');
 
 describe("Test 'last_login' table", () => {
   let test_uid;
-  let test_last_login_uid;
+  let test_last_login_lid;
   let date = new Date();
 
   beforeAll((done) => {
@@ -16,21 +16,21 @@ describe("Test 'last_login' table", () => {
       })
       .then(() => {
         return sql.test.units.add({
-          name: 'Reza razavi',
-          username: 'rrazavi',
+          name: 'Sareh salehi',
+          username: 'sasalehi',
           secret: 'qwerty',
           is_branch: false
         })
       })
-      .then((res) => {
+      .then(() => {
         return sql.test.units.add({
-          name: 'Sahar salehi',
-          username: 'ssalehi',
+          name: 'Ali salehi',
+          username: 'asalehi',
           secret: 'qwerty',
           is_branch: true
         })
       })
-      .then((res) => {
+      .then(() => {
         return sql.test.units.add({
           name: 'Negar salehi',
           username: 'nsalehi',
@@ -38,7 +38,15 @@ describe("Test 'last_login' table", () => {
           is_branch: false
         })
       })
-      .then((res) => {
+      .then(() => {
+        return sql.test.units.add({
+          name: 'Sadra salehi',
+          username: 'sadsalehi',
+          secret: 'qwerty',
+          is_branch: false
+        })
+      })
+      .then((res)=>{
         test_uid = res.uid;
         done();
       })
@@ -49,38 +57,82 @@ describe("Test 'last_login' table", () => {
       });
   });
 
-
-  it("Should add a new row to the table after successfull login", (done) => {
+  it("should throw an error if login_uid is NOT exist in units table",(done) => {
     sql.test.last_login.add({
-      login_uid : test_uid,
-      login_date_time : date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+      login_uid : 10,
+    })
+    .then((res)=>{
+      fail('this login_uid is NOT exist in units table!!');
+      done();
+    })
+    .catch((err) => {
+      return sql.test.last_login.select()
+    })
+    .then((res) => {
+      expect(res.length).toBe(0);
+      done();
+    })
+    .catch((err) => {
+      console.log(err.message);
+      fail(err.message);
+      done();
+    })
+  });
+
+  it("should delete 0 row if user logins for the first time",(done) =>{
+    sql.test.last_login.add({
+      login_uid : 1,
+    })
+      .then((res) => {
+        test_last_login_lid = res.lid;
+        return sql.test.last_login.get_login_uid({lid : test_last_login_lid});
       })
       .then((res) => {
+        expect(res[0].login_uid).toBe(1);
+        return sql.test.last_login.delete({login_uid : res[0].login_uid ,lid: test_last_login_lid})
+      })
+      .then((res) => {
+        expect(res.length).toBe(0);
         return sql.test.last_login.select()
       })
       .then((res) => {
         expect(res.length).toBe(1);
-        return sql.test.last_login.add({
-          login_uid: test_uid-1,
-          login_date_time: date.getFullYear() + '-' + (date.getMonth() + 2) + '-' + date.getDate()
-        })
+        done();
+      })
+      .catch((err) => {
+        console.log(err.message);
+        fail(err.message);
+        done();
+      })
+  });
+
+  it("Should add a new row to the table after successfull login", (done) => {
+    sql.test.last_login.add({
+      login_uid : test_uid,
       })
       .then((res) => {
         return sql.test.last_login.select()
       })
-      .then((res) =>{
+      .then((res) => {
         expect(res.length).toBe(2);
         return sql.test.last_login.add({
-          login_uid: test_uid -2,
-          login_date_time: date.getFullYear() + '-' + (date.getMonth() + 2) + '-' + date.getDate()
+          login_uid: test_uid-1,
+        })
+      })
+      .then((res) => {
+        return sql.test.last_login.select()
+      })
+      .then((res) =>{
+        expect(res.length).toBe(3);
+        return sql.test.last_login.add({
+          login_uid: test_uid-2,
         })
       })
       .then((res) =>{
-        test_last_login_uid = res.uid;
         return sql.test.last_login.select()
       })
       .then((res) => {
-        expect(res.length).toBe(3);
+        expect(res.length).toBe(4);
         done();
       })
       .catch((err) => {
@@ -90,24 +142,24 @@ describe("Test 'last_login' table", () => {
       });
   });
 
-  it("Should delete user all last logins if there is after new login" ,(done) =>{
+  it("Should delete user all last logins(just 1 row) if there is after new login" ,(done) =>{
     sql.test.last_login.add({
-      login_uid : 3,
-      login_date_time : date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+      login_uid : 4,
     })
     .then ((res) => {
-      test_uid = res.uid;
-      return sql.test.last_login.get_login_uid({uid : test_uid})
+      test_last_login_lid = res.lid;
+      return sql.test.last_login.get_login_uid({lid : test_last_login_lid})
     })
     .then((res) => {
-      expect(res[0].login_uid).toBe(3);
-      return sql.test.last_login.delete({login_uid : res[0].login_uid , uid : test_uid})
+      expect(res[0].login_uid).toBe(4);
+      return sql.test.last_login.delete({login_uid : res[0].login_uid ,lid: test_last_login_lid})
     })
-    .then(() => {
+    .then((res) => {
+      expect(res.length).toBe(1);
       return sql.test.last_login.select()
     })
     .then((res)=>{
-      expect(res.length).toBe(3);
+      expect(res.length).toBe(4);
       done();
     })
     .catch((err) => {
@@ -118,7 +170,7 @@ describe("Test 'last_login' table", () => {
   });
 
   afterAll((done) => {
-    if(test_last_login_uid) {
+    if(test_last_login_lid) {
       sql.test.last_login.drop()
         .then(() => {
           if(test_uid) {

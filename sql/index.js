@@ -15,6 +15,8 @@ let usingFunction = query=> {
     uniqueGet: 'one',
     checkNone: 'none',
     test: 'one',
+    add: 'one',
+    // delete: 'one',
   }[query];
 
   if (!res)
@@ -77,15 +79,14 @@ let tablesWithSqlCreatedByHelpers = [
     delete: true,
     idColumn: 'uid',
   },
-
   {
     name: 'last_login',
-    insert: true,
+    insert: false,
     update: true,
     select: false,
     delete: false,
-    idColumn: 'uid',
-  }
+    idColumn: 'lid',
+  },
   {
     name: 'products',
     insert: true,
