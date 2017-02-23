@@ -4,10 +4,9 @@
 const env = require('../../env');
 const sql = require('../../sql');
 
-describe("Test 'last_login' table", () => {
+fdescribe("Test 'last_login' table", () => {
   let test_uid;
   let test_last_login_lid;
-  let date = new Date();
 
   beforeAll((done) => {
     sql.test.units.create()
@@ -79,34 +78,34 @@ describe("Test 'last_login' table", () => {
     })
   });
 
-  it("should delete 0 row if user logins for the first time",(done) =>{
+  it("should delete 0 row from last_login table if user logins for the first time",(done) =>{
     sql.test.last_login.add({
       login_uid : 1,
     })
-      .then((res) => {
-        test_last_login_lid = res.lid;
-        return sql.test.last_login.get_login_uid({lid : test_last_login_lid});
-      })
-      .then((res) => {
-        expect(res[0].login_uid).toBe(1);
-        return sql.test.last_login.delete({login_uid : res[0].login_uid ,lid: test_last_login_lid})
-      })
-      .then((res) => {
-        expect(res.length).toBe(0);
-        return sql.test.last_login.select()
-      })
-      .then((res) => {
-        expect(res.length).toBe(1);
-        done();
-      })
-      .catch((err) => {
-        console.log(err.message);
-        fail(err.message);
-        done();
-      })
+    .then((res) => {
+      test_last_login_lid = res.lid;
+      return sql.test.last_login.get_login_uid({lid : test_last_login_lid});
+    })
+    .then((res) => {
+      expect(res[0].login_uid).toBe(1);
+      return sql.test.last_login.delete({login_uid : res[0].login_uid ,lid: test_last_login_lid})
+    })
+    .then((res) => {
+      expect(res.length).toBe(0);
+      return sql.test.last_login.select()
+    })
+    .then((res) => {
+      expect(res.length).toBe(1);
+      done();
+    })
+    .catch((err) => {
+      console.log(err.message);
+      fail(err.message);
+      done();
+    })
   });
 
-  it("Should add a new row to the table after successfull login", (done) => {
+  it("should add a new row to the table after successfull login", (done) => {
     sql.test.last_login.add({
       login_uid : test_uid,
       })
@@ -142,7 +141,7 @@ describe("Test 'last_login' table", () => {
       });
   });
 
-  it("Should delete user all last logins(just 1 row) if there is after new login" ,(done) =>{
+  it("should delete user all last logins(just 1 row) if there is after new login" ,(done) =>{
     sql.test.last_login.add({
       login_uid : 4,
     })
@@ -168,6 +167,41 @@ describe("Test 'last_login' table", () => {
       done();
     })
   });
+
+  it("should add a new row to last_login table and delete all last exist login-dates just after successful login", (done) => {
+    sql.test.units.add({
+      name: 'mona pedram',
+      username: 'mpedram',
+      secret: 'qwerty',
+      is_branch: false
+    })
+    .then((res)=>{
+      expect(typeof res.uid).toBe('number');
+      test_uid = res.uid;
+      return sql.test.last_login.add({
+        login_uid : test_uid,
+      })
+    })
+    .then((res) => {
+      expect(typeof res.lid).toBe('number');
+      test_last_login_lid = res.lid;
+      return sql.test.last_login.get_login_uid({lid : test_last_login_lid})
+    })
+    .then((res) => {
+      expect(res[0].login_uid).toBe(test_uid);
+      return sql.test.last_login.delete({login_uid : res[0].login_uid ,lid: test_last_login_lid})
+    })
+    .then((res) => {
+      expect(res.length).toBe(0);
+      done();
+    })
+    .catch((err) => {
+      console.log(err.message);
+      fail(err.message);
+      done();
+    })
+  });
+
 
   afterAll((done) => {
     if(test_last_login_lid) {

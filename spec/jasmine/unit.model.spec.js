@@ -15,7 +15,6 @@ describe("Unit model", ()=> {
 
   let lid;
   const login_uid = 1;
-  const login_date_time = '2020-02-22';
 
   beforeAll(done=> {
     sql.test.units.create()
@@ -32,7 +31,6 @@ describe("Unit model", ()=> {
         .then(() => {
           sql.test.last_login.add({
             login_uid : login_uid,
-            login_date_time : login_date_time
           })
           .then(res =>{
             lid = res.lid;
@@ -236,20 +234,3 @@ describe("Unit model", ()=> {
 
 });
 
-
-
-
-
-
-
-
-// afterAll((done) => {
-//   sql.test.units.drop()
-//     .then(() => {
-//       done();
-//     })
-//     .catch((err) => {
-//       console.log(err.message);
-//       done();
-//     });
-// });
