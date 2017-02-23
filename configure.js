@@ -27,7 +27,7 @@ function createOrExist(tableName){
       .then(resolve)
       .catch(err => {
         if(err.message.indexOf(`"${tableName}" already exists`)!==-1)
-          resolve()
+          resolve();
         else
           reject(err);
       })

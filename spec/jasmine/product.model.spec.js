@@ -75,7 +75,7 @@ describe('Product model', () => {
 
   it('should select all products', (done) => {
     Product.test = true;
-    Product.select()
+    Product.select('admin')
       .then((res) => {
         expect(res.length).toBe(2);
         Product.test = false;
@@ -95,7 +95,7 @@ describe('Product model', () => {
       usage: 1
     };
 
-    product.update(data, product_id, unit_id)
+    product.update(data, product_id, 'JohnSmith' ,unit_id)
       .then((res) => {
         expect(res).toBeTruthy();
         done();
@@ -108,7 +108,7 @@ describe('Product model', () => {
 
   it('should select all products (with overridden values)', (done) => {
     Product.test = true;
-    Product.select(unit_id)
+    Product.select('JohnSmith', unit_id)
       .then((res) => {
         expect(res[0].default_max).toBe(5);
         expect(res[0].default_mon_multiple).toBe(2);
