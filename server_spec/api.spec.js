@@ -37,6 +37,7 @@ describe("REST API", ()=> {
   });
 
   describe("unit", ()=> {
+    let branchUid;
     let uid;
     let adminUid;
     let u;
@@ -54,24 +55,31 @@ describe("REST API", ()=> {
         sql.test.units.create()
           .then(() => {
             setup = false;
-            u.save()
-              .then(id => {
-                uid = id;
-                a = new lib.Unit(true);
-                a.username = 'Admin';
-                a.password = 'atest';
-                a.name = '';
-                a.is_branch = false;
-                a.save()
-                  .then(aid=> {
-                    adminUid = aid;
-                    done();
-                  })
-              })
-              .catch(err => {
-                console.log(err.message);
-                done();
-              })
+            return u.save();
+          })
+          .then(id => {
+            uid = id;
+            a = new lib.Unit(true);
+            a.username = 'Admin';
+            a.password = 'atest';
+            a.name = '';
+            a.is_branch = false;
+            return a.save();
+          })
+          .then(aid=> {
+            adminUid = aid;
+
+            let b = new lib.Unit(true);
+            b.name = 'Baker Street';
+            b.username = 'bk';
+            b.password = '123';
+            b.is_branch = true;
+
+            return b.save();
+          })
+          .then(bid => {
+            branchUid = bid;
+            done();
           })
           .catch(err => {
             console.log(err.message);
@@ -130,23 +138,23 @@ describe("REST API", ()=> {
       })
     });
 
-    it("allows admin to list all units", done => {
+    it("allows admin to list all units except admin user", done => {
       req.get(base_url + 'unit' + test_query, (err, res)=> {
         if (resExpect(res, 200)) {
           let data = JSON.parse(res.body);
           expect(data.length).toBe(2);
-          expect(data.map(r=>r.uid)).toContain(adminUid);
-          expect(data.map(r=>r.username)).toContain('admin');
+          expect(data.map(r=>r.uid)).toContain(uid);
+          expect(data.map(r=>r.username)).toContain('bk');
         }
         done();
       })
     });
 
-    it("allows admin to list all prep units", done => {
+    it("allows admin to list all prep units (except admin user)", done => {
       req.get(base_url + 'unit' + test_query + '&isBranch=false', (err, res) => {
         if(resExpect(res, 200)) {
           let data = JSON.parse(res.body);
-          expect(data.length).toBe(2);
+          expect(data.length).toBe(1);
           expect(data.map(r => r.is_branch)).toContain(false);
           expect(data.map(r => r.is_branch)).not.toContain(true);
         }
@@ -220,8 +228,8 @@ describe("REST API", ()=> {
         if (resExpect(res, 200)) {
           let data = JSON.parse(res.body);
           expect(data.length).toBe(1);
-          expect(data[0].uid).toBe(adminUid);
-          expect(data[0].username).toBe('admin');
+          expect(data[0].uid).toBe(branchUid);
+          expect(data[0].username).toBe('bk');
         }
         done();
       })
@@ -279,5 +287,5 @@ describe("REST API", ()=> {
         });
       else done();
     });
-  })
+  });
 });

@@ -1,7 +1,7 @@
 CREATE TABLE branch_stock_rules(
     bsrid serial not null,
-    pid serial not null references products(pid),
-    uid serial not null references units(uid),
+    pid integer not null references products(pid) on delete cascade,
+    uid integer not null references units(uid) on delete cascade,
     max integer,
     min integer,
     start_date date,
