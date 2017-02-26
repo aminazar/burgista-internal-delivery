@@ -4,7 +4,7 @@
 const env = require('../../env');
 const sql = require('../../sql');
 
-fdescribe("Test 'last_login' table", () => {
+describe("Test 'last_login' table", () => {
   let test_uid;
   let test_last_login_lid;
 

@@ -65,7 +65,8 @@ describe("REST API", ()=> {
                 a.save()
                   .then(aid=> {
                     adminUid = aid;
-                    done();
+                    return sql.test.last_login.create()
+                    .then(()=>done())
                   })
               })
               .catch(err => {
@@ -83,6 +84,22 @@ describe("REST API", ()=> {
       }
     });
 
+    it("should show correct row number of units & last_login table", done => {
+      return sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(2);
+          return sql.test.last_login.select()
+            .then((res) => {
+              expect(res.length).toBe(0);
+              done();
+            })
+            .catch((err)=> {
+              console.log(err.message);
+              done()
+            });
+          });
+      });
+
     it("responds to 'loginCheck'", done => {
       request.post({
         url: base_url + 'loginCheck' + test_query,
@@ -92,7 +109,6 @@ describe("REST API", ()=> {
         done();
       });
     });
-
     it("responds to incorrect login unit", done => {
       request.post({
         url: base_url + 'loginCheck' + test_query,
@@ -102,7 +118,6 @@ describe("REST API", ()=> {
         done();
       });
     });
-
     it("responds to incorrect login password", done => {
       request.post({
         url: base_url + 'loginCheck' + test_query,
@@ -112,6 +127,42 @@ describe("REST API", ()=> {
         done();
       })
     });
+
+
+    it("login as amin'", done => {
+      request.post({
+        url: base_url + 'login' + test_query,
+        form: {username: 'amin', password: 'test'}
+      }, function (error, response) {
+        expect(response.statusCode).toBe(200);
+        return sql.test.last_login.select()
+          .then((res) => {
+            expect(res.length).toBe(1);
+            done();
+          })
+          .catch((err) =>{
+            console.log(err.message);
+            done()
+          })
+      });
+    });
+    it("should show correct row number of units & last_login table", done => {
+      return sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(2);
+          return sql.test.last_login.select()
+            .then((res) => {
+              expect(res.length).toBe(1);
+              done();
+            })
+            .catch((err)=> {
+              console.log(err.message);
+              done()
+            });
+        });
+    })
+
+
 
     it("doesn't save a new unit if it is not admin", done => {
       request.put({
@@ -123,12 +174,31 @@ describe("REST API", ()=> {
       });
     });
 
+
     it("logins as admin", done => {
-      req.post({url: base_url + 'login' + test_query, form: {username: 'admin', password: 'atest'}}, (err, res)=> {
+      req.post({url: base_url + 'login' + test_query,
+        form: {username: 'admin', password: 'atest'}}, (err, res)=> {
         expect(res.statusCode).toBe(200);
         done();
       })
     });
+    it("should show correct row number of units & last_login table", done => {
+      return sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(2);
+          return sql.test.last_login.select()
+            .then((res) => {
+              expect(res.length).toBe(2);
+              done();
+            })
+            .catch((err)=> {
+              console.log(err.message);
+              done()
+            });
+        });
+    })
+
+
 
     it("allows admin to list all units", done => {
       req.get(base_url + 'unit' + test_query, (err, res)=> {
@@ -141,7 +211,6 @@ describe("REST API", ()=> {
         done();
       })
     });
-
     it("allows admin to list all prep units", done => {
       req.get(base_url + 'unit' + test_query + '&isBranch=false', (err, res) => {
         if(resExpect(res, 200)) {
@@ -153,14 +222,13 @@ describe("REST API", ()=> {
         done();
       });
     });
-
     it("allows admin to update a username", done => {
-      req.post({url: base_url + 'unit/' + uid + test_query, form: {username: 'aminazar'}}, (err, res)=> {
+      req.post({url: base_url + 'unit/' + uid + test_query,
+        form: {username: 'aminazar'}}, (err, res)=> {
         expect(res.statusCode).toBe(200);
         done();
       })
     });
-
     it("allows admin to update a username - checking that update happened", done => {
       req.post({
         url: base_url + 'loginCheck' + test_query,
@@ -170,24 +238,22 @@ describe("REST API", ()=> {
         done();
       })
     });
-
     it("allows admin to update a password", done => {
-      req.post({url: base_url + 'unit/' + uid + test_query, form: {password: 'test2'}}, (err, res)=> {
+      req.post({url: base_url + 'unit/' + uid + test_query,
+        form: {password: 'test2'}}, (err, res)=> {
         expect(res.statusCode).toBe(200);
         done();
       })
     });
-
     it("allows admin to update a password - checking that update happened", done => {
       req.post({
         url: base_url + 'loginCheck' + test_query,
-        form: {username: 'aminazar', password: 'test2'}
-      }, (err, res)=> {
+        form: {username: 'aminazar', password: 'test2'}},
+        (err, res)=> {
         expect(res.statusCode).toBe(200);
         done();
       })
     });
-
     it("allows admin to update both username and password", done => {
       req.post({
         url: base_url + 'unit/' + uid + test_query,
@@ -197,35 +263,28 @@ describe("REST API", ()=> {
         done();
       })
     });
-
     it("allows admin to update both username and password - checking that update happened", done => {
       req.post({url: base_url + 'loginCheck' + test_query, form: {username: 'amin2', password: 'test3'}}, (err, res)=> {
         expect(res.statusCode).toBe(200);
         done();
       })
     });
+    it("should show correct row number of units & last_login table", done => {
+      return sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(2);
+          return sql.test.last_login.select()
+            .then((res) => {
+              expect(res.length).toBe(2);
+              done();
+            })
+            .catch((err)=> {
+              console.log(err.message);
+              done()
+            });
+        });
+    })
 
-    it("allows admin to delete a unit", done => {
-      req.delete({
-        url: base_url + 'unit/' + uid + test_query,
-        form: {username: 'amin2', password: 'test3'}
-      }, (err, res)=> {
-        expect(res.statusCode).toBe(200);
-        done();
-      });
-    });
-
-    it("allows admin to delete a user - check it happened", done => {
-      req.get(base_url + 'unit' + test_query, (err, res)=> {
-        if (resExpect(res, 200)) {
-          let data = JSON.parse(res.body);
-          expect(data.length).toBe(1);
-          expect(data[0].uid).toBe(adminUid);
-          expect(data[0].username).toBe('admin');
-        }
-        done();
-      })
-    });
 
     it("allows admin to add a new unit", done => {
       req.put({
@@ -239,18 +298,151 @@ describe("REST API", ()=> {
         done();
       });
     });
-
     it("allows admin to add a new unit - checking it happened", done => {
       req.get(base_url + 'unit' + test_query, (err, res)=> {
         if (resExpect(res, 200)) {
           let data = JSON.parse(res.body);
-          expect(data.length).toBe(2);
+          expect(data.length).toBe(3);
           expect(data.map(r => r.username)).toContain('ali');
           expect(data.map(r => r.uid)).toContain(uid);
         }
         done();
       });
     });
+    it("should show correct row number of units & last_login table", done => {
+      return sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(3);
+          return sql.test.last_login.select()
+            .then((res) => {
+              expect(res.length).toBe(2);
+              done();
+            })
+            .catch((err)=> {
+              console.log(err.message);
+              done()
+            });
+        });
+    })
+
+
+    it("saves lagin date of user and delete last login date if there is,first step", done => {
+      req.put({
+        url: base_url + 'unit' + test_query,
+        form: {username: 'saray', password: '123', name: 'sareh', is_branch: true}
+      }, function (err, res) {
+        if (resExpect(res, 200)) {
+          uid = JSON.parse(res.body);
+          expect(uid).toBeTruthy();
+        }
+        done();
+      });
+    });
+    it("should show correct row number of units & last_login table", done => {
+      return sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(4);
+          return sql.test.last_login.select()
+            .then((res) => {
+              expect(res.length).toBe(2);
+              done();
+            })
+            .catch((err)=> {
+              console.log(err.message);
+              done()
+            });
+        });
+    })
+    it("saves lagin date of user and delete last login date if there is,second step", done => {
+      req.post({url: base_url + 'login' + test_query,
+        form: {username: 'saray', password: '123'}}, (err, res)=> {
+        expect(res.statusCode).toBe(200);
+        return sql.test.last_login.select()
+          .then((res) => {
+            expect(res.length).toBe(3);
+            done();
+          })
+          .catch((err) =>{
+            console.log(err.message);
+            done()
+          })
+      })
+    });
+    it("should show correct row number of units & last_login table", done => {
+      return sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(4);
+          return sql.test.last_login.select()
+            .then((res) => {
+              expect(res.length).toBe(3);
+              done();
+            })
+            .catch((err)=> {
+              console.log(err.message);
+              done()
+            });
+        });
+    })
+
+    it("logins as admin", done => {
+      req.post({url: base_url + 'login' + test_query,
+        form: {username: 'admin', password: 'atest'}}, (err, res)=> {
+        expect(res.statusCode).toBe(200);
+        done();
+      })
+    });
+    it("should show correct row number of units & last_login table", done => {
+      return sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(4);
+          return sql.test.last_login.select()
+            .then((res) => {
+              expect(res.length).toBe(3);
+              done();
+            })
+            .catch((err)=> {
+              console.log(err.message);
+              done()
+            });
+        });
+    })
+
+    it("allows admin to delete a unit", done => {
+      req.delete({
+        url: base_url + 'unit/' + uid + test_query,
+        form: {username: 'amin2', password: 'test3'}
+      }, (err, res)=> {
+        expect(res.statusCode).toBe(200);
+        done();
+      });
+    });
+    it("allows admin to delete a user - check it happened", done => {
+      req.get(base_url + 'unit' + test_query, (err, res)=> {
+        if (resExpect(res, 200)) {
+          let data = JSON.parse(res.body);
+          expect(data.length).toBe(3);
+          expect(data[0].uid).toBe(adminUid);
+          expect(data[0].username).toBe('admin');
+        }
+        done();
+      })
+    });
+    it("should show correct row number of units & last_login table", done => {
+      return sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(3);
+          return sql.test.last_login.select()
+            .then((res) => {
+              expect(res.length).toBe(2);
+              done();
+            })
+            .catch((err)=> {
+              console.log(err.message);
+              done()
+            });
+        });
+    })
+
 
     it("logs out a unit", done => {
       req.get(base_url + 'logout' + test_query, (err, res) => {
@@ -258,7 +450,6 @@ describe("REST API", ()=> {
         done();
       });
     });
-
     it("logs out a unit - checking it happened", done => {
       req.get(base_url + 'unit' + test_query, (err, res)=> {
         expect(res.statusCode).toBe(403);
@@ -266,18 +457,90 @@ describe("REST API", ()=> {
       });
     });
 
+
     it("tears down", ()=> {
       teardown = true;
       expect(teardown).toBeTruthy();
     });
 
+
     afterEach((done)=> {
       if (teardown)
-        sql.test.units.drop().then(()=>done()).catch(err=> {
-          console.log(err.message);
-          done()
-        });
+        sql.test.last_login.drop()
+        .then(()=> {
+          sql.test.units.drop()
+          .then(()=>done())
+          })
+          .catch(err=> {
+            console.log(err.message);
+            done()
+          });
       else done();
     });
+
   })
 });
+
+
+//
+//
+// afterEach((done)=> {
+//   if (teardown)
+//     sql.test.units.drop()
+//       .then(()=>done())
+//       .catch(err=> {
+//         console.log(err.message);
+//         done()
+//       });
+//   else done();
+// });
+
+// expect((JSON.parse(res.body).map(r => r.username)).toContain('saray');
+//
+// it("saves lagin date of user and delete last login date if there is,first step", done => {
+//   req.put({
+//     url: base_url + 'unit' + test_query,
+//     form: {username: 'saray', password: '123', name: 'sareh', is_branch: true}
+//   }, function (err, res) {
+//     if (resExpect(res, 200)) {
+//       uid = JSON.parse(res.body);
+//       expect(uid).toBeTruthy();
+//     }
+//     done();
+//   });
+// });//add new unit saray
+// it("saves lagin date of user and delete last login date if there is,second step", done => {
+//   req.get(base_url + 'unit' + test_query, (err, res)=> {
+//     if (resExpect(res, 200)) {
+//       let data = JSON.parse(res.body);
+//       expect(data.length).toBe(3);
+//       expect(data.map(r => r.username)).toContain('saray');
+//       expect(data.map(r => r.uid)).toContain(uid);
+//     }
+//     done();
+//   });
+// });//check adding new unit is happend
+// it("saves lagin date of user and delete last login date if there is,3th step", done => {
+//   req.post({url: base_url + 'loginCheck' + test_query,
+//     form: {username: 'saray', password: '123'}}, (err, res)=> {
+//     expect(res.statusCode).toBe(200);
+//     done();
+//   })
+// });//login as saray
+// it("saves lagin date of user and delete last login date if there is,4th step", done => {
+//   req.get(base_url + 'validUser' + test_query, (err, res) => {
+//     expect(res.statusCode).toBe(200);
+//     done();
+//   });
+// });//check login as saray is happend
+
+
+// it("responds to 'loginCheck'", done => {
+//   request.post({
+//     url: base_url + 'loginCheck' + test_query,
+//     form: {username: 'amin', password: 'test'}
+//   }, function (error, response) {
+//     expect(response.statusCode).toBe(200);
+//     done();
+//   });
+// });

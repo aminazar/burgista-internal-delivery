@@ -13,8 +13,6 @@ describe("Unit model", ()=> {
   const pwd = 'testPwd';
   const isBranch = true;
 
-  let lid;
-  const login_uid = 1;
 
   beforeAll(done=> {
     sql.test.units.create()
@@ -25,18 +23,9 @@ describe("Unit model", ()=> {
           secret: pwd,
           is_branch: isBranch
         })
-      .then(res=> {
+      .then(res => {
         uid = res.uid;
-        sql.test.last_login.create()
-        .then(() => {
-          sql.test.last_login.add({
-            login_uid : login_uid,
-          })
-          .then(res =>{
-            lid = res.lid;
-            done();
-          })
-          });
+        done();
         });
       })
       .catch(err => {
@@ -193,34 +182,28 @@ describe("Unit model", ()=> {
       });
   });
 
-  // it("should insert a new row into last_login table only after successful login", done=> {
-  //   sql.test.units.create()
-  //     .then((data)=> {
-  //       expect(data.username).toBe(username.toLowerCase());
-  //       done();
-  //     })
-  //     .catch(err=> {
-  //       fail(err.message);
-  //       done();
-  //     });
-  // });
+
+  it("should save login_date after successful login", done=> {
+  Unit.saveDateAfterLogin(username,isBranch,1)
+    .then((res) => {
+      expect(res).toBeTruthy();
+      expect(res.user).toBe('Ali Alavi');
+      expect(res.userType).toBe('branch');
+      done();
+    })
+    .catch((err) => {
+      fail(err.message);
+      done();
+    });
+
+});
+
+
   afterAll((done) => {
-    if(lid) {
-      sql.test.last_login.drop()
+    if(uid) {
+      sql.test.units.drop()
         .then(() => {
-          if(uid) {
-            sql.test.units.drop()
-              .then(() => {
-                done();
-              })
-              .catch((err) => {
-                console.log(err.message);
-                fail(err.message);
-                done();
-              });
-          }
-          else
-            done();
+          done();
         })
         .catch((err) => {
           console.log(err.message);
@@ -230,7 +213,6 @@ describe("Unit model", ()=> {
     }
     else
       done();
-  });
+  })
 
 });
-
