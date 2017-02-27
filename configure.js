@@ -38,6 +38,8 @@ function prodTablesCreate() {
   return new Promise((resolve, reject) => {
     createOrExist('units')
       .then(createOrExist('products'))
+      .then(createOrExist('branch_stock_rules'))
+      .then(createOrExist('last_login'))
       .catch((err) => {
         reject(err);
       });
