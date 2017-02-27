@@ -1,0 +1,1 @@
+insert into last_login(login_uid,login_date_time) values (${login_uid}, current_date) returning lid
