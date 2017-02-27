@@ -1,0 +1,40 @@
+/// <reference types="rrule" />
+import { OnInit, EventEmitter } from '@angular/core';
+import * as Rrule from 'rrule';
+export declare class RRuleComponent implements OnInit {
+    private _rstr;
+    RRuleStr: any;
+    RRuleStrChange: EventEmitter<string>;
+    validation: EventEmitter<string>;
+    options: Rrule.Options;
+    rule: Rrule;
+    freqs: string[];
+    freqsConst: Rrule.Frequency[];
+    freqsName: string[];
+    weekdays: string[];
+    weekdaysConst: Rrule.Weekday[];
+    weekpos: number[];
+    weekposName: string[];
+    byweekday: Rrule.Weekday[];
+    text: string;
+    showWeekdays: boolean;
+    showMonthOptions: boolean;
+    monthlyChooseByWeek: boolean;
+    monthDaysOption: any[];
+    monthDaysPast: number[];
+    monthDaysRemained: number[];
+    bymonthday: number[];
+    showMonthDaysPast: boolean;
+    showMonthDaysRemained: boolean;
+    bysetpos: number[];
+    constructor();
+    ngOnInit(): void;
+    onChange(): void;
+    validate(): void;
+    byweekdayChange(event: any): void;
+    monthDaysPastOrRemainedChange(event: any): void;
+    monthDaysRemainedChange(): void;
+    monthDaysPastChange(): void;
+    weekposChange(event: any): void;
+    multipleChoice(event: any, member: any): void;
+}
