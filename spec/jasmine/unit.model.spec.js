@@ -84,7 +84,7 @@ describe("Unit model", ()=> {
       });
   });
 
-  it("should exports name and hashed password", done=> {
+  it("should export name and hashed password", done=> {
     u.username += '.x';
     u.save()
       .then(data=> {

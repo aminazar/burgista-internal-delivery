@@ -1,1 +1,1 @@
-select uid,name,username,is_branch from units
+select uid,name,username,is_branch from units where lower(username) <> 'admin'

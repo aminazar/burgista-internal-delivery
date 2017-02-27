@@ -21,12 +21,23 @@ function dbTestCreate() {
   });
 }
 
+function createOrExist(tableName){
+  return new Promise((resolve, reject) => {
+    sql[tableName].create()
+      .then(resolve)
+      .catch(err => {
+        if(err.message.indexOf(`"${tableName}" already exists`)!==-1)
+          resolve();
+        else
+          reject(err);
+      })
+  })
+}
+
 function prodTablesCreate() {
   return new Promise((resolve, reject) => {
-    sql.units.create()
-      .then((u_res) => {
-        resolve();
-      })
+    createOrExist('units')
+      .then(createOrExist('products'))
       .catch((err) => {
         reject(err);
       });

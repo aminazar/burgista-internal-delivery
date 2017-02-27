@@ -37,6 +37,7 @@ describe("REST API", ()=> {
   });
 
   describe("unit", ()=> {
+    let branchUid;
     let uid;
     let adminUid;
     let u;
@@ -55,6 +56,7 @@ describe("REST API", ()=> {
         sql.test.units.create()
           .then(() => {
             setup = false;
+
             u.save()
               .then(id => {
                 uid = id;
@@ -67,13 +69,18 @@ describe("REST API", ()=> {
                   .then(aid=> {
                     adminUid = aid;
                     return sql.test.last_login.create()
-                    .then(()=>done())
-                  })
-              })
-              .catch(err => {
-                console.log(err.message);
-                done();
-              })
+                    .then(()=>{            
+                      let b = new lib.Unit(true);
+                      b.name = 'Baker Street';
+                      b.username = 'bk';
+                      b.password = '123';
+                      b.is_branch = true;
+
+                      return b.save();
+                    })
+                    .then(bid => {
+                      branchUid = bid;
+                      done();
           })
           .catch(err => {
             console.log(err.message);
@@ -201,23 +208,24 @@ describe("REST API", ()=> {
         });
     })
 
-    it("allows admin to list all units", done => {
+    it("allows admin to list all units except admin user", done => {
+
       req.get(base_url + 'unit' + test_query, (err, res)=> {
         if (resExpect(res, 200)) {
           let data = JSON.parse(res.body);
           expect(data.length).toBe(2);
-          expect(data.map(r=>r.uid)).toContain(adminUid);
-          expect(data.map(r=>r.username)).toContain('admin');
+          expect(data.map(r=>r.uid)).toContain(uid);
+          expect(data.map(r=>r.username)).toContain('bk');
         }
         done();
       })
     });
 
-    it("allows admin to list all prep units", done => {
+    it("allows admin to list all prep units (except admin user)", done => {
       req.get(base_url + 'unit' + test_query + '&isBranch=false', (err, res) => {
         if(resExpect(res, 200)) {
           let data = JSON.parse(res.body);
-          expect(data.length).toBe(2);
+          expect(data.length).toBe(1);
           expect(data.map(r => r.is_branch)).toContain(false);
           expect(data.map(r => r.is_branch)).not.toContain(true);
         }
@@ -298,6 +306,8 @@ describe("REST API", ()=> {
           expect(data.length).toBe(3);
           expect(data.map(r => r.username)).toContain('ali');
           expect(data.map(r => r.uid)).toContain(uid);
+          expect(data[data.length-1].uid).toBe(branchUid);
+          expect(data[data.length-1].username).toBe('bk');
         }
         done();
       });
@@ -463,8 +473,6 @@ describe("REST API", ()=> {
           });
       else done();
     });
-
-  })
+  });
 });
-
 
