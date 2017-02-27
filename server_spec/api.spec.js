@@ -69,18 +69,21 @@ describe("REST API", ()=> {
                   .then(aid=> {
                     adminUid = aid;
                     return sql.test.last_login.create()
-                    .then(()=>{            
-                      let b = new lib.Unit(true);
-                      b.name = 'Baker Street';
-                      b.username = 'bk';
-                      b.password = '123';
-                      b.is_branch = true;
+                      .then(()=> {
+                        let b = new lib.Unit(true);
+                        b.name = 'Baker Street';
+                        b.username = 'bk';
+                        b.password = '123';
+                        b.is_branch = true;
 
-                      return b.save();
-                    })
-                    .then(bid => {
-                      branchUid = bid;
-                      done();
+                        return b.save();
+                      })
+                      .then(bid => {
+                        branchUid = bid;
+                        done();
+                      })
+                  })
+              })
           })
           .catch(err => {
             console.log(err.message);
@@ -304,10 +307,17 @@ describe("REST API", ()=> {
         if (resExpect(res, 200)) {
           let data = JSON.parse(res.body);
           expect(data.length).toBe(3);
-          expect(data.map(r => r.username)).toContain('ali');
-          expect(data.map(r => r.uid)).toContain(uid);
-          expect(data[data.length-1].uid).toBe(branchUid);
-          expect(data[data.length-1].username).toBe('bk');
+          // console.log('**********');
+          // console.log(res.body);
+          // console.log('**********');
+          // expect(data.map(r => r.username)).toContain('ali');
+          // expect(data.map(r => r.uid)).toContain(uid);
+          // expect(data[data.length-1].uid).toBe(branchUid);
+          // expect(data[data.length-1].username).toBe('bk');
+           let f = data.filter (r => r.uid === data[data.length-1].uid);
+          expect(f.length).toBe(1);
+          if(f.length === 1)
+            expect((f[0].username)).toContain('ali');
         }
         done();
       });
@@ -403,10 +413,10 @@ describe("REST API", ()=> {
         });
     })
 
+
     it("allows admin to delete a unit", done => {
       req.delete({
         url: base_url + 'unit/' + uid + test_query,
-        form: {username: 'amin2', password: 'test3'}
       }, (err, res)=> {
         expect(res.statusCode).toBe(200);
         done();
@@ -418,8 +428,8 @@ describe("REST API", ()=> {
         if (resExpect(res, 200)) {
           let data = JSON.parse(res.body);
           expect(data.length).toBe(3);
-          expect(data[0].uid).toBe(adminUid);
-          expect(data[0].username).toBe('admin');
+          expect(data[0].uid).toBe(branchUid);
+          expect(data[0].username).toBe('bk');
         }
         done();
       })

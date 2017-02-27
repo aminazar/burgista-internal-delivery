@@ -48,7 +48,6 @@ module.exports = {
     drop:     sql('last_login/drop.sql'),
     add:   sql('last_login/insert.sql'),
     delete:   sql('last_login/delete.sql'),
-    select: sql('last_login/select.sql'),
     get_login_uid: sql('last_login/get_login_uid.sql'),
   }
 };

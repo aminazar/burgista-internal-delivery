@@ -83,7 +83,7 @@ let tablesWithSqlCreatedByHelpers = [
     name: 'last_login',
     insert: false,
     update: true,
-    select: false,
+    select: true,
     delete: false,
     idColumn: 'lid',
   },
