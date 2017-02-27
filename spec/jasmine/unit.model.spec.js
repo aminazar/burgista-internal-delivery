@@ -17,16 +17,19 @@ describe("Unit model", ()=> {
   beforeAll(done=> {
     sql.test.units.create()
       .then(() => {
-        sql.test.units.add({
+       return sql.test.last_login.create()
+      })
+      .then(() => {
+         return sql.test.units.add({
           name: name,
           username: username.toLowerCase(),
           secret: pwd,
           is_branch: isBranch
         })
+      })
       .then(res => {
         uid = res.uid;
         done();
-        });
       })
       .catch(err => {
         console.log(err.message);
@@ -46,18 +49,6 @@ describe("Unit model", ()=> {
         done();
       });
   });
-
-  // it("should fail on password check initially", done=> {
-  //     u.checkPassword()
-  //         .then(()=> {
-  //             fail("succeeded!");
-  //             done();
-  //         })
-  //         .catch(err=> {
-  //             expect(err.message).toBe("No password is set up");
-  //             done()
-  //         });
-  // });
 
   it("should save unit", done=> {
     u.exportData()
@@ -184,7 +175,8 @@ describe("Unit model", ()=> {
 
 
   it("should save login_date after successful login", done=> {
-  Unit.saveDateAfterLogin(username,isBranch,1)
+    Unit.test = true;
+    Unit.saveDateAfterLogin(username, isBranch, 1)
     .then((res) => {
       expect(res).toBeTruthy();
       expect(res.user).toBe('Ali Alavi');
@@ -195,24 +187,34 @@ describe("Unit model", ()=> {
       fail(err.message);
       done();
     });
-
-});
-
+  });
 
   afterAll((done) => {
     if(uid) {
-      sql.test.units.drop()
-        .then(() => {
+      sql.test.last_login.drop()
+      .then(() => {
+        if(uid) {
+          sql.test.units.drop()
+          .then(() => {
+            done();
+          })
+          .catch((err) => {
+            console.log(err.message);
+            fail(err.message);
+            done();
+          });
+        }
+        else
           done();
-        })
-        .catch((err) => {
-          console.log(err.message);
-          fail(err.message);
-          done();
-        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+        fail(err.message);
+        done();
+      });
     }
     else
       done();
-  })
+  });
 
 });

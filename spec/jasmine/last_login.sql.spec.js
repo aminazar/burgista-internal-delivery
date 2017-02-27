@@ -6,7 +6,7 @@ const sql = require('../../sql');
 
 describe("Test 'last_login' table", () => {
   let test_uid;
-  let test_last_login_lid;
+  let test_last_login_lid =1 ;
 
   beforeAll((done) => {
     sql.test.units.create()
@@ -206,26 +206,26 @@ describe("Test 'last_login' table", () => {
   afterAll((done) => {
     if(test_last_login_lid) {
       sql.test.last_login.drop()
-        .then(() => {
-          if(test_uid) {
-            sql.test.units.drop()
-              .then(() => {
-                done();
-              })
-              .catch((err) => {
-                console.log(err.message);
-                fail(err.message);
-                done();
-              });
-          }
-          else
+      .then(() => {
+        if(test_uid) {
+          sql.test.units.drop()
+          .then(() => {
             done();
-        })
-        .catch((err) => {
-          console.log(err.message);
-          fail(err.message);
+          })
+          .catch((err) => {
+            console.log(err.message);
+            fail(err.message);
+            done();
+          });
+        }
+        else
           done();
-        });
+      })
+      .catch((err) => {
+        console.log(err.message);
+        fail(err.message);
+        done();
+      });
     }
     else
       done();

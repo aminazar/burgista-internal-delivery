@@ -54,41 +54,40 @@ describe("REST API", ()=> {
         u.name = 'amin';
         u.is_branch = false;
         sql.test.units.create()
-          .then(() => {
-            setup = false;
+        .then(() => {
+          setup = false;
+          u.save()
+          .then(id => {
+            uid = id;
+            a = new lib.Unit(true);
+            a.username = 'Admin';
+            a.password = 'atest';
+            a.name = '';
+            a.is_branch = false;
+            a.save()
+            .then(aid=> {
+              adminUid = aid;
+              return sql.test.last_login.create()
+              .then(()=> {
+                let b = new lib.Unit(true);
+                b.name = 'Baker Street';
+                b.username = 'bk';
+                b.password = '123';
+                b.is_branch = true;
 
-            u.save()
-              .then(id => {
-                uid = id;
-                a = new lib.Unit(true);
-                a.username = 'Admin';
-                a.password = 'atest';
-                a.name = '';
-                a.is_branch = false;
-                a.save()
-                  .then(aid=> {
-                    adminUid = aid;
-                    return sql.test.last_login.create()
-                      .then(()=> {
-                        let b = new lib.Unit(true);
-                        b.name = 'Baker Street';
-                        b.username = 'bk';
-                        b.password = '123';
-                        b.is_branch = true;
-
-                        return b.save();
-                      })
-                      .then(bid => {
-                        branchUid = bid;
-                        done();
-                      })
-                  })
+                return b.save();
               })
+              .then(bid => {
+                branchUid = bid;
+                done();
+              })
+            })
           })
-          .catch(err => {
-            console.log(err.message);
-            done();
-          });
+        })
+        .catch(err => {
+          console.log(err.message);
+          done();
+        });
       }
       else {
         done();
@@ -159,22 +158,6 @@ describe("REST API", ()=> {
       });
     });
 
-    it("should show correct row number of units & last_login table", done => {
-      sql.test.units.select()
-        .then((res) => {
-          expect(res.length).toBe(2);
-          sql.test.last_login.select()
-            .then((res) => {
-              expect(res.length).toBe(1);
-              done();
-            })
-            .catch((err)=> {
-              console.log(err.message);
-              done()
-            });
-        });
-    })
-
     it("doesn't save a new unit if it is not admin", done => {
       request.put({
         url: base_url + 'unit' + test_query,
@@ -195,20 +178,20 @@ describe("REST API", ()=> {
 
     it("should show correct row number of units & last_login table", done => {
       sql.test.units.select()
-        .then((res) => {
-          expect(res.length).toBe(2);
-          sql.test.last_login.select()
-            .then((res) => {
-              expect(res.length).toBe(2);
-              adminLid = res[1].lid;
-              adminUid = res[1].login_uid;
-              done();
-            })
-            .catch((err)=> {
-              console.log(err.message);
-              done()
-            });
-        });
+      .then((res) => {
+        expect(res.length).toBe(2);
+        sql.test.last_login.select()
+          .then((res) => {
+            expect(res.length).toBe(2);
+            adminLid = res[1].lid;
+            adminUid = res[1].login_uid;
+            done();
+          })
+          .catch((err)=> {
+            console.log(err.message);
+            done()
+          });
+      });
     })
 
     it("allows admin to list all units except admin user", done => {
@@ -307,13 +290,6 @@ describe("REST API", ()=> {
         if (resExpect(res, 200)) {
           let data = JSON.parse(res.body);
           expect(data.length).toBe(3);
-          // console.log('**********');
-          // console.log(res.body);
-          // console.log('**********');
-          // expect(data.map(r => r.username)).toContain('ali');
-          // expect(data.map(r => r.uid)).toContain(uid);
-          // expect(data[data.length-1].uid).toBe(branchUid);
-          // expect(data[data.length-1].username).toBe('bk');
            let f = data.filter (r => r.uid === data[data.length-1].uid);
           expect(f.length).toBe(1);
           if(f.length === 1)
@@ -322,22 +298,6 @@ describe("REST API", ()=> {
         done();
       });
     });
-
-    it("should show correct row number of units & last_login table", done => {
-      sql.test.units.select()
-        .then((res) => {
-          expect(res.length).toBe(3);
-          sql.test.last_login.select()
-            .then((res) => {
-              expect(res.length).toBe(2);
-              done();
-            })
-            .catch((err)=> {
-              console.log(err.message);
-              done()
-            });
-        });
-    })
 
     it("saves lagin date of user-login and delete last login date if there is,first step", done => {
       req.put({
@@ -368,22 +328,6 @@ describe("REST API", ()=> {
       })
     });
 
-    it("should show correct row number of units & last_login table", done => {
-      sql.test.units.select()
-        .then((res) => {
-          expect(res.length).toBe(4);
-          sql.test.last_login.select()
-          .then((res) => {
-            expect(res.length).toBe(3);
-            done();
-          })
-          .catch((err)=> {
-            console.log(err.message);
-            done()
-          });
-        });
-    })
-
     it("logins as admin", done => {
       req.post({url: base_url + 'login' + test_query,
         form: {username: 'admin', password: 'atest'}}, (err, res)=> {
@@ -413,7 +357,6 @@ describe("REST API", ()=> {
         });
     })
 
-
     it("allows admin to delete a unit", done => {
       req.delete({
         url: base_url + 'unit/' + uid + test_query,
@@ -434,22 +377,6 @@ describe("REST API", ()=> {
         done();
       })
     });
-
-    it("should show correct row number of units & last_login table", done => {
-      sql.test.units.select()
-        .then((res) => {
-          expect(res.length).toBe(3);
-          sql.test.last_login.select()
-          .then((res) => {
-            expect(res.length).toBe(2);
-            done();
-          })
-          .catch((err)=> {
-            console.log(err.message);
-            done()
-          });
-        });
-    })
 
     it("logs out a unit", done => {
       req.get(base_url + 'logout' + test_query, (err, res) => {
@@ -483,6 +410,7 @@ describe("REST API", ()=> {
           });
       else done();
     });
+
   });
 });
 
