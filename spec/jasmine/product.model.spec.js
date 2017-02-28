@@ -78,6 +78,7 @@ describe('Product model', () => {
     Product.select('admin')
       .then((res) => {
         expect(res.length).toBe(2);
+        expect(res.filter((p) => p.isOverridden === true).length).toBe(0);
         Product.test = false;
         done();
       })
@@ -110,6 +111,7 @@ describe('Product model', () => {
     Product.test = true;
     Product.select('JohnSmith', unit_id)
       .then((res) => {
+        expect(res[0].isOverridden).toBe(true);
         expect(res[0].default_max).toBe(5);
         expect(res[0].default_mon_multiple).toBe(2);
         Product.test = false;

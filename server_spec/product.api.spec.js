@@ -26,7 +26,10 @@ let resExpect = (res, statusCode) => {
   return true;
 };
 
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
+
 describe("REST API", ()=> {
+
   describe("product", () => {
     let uid;
     let pid;
@@ -218,7 +221,7 @@ describe("REST API", ()=> {
 
     it("should add a new override on a specific product", (done) => {
       req.post({
-        url: base_url + 'product/' + pid + test_query + '&uid=' + bid ,
+        url: base_url + 'override/' + pid + test_query + '&uid=' + bid ,
         form: {
           max: 20,
           mon_multiple: 2
@@ -235,7 +238,7 @@ describe("REST API", ()=> {
     });
 
     it("should get all products (with overridden values)", (done) => {
-      req.get({url: base_url + 'product' + test_query + '&uid=' + bid}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + bid}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -244,6 +247,7 @@ describe("REST API", ()=> {
         let data = JSON.parse(response.body);
 
         expect(data.length).toBe(2);
+        expect(data[0].isOverridden).toBe(true);
         expect(data[0].default_max).toBe(20);
         expect(data[0].default_mon_multiple).toBe(2);
         expect(response.statusCode).toBe(200);
@@ -253,7 +257,7 @@ describe("REST API", ()=> {
 
     it("should update a product overridden values", (done) => {
       req.post({
-        url: base_url + 'product/' + pid + test_query + '&uid=' + bid,
+        url: base_url + 'override/' + pid + test_query + '&uid=' + bid,
         form: {
           max: 30,
           sun_multiple: 10
@@ -270,7 +274,7 @@ describe("REST API", ()=> {
     });
 
     it("should get all products with overridden values", (done) => {
-      req.get({url: base_url + 'product' + test_query + '&uid=' + bid}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + bid}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -279,6 +283,7 @@ describe("REST API", ()=> {
         let data = JSON.parse(response.body);
 
         expect(data.length).toBe(2);
+        expect(data[0].isOverridden).toBe(true);
         expect(data[0].name).toBe('Frying oil');
         expect(data[0].default_max).toBe(30);
         expect(data[0].default_mon_multiple).toBe(2);
@@ -327,6 +332,7 @@ describe("REST API", ()=> {
         let data = JSON.parse(response.body);
 
         expect(data.length).toBe(1);
+        expect(data[0].isOverridden).toBe(undefined);
         done();
       })
     });
@@ -351,7 +357,7 @@ describe("REST API", ()=> {
 
     it("should add a new override on a specific product", (done) => {
       req.post({
-        url: base_url + 'product/' + anotherPid + test_query + '&uid=' + bid ,
+        url: base_url + 'override/' + anotherPid + test_query + '&uid=' + bid ,
         form: {
           max: 20,
           mon_multiple: 2
@@ -368,7 +374,7 @@ describe("REST API", ()=> {
     });
 
     it("should get all products with overridden values", (done) => {
-      req.get({url: base_url + 'product' + test_query + '&uid=' + bid}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + bid}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -377,6 +383,7 @@ describe("REST API", ()=> {
         let data = JSON.parse(response.body);
 
         expect(data.length).toBe(1);
+        expect(data[0].isOverridden).toBe(true);
         expect(data[0].name).toBe('Meat');
         expect(data[0].default_max).toBe(20);
         expect(data[0].default_mon_multiple).toBe(2);
@@ -385,7 +392,7 @@ describe("REST API", ()=> {
     });
 
     it("should delete a product overridden from branch_stock_rules table", (done) => {
-      req.delete({url: base_url + 'product/' + anotherPid + test_query + '&uid=' + bid}, (error, response) => {
+      req.delete({url: base_url + 'override/' + anotherPid + test_query + '&uid=' + bid}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -397,7 +404,7 @@ describe("REST API", ()=> {
     });
 
     it("should get all products with overridden values (but there is no overridden values)", (done) => {
-      req.get({url: base_url + 'product' + test_query + '&uid=' + bid}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + bid}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -405,7 +412,10 @@ describe("REST API", ()=> {
 
         let data = JSON.parse(response.body);
 
+        console.log(data);
+
         expect(data.length).toBe(1);
+        expect(data[0].isOverridden).toBe(undefined);
         expect(data[0].default_max).toBe(5);
         expect(data[0].default_mon_multiple).toBe(1);
         done();
@@ -501,6 +511,7 @@ describe("REST API", ()=> {
         console.log(data);
 
         expect(data.length).toBe(1);
+        expect(data[0].isOverridden).toBe(undefined);
         expect(data[0].default_max).toBe(5);
         expect(data[0].default_min).toBe(2);
         done();

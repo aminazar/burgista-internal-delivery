@@ -31,11 +31,11 @@ function apiResponse(className, functionName, adminOnly=false, reqFuncs=[]){
       for(let i in reqFuncs)
         dynamicArgs.push((typeof reqFuncs[i]==='function') ? reqFuncs[i](req) : deepFind(req,reqFuncs[i]));
 
-      args = dynamicArgs.concat(args);
+      let allArgs = dynamicArgs.concat(args);
       lib[className].test = req.test;
       let isStaticFunction = typeof lib[className][functionName] === 'function';
       let model = isStaticFunction ? lib[className] : new lib[className](req.test);
-      model[functionName].apply(isStaticFunction?null:model, args)
+      model[functionName].apply(isStaticFunction?null:model, allArgs)
         .then(data=> {
           res.status(200)
             .json(data);
@@ -64,8 +64,11 @@ router.post('/unit/:uid', apiResponse('Unit', 'update', true, ['params.uid','bod
 router.delete('/unit/:uid', apiResponse('Unit', 'delete', true, ['params.uid']));
 //Product API
 router.put('/product', apiResponse('Product', 'insert', true, ['body']));
-router.get('/product', apiResponse('Product', 'select', false, ['user.username', 'query.uid']));
-router.post('/product/:pid', apiResponse('Product', 'update', false, ['body', 'params.pid', 'user.username', 'query.uid']));
-router.delete('/product/:pid', apiResponse('Product', 'delete', false, ['params.pid', 'user.username', 'query.uid']));
-
+router.get('/product', apiResponse('Product', 'select', true, ['user.username'], undefined));
+router.post('/product/:pid', apiResponse('Product', 'update', true, ['body', 'params.pid', 'user.username']));
+router.delete('/product/:pid', apiResponse('Product', 'delete', true, ['params.pid', 'user.username']));
+//Override API
+router.get('/override', apiResponse('Product', 'select', false, ['user.username', 'query.uid', 'user.uid']));
+router.post('/override/:pid', apiResponse('Product', 'update', false, ['body', 'params.pid', 'user.username', 'query.uid', 'user.uid']));
+router.delete('/override/:pid', apiResponse('Product', 'delete', false, ['params.pid', 'user.username', 'query.uid', 'user.uid']));
 module.exports = router;
