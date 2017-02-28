@@ -43,4 +43,11 @@ module.exports = {
     update:             sql('branch_stock_rules/update.sql'),
     delete:             sql('branch_stock_rules/delete.sql'),
   },
+  last_login: {
+    create:   sql('last_login/create.sql'),
+    drop:     sql('last_login/drop.sql'),
+    add:   sql('last_login/insert.sql'),
+    delete:   sql('last_login/delete.sql'),
+    get_login_uid: sql('last_login/get_login_uid.sql'),
+  }
 };

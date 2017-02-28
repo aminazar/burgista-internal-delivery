@@ -44,6 +44,9 @@ describe("REST API", ()=> {
     beforeEach((done) => {
       if(setup){
         sql.test.units.create()
+          .then ((res)=>{
+            return sql.test.last_login.create();
+        })                          //Create last_login table
           .then((res) => {
             return sql.test.products.create();
           })                        //Create products table
@@ -565,7 +568,10 @@ describe("REST API", ()=> {
 
     afterEach((done) => {
       if(tearDown){
-        sql.test.branch_stock_rules.drop()
+        sql.test.last_login.drop()
+          .then(() => {
+            return sql.test.branch_stock_rules.drop()
+          })
           .then(() => {
             return sql.test.products.drop();
           })

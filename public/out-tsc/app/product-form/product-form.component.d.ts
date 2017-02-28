@@ -1,0 +1,31 @@
+import { OnInit } from '@angular/core';
+import { BehaviorSubject } from "rxjs";
+import { FormControl } from "@angular/forms";
+import { ProductModel } from "./product.model";
+import { RestService } from "../rest.service";
+import { MessageService } from "../message.service";
+export declare class ProductFormComponent implements OnInit {
+    private restService;
+    private messageService;
+    isAdding: BehaviorSubject<boolean>;
+    actionIsSuccess: BehaviorSubject<boolean>;
+    productModels: ProductModel[];
+    filteredProductModel: ProductModel;
+    filteredNameCode: any;
+    isFiltered: boolean;
+    productModelCtrl: FormControl;
+    productName_Code: string[];
+    productNames: string[];
+    productCodes: string[];
+    selectedIndex: number;
+    autoNameCode: any;
+    constructor(restService: RestService, messageService: MessageService);
+    ngOnInit(): void;
+    doClickedAction(value: any): void;
+    private addProduct(product);
+    private deleteProduct(productId);
+    private updateProduct(productId, product);
+    private disableEnable(productId, btnType, isDisable);
+    filterProducts(val: string): string[];
+    getProduct(nameCode: string): ProductModel;
+}
