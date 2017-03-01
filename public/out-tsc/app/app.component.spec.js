@@ -23,17 +23,6 @@ var sub_form_component_1 = require("./unit-form/sub-form.component");
 var rrule_component_1 = require("./rrule/rrule.component");
 var monthday_component_1 = require("./rrule/monthday.component");
 var testing_3 = require("@angular/http/testing");
-var RouterStub = (function () {
-    function RouterStub() {
-    }
-    RouterStub.prototype.navigateByUrl = function (url) {
-        return url;
-    };
-    RouterStub.prototype.navigate = function (url) {
-        return url;
-    };
-    return RouterStub;
-}());
 describe('App: Burgista Internal Delivery', function () {
     var app;
     var fixture;

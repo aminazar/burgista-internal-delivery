@@ -57,13 +57,35 @@ var ProductFormComponent = (function () {
         this.filteredNameCode = this.productModelCtrl.valueChanges
             .startWith(null)
             .map(function (name_code) { return _this.filterProducts(name_code); });
+        var oneItemInList = false;
         this.filteredNameCode.subscribe(function (data) {
             if (data.length === 1) {
+                _this.isFiltered = false;
                 _this.filteredProductModel = _this.getProduct(data);
                 _this.isFiltered = true;
+                oneItemInList = true;
             }
-            else
+            else {
                 _this.isFiltered = false;
+                oneItemInList = false;
+            }
+        }, function (err) {
+            console.log(err.message);
+        });
+        this.productModelCtrl.valueChanges.subscribe(function (data) {
+            if (!oneItemInList) {
+                var fullMatch = _this.productModels.find(function (el) {
+                    return (el._product.name.toLowerCase() == _this.productModelCtrl.value.toLowerCase())
+                        || (el._product.code.toLowerCase() == _this.productModelCtrl.value.toLowerCase());
+                });
+                if (fullMatch !== null && fullMatch !== undefined) {
+                    _this.isFiltered = false;
+                    _this.filteredProductModel = fullMatch;
+                    _this.isFiltered = true;
+                }
+                else
+                    _this.isFiltered = false;
+            }
         }, function (err) {
             console.log(err.message);
         });
@@ -86,6 +108,22 @@ var ProductFormComponent = (function () {
     };
     ProductFormComponent.prototype.addProduct = function (product) {
         var _this = this;
+        var foundByName = this.productModels.find(function (el) {
+            return el._product.name.toLowerCase() === product.name.toLowerCase();
+        });
+        if (foundByName !== null && foundByName !== undefined) {
+            this.messageService.warn("The '" + foundByName._product.name + "' name is already exist.");
+            this.disableEnable(product.id, actionEnum_1.ActionEnum.add, false);
+            return;
+        }
+        var foundByCode = this.productModels.find(function (el) {
+            return el._product.code.toLowerCase() === product.code.toLowerCase();
+        });
+        if (foundByCode !== null && foundByCode !== undefined) {
+            this.messageService.warn("The '" + foundByCode._product.code + "' code is already exist.");
+            this.disableEnable(product.id, actionEnum_1.ActionEnum.add, false);
+            return;
+        }
         var name = product.name;
         this.restService.insert('product', product_model_1.ProductModel.toAnyObject(product)).subscribe(function (data) {
             product.id = data;
@@ -140,6 +178,22 @@ var ProductFormComponent = (function () {
     };
     ProductFormComponent.prototype.updateProduct = function (productId, product) {
         var _this = this;
+        var foundByName = this.productModels.find(function (el) {
+            return el._product.name.toLowerCase() === product.name.toLowerCase();
+        });
+        if ((foundByName !== null && foundByName !== undefined) && product.name !== this.filteredProductModel._product.name) {
+            this.messageService.warn("The '" + foundByName._product.name + "' name is already exist.");
+            this.disableEnable(productId, actionEnum_1.ActionEnum.update, false);
+            return;
+        }
+        var foundByCode = this.productModels.find(function (el) {
+            return el._product.code.toLowerCase() === product.code.toLowerCase();
+        });
+        if ((foundByCode !== null && foundByCode !== undefined) && product.code !== this.filteredProductModel._product.code) {
+            this.messageService.warn("The '" + foundByCode._product.code + "' code is already exist.");
+            this.disableEnable(productId, actionEnum_1.ActionEnum.update, false);
+            return;
+        }
         var index = this.productModels.findIndex(function (element) {
             return element._product.id == productId;
         });
@@ -158,7 +212,7 @@ var ProductFormComponent = (function () {
             _this.productName_Code = _this.productName_Code.concat(_this.productNames);
             _this.productName_Code = _this.productName_Code.concat(_this.productCodes);
             _this.disableEnable(productId, actionEnum_1.ActionEnum.update, false);
-            _this.messageService.message("'" + name + "' is added to products.");
+            _this.messageService.message("'" + name + "' is updated in products.");
             _this.actionIsSuccess.next(false);
         }, function (error) {
             _this.messageService.error(error);
@@ -190,16 +244,15 @@ var ProductFormComponent = (function () {
         return val ? this.productName_Code.filter(function (p) { return new RegExp(val, 'gi').test(p); }) : this.productName_Code;
     };
     ProductFormComponent.prototype.getProduct = function (nameCode) {
-        var tempProductModel = null;
-        tempProductModel = this.productModels.filter(function (p) {
-            return p._product.name == nameCode;
+        var tempProductModel;
+        tempProductModel = this.productModels.find(function (p) {
+            return p._product.name.toLowerCase() == nameCode[0].toLowerCase();
         });
-        console.log(tempProductModel);
-        if (tempProductModel !== null && tempProductModel.length !== 0)
-            return tempProductModel[0];
-        return this.productModels.filter(function (p) {
-            return p._product.code == nameCode;
-        })[0];
+        if (tempProductModel !== null && tempProductModel !== undefined)
+            return tempProductModel;
+        return this.productModels.find(function (p) {
+            return p._product.code.toLowerCase() == nameCode[0].toLowerCase();
+        });
     };
     __decorate([
         core_1.ViewChild('autoNameCode'), 

@@ -11,4 +11,5 @@ export declare class MessageService {
     message(msg: string): void;
     warn(msg: string): void;
     constructor();
+    changeToUnderstandableMessage(msg: any): Response;
 }

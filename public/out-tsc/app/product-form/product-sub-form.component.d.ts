@@ -10,9 +10,10 @@ export declare class ProductSubFormComponent implements OnInit {
     private messageService;
     isAdd: boolean;
     isAdding: Observable<boolean>;
-    productModel: ProductModel;
     actionIsSuccess: Observable<boolean>;
+    productModel: ProductModel;
     action: EventEmitter<{}>;
+    tempProductModel: ProductModel;
     hasCountingRuleError: boolean;
     countingRuleError: string;
     _isAdding: boolean;

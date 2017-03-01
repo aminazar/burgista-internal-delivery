@@ -13,7 +13,8 @@ var rxjs_1 = require("rxjs");
 var PromiseObservable_1 = require("rxjs/observable/PromiseObservable");
 var product_model_1 = require("./product.model");
 var actionEnum_1 = require("../unit-form/actionEnum");
-describe('ProductSubFormComponent', function () {
+var message_service_1 = require("../message.service");
+fdescribe('ProductSubFormComponent', function () {
     var component;
     var fixture;
     beforeEach(testing_1.async(function () {
@@ -31,6 +32,7 @@ describe('ProductSubFormComponent', function () {
             ],
             providers: [
                 rest_service_1.RestService,
+                message_service_1.MessageService,
             ]
         })
             .compileComponents();

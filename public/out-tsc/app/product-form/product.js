@@ -12,6 +12,7 @@ var Product = (function () {
             Sunday: 1,
             Usage: 1
         };
+        this.isOverridden = false;
     }
     return Product;
 }());

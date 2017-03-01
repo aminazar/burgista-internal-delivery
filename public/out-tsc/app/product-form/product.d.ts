@@ -18,4 +18,5 @@ export declare class Product {
         Sunday: number;
         Usage: number;
     };
+    isOverridden: boolean;
 }

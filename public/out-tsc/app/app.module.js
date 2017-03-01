@@ -65,6 +65,7 @@ var AppModule = (function () {
                     { path: 'login', component: login_component_1.LoginComponent },
                     { path: 'units', component: unit_form_component_1.UnitFormComponent, canActivate: [logged_in_guard_1.LoggedInGuard] },
                     { path: 'products', component: product_form_component_1.ProductFormComponent, canActivate: [logged_in_guard_1.LoggedInGuard] },
+                    { path: 'override', component: override_form_component_1.OverrideFormComponent, canActivate: [logged_in_guard_1.LoggedInGuard] },
                 ]),
             ],
             providers: [auth_service_1.AuthService, rest_service_1.RestService, logged_in_guard_1.LoggedInGuard, message_service_1.MessageService],

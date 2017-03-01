@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var CountingRuleComponent = (function () {
     function CountingRuleComponent() {
+        this.isOverridden = false;
         this.coefficientsChange = new core_1.EventEmitter();
         this.minQtyChange = new core_1.EventEmitter();
         this.maxQtyChange = new core_1.EventEmitter();
@@ -32,10 +33,10 @@ var CountingRuleComponent = (function () {
         configurable: true
     });
     CountingRuleComponent.prototype.ngOnInit = function () {
-        this.minChange();
         this.maxChange();
+        this.minChange();
         if (!this.recursionRule)
-            this.addRRuleValidation('add a period');
+            this.sendError('add a period', 2);
     };
     CountingRuleComponent.prototype.coeffChange = function () {
         this.coefficientsChange.emit(this.coefficients);
@@ -52,7 +53,7 @@ var CountingRuleComponent = (function () {
     };
     CountingRuleComponent.prototype.minChange = function () {
         this.minQtyChange.emit(this.minQty);
-        if (!this.minQty) {
+        if (this.minQty !== 0 && !this.minQty) {
             this.sendError('The Min Qty should not be blank', 0);
         }
         else
@@ -61,7 +62,7 @@ var CountingRuleComponent = (function () {
     };
     CountingRuleComponent.prototype.maxChange = function () {
         this.maxQtyChange.emit(this.maxQty);
-        if (!this.maxQty) {
+        if (this.maxQty !== 0 && !this.maxQty) {
             this.sendError('The Max Qty should not be blank', 1);
         }
         else
@@ -69,14 +70,11 @@ var CountingRuleComponent = (function () {
         this.checkMinMax();
     };
     CountingRuleComponent.prototype.recurChange = function (event) {
-        this.recursionRuleChange.emit(event);
-    };
-    CountingRuleComponent.prototype.addRRuleValidation = function (event) {
-        this.RRuleValidation = event;
-        if (event)
-            this.sendError("Recursion rule warning: " + this.RRuleValidation, 2);
+        if (event.error)
+            this.sendError("Recursion rule warning: " + event.error, 2);
         else
             this.sendError('', 2);
+        this.recursionRuleChange.emit(event.value);
     };
     CountingRuleComponent.prototype.checkMinMax = function () {
         if (this.minQty > this.maxQty) {
@@ -97,6 +95,10 @@ var CountingRuleComponent = (function () {
         }
         this.showMessage = msg;
     };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], CountingRuleComponent.prototype, "isOverridden", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Object)

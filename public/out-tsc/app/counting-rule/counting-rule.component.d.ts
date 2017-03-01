@@ -1,5 +1,6 @@
 import { OnInit, EventEmitter } from '@angular/core';
 export declare class CountingRuleComponent implements OnInit {
+    isOverridden: boolean;
     coefficients: any;
     private _mq;
     minQty: any;
@@ -11,7 +12,6 @@ export declare class CountingRuleComponent implements OnInit {
     recursionRuleChange: EventEmitter<string>;
     hasError: EventEmitter<string>;
     days: string[];
-    private RRuleValidation;
     private errorMessage;
     private showMessage;
     constructor();
@@ -20,7 +20,6 @@ export declare class CountingRuleComponent implements OnInit {
     minChange(): void;
     maxChange(): void;
     recurChange(event: any): void;
-    addRRuleValidation(event: any): void;
     checkMinMax(): void;
     sendError(msg: any, index: any): void;
 }

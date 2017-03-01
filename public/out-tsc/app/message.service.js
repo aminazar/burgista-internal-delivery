@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var rxjs_1 = require("rxjs");
+var http_1 = require("@angular/http");
 var MessageService = (function () {
     function MessageService() {
         this.errStream = new rxjs_1.Subject();
@@ -20,13 +21,32 @@ var MessageService = (function () {
         this.warn$ = this.warningStream.asObservable();
     }
     MessageService.prototype.error = function (err) {
-        this.errStream.next(err);
+        this.errStream.next(this.changeToUnderstandableMessage(err));
     };
     MessageService.prototype.message = function (msg) {
         this.msgStream.next(msg);
     };
     MessageService.prototype.warn = function (msg) {
         this.warningStream.next(msg);
+    };
+    MessageService.prototype.changeToUnderstandableMessage = function (msg) {
+        var data = msg._body;
+        var resOptions = new http_1.ResponseOptions();
+        var res = new http_1.Response(resOptions);
+        if (data.indexOf('foreign key constraint') !== -1 && data.indexOf('unit') !== -1) {
+            res.statusText = 'Can not delete this unit because there are some products related to it';
+            return res;
+        }
+        else if (data.indexOf('duplicate key value') !== -1) {
+            res.statusText = 'One of the data is already exist';
+            return res;
+        }
+        else if (data.indexOf('null value') !== -1 && data.indexOf('not-null constraint') !== -1) {
+            res.statusText = 'The fields can not have null value';
+            return res;
+        }
+        else
+            return msg;
     };
     MessageService = __decorate([
         core_1.Injectable(), 

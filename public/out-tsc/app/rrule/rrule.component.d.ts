@@ -4,8 +4,7 @@ import * as Rrule from 'rrule';
 export declare class RRuleComponent implements OnInit {
     private _rstr;
     RRuleStr: any;
-    RRuleStrChange: EventEmitter<string>;
-    validation: EventEmitter<string>;
+    RRuleStrChange: EventEmitter<any>;
     options: Rrule.Options;
     rule: Rrule;
     freqs: string[];
@@ -19,7 +18,7 @@ export declare class RRuleComponent implements OnInit {
     text: string;
     showWeekdays: boolean;
     showMonthOptions: boolean;
-    monthlyChooseByWeek: boolean;
+    monthlyInputMode: string;
     monthDaysOption: any[];
     monthDaysPast: number[];
     monthDaysRemained: number[];
@@ -30,11 +29,14 @@ export declare class RRuleComponent implements OnInit {
     constructor();
     ngOnInit(): void;
     onChange(): void;
-    validate(): void;
+    private calcPastOrRemained();
+    private emitChange();
+    validate(): string;
+    onMonthlyInputModeChange(event: any): void;
     byweekdayChange(event: any): void;
     monthDaysPastOrRemainedChange(event: any): void;
-    monthDaysRemainedChange(): void;
-    monthDaysPastChange(): void;
+    monthDaysRemainedChange(event: any): void;
+    monthDaysPastChange(event: any): void;
     weekposChange(event: any): void;
     multipleChoice(event: any, member: any): void;
 }

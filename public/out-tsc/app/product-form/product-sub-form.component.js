@@ -31,6 +31,17 @@ var ProductSubFormComponent = (function () {
         this.measuringUnits = ['Kg', 'gr', 'L', 'lb', 'oz', 'fl oz', 'mL', 'units', 'packs', 'dozens', 'barrels'];
         this.prepUnits = [];
     }
+    Object.defineProperty(ProductSubFormComponent.prototype, "productModel", {
+        get: function () {
+            return this.tempProductModel;
+        },
+        set: function (val) {
+            this.tempProductModel = val;
+            this.ngOnInit();
+        },
+        enumerable: true,
+        configurable: true
+    });
     ProductSubFormComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.product = new product_1.Product();
@@ -56,12 +67,12 @@ var ProductSubFormComponent = (function () {
                     _this.product.size = null;
                     _this.product.measuringUnit = null;
                     _this.product.prep_unit_id = null;
-                    _this.product.countingRecursion = '';
                     _this.product.minQty = null;
                     _this.product.maxQty = null;
                     for (var day in _this.product.coefficients) {
                         _this.product.coefficients[day] = 1;
                     }
+                    _this.product.countingRecursion = '';
                 }
                 _this.disabilityStatus();
             }
@@ -97,18 +108,18 @@ var ProductSubFormComponent = (function () {
             }, function (err) {
                 console.log(err.message);
             });
-            this.product.id = this.productModel._product.id;
-            this.product.name = this.productModel._product.name;
-            this.product.code = this.productModel._product.code;
-            this.product.size = this.productModel._product.size;
-            this.product.measuringUnit = this.productModel._product.measuringUnit;
-            this.product.prep_unit_id = this.productModel._product.prep_unit_id;
-            this.product.maxQty = this.productModel._product.maxQty;
-            this.product.minQty = this.productModel._product.minQty;
-            for (var day in this.productModel._product.coefficients) {
-                this.product.coefficients[day] = this.productModel._product.coefficients[day];
+            this.product.id = this.tempProductModel._product.id;
+            this.product.name = this.tempProductModel._product.name;
+            this.product.code = this.tempProductModel._product.code;
+            this.product.size = this.tempProductModel._product.size;
+            this.product.measuringUnit = this.tempProductModel._product.measuringUnit;
+            this.product.prep_unit_id = this.tempProductModel._product.prep_unit_id;
+            this.product.maxQty = this.tempProductModel._product.maxQty;
+            this.product.minQty = this.tempProductModel._product.minQty;
+            for (var day in this.tempProductModel._product.coefficients) {
+                this.product.coefficients[day] = this.tempProductModel._product.coefficients[day];
             }
-            this.product.countingRecursion = this.productModel._product.countingRecursion;
+            this.product.countingRecursion = this.tempProductModel._product.countingRecursion;
             this.formTitle = this.product.name;
         }
         this.disabilityStatus();
@@ -192,12 +203,13 @@ var ProductSubFormComponent = (function () {
     ], ProductSubFormComponent.prototype, "isAdding", void 0);
     __decorate([
         core_1.Input(), 
-        __metadata('design:type', product_model_1.ProductModel)
-    ], ProductSubFormComponent.prototype, "productModel", void 0);
-    __decorate([
-        core_1.Input(), 
         __metadata('design:type', rxjs_1.Observable)
     ], ProductSubFormComponent.prototype, "actionIsSuccess", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', product_model_1.ProductModel), 
+        __metadata('design:paramtypes', [product_model_1.ProductModel])
+    ], ProductSubFormComponent.prototype, "productModel", null);
     __decorate([
         core_1.Output(), 
         __metadata('design:type', Object)

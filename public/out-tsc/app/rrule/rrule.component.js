@@ -14,7 +14,6 @@ var moment = require('moment');
 var RRuleComponent = (function () {
     function RRuleComponent() {
         this.RRuleStrChange = new core_1.EventEmitter();
-        this.validation = new core_1.EventEmitter();
         this.freqs = ['Daily', 'Weekly', 'Monthly'];
         this.freqsConst = [Rrule.DAILY, Rrule.WEEKLY, Rrule.MONTHLY];
         this.freqsName = ['day', 'week', 'month'];
@@ -26,7 +25,7 @@ var RRuleComponent = (function () {
         this.text = '';
         this.showWeekdays = false;
         this.showMonthOptions = false;
-        this.monthlyChooseByWeek = false;
+        this.monthlyInputMode = '';
         this.monthDaysOption = [];
         this.monthDaysPast = [];
         this.monthDaysRemained = [];
@@ -38,8 +37,11 @@ var RRuleComponent = (function () {
             return this._rstr;
         },
         set: function (val) {
-            this._rstr = val;
-            this.ngOnInit();
+            if (val === '' || !this._rstr) {
+                this._rstr = val;
+                this.ngOnInit();
+                this.text = '';
+            }
         },
         enumerable: true,
         configurable: true
@@ -57,14 +59,11 @@ var RRuleComponent = (function () {
             this.byweekday = this.options.byweekday.map(function (r) { return _this.weekdaysConst[r]; });
         else if (this.options.byweekday)
             this.byweekday = this.options.byweekday;
-        this.monthlyChooseByWeek = this.bysetpos.length > 0;
-        this.monthDaysPast = this.bymonthday.filter(function (r) { return r > 0; });
-        if (this.monthDaysPast.length) {
-            this.monthDaysOption.push('past');
-        }
-        this.monthDaysRemained = this.bymonthday.filter(function (r) { return r < 0; });
-        if (this.monthDaysRemained.length)
-            this.monthDaysOption.push('remained');
+        if (this.bysetpos.length > 0)
+            this.monthlyInputMode = 'week';
+        else if (this.bymonthday.length > 0)
+            this.monthlyInputMode = 'month';
+        this.calcPastOrRemained();
     };
     RRuleComponent.prototype.onChange = function () {
         try {
@@ -86,38 +85,44 @@ var RRuleComponent = (function () {
                 this.monthDaysPast = [];
                 this.monthDaysRemained = [];
             }
-            else if (this.monthlyChooseByWeek) {
-                delete this.options.bymonthday;
-                this.bymonthday = [];
-                this.monthDaysPast = [];
-                this.monthDaysRemained = [];
-            }
-            else {
-                delete this.options.byweekday;
-                delete this.options.bysetpos;
-                this.bysetpos = [];
-                this.byweekday = [];
-            }
-            this.showWeekdays = this.options.freq === Rrule.WEEKLY || (this.options.freq === Rrule.MONTHLY && this.monthlyChooseByWeek);
+            else
+                this.onMonthlyInputModeChange(this.monthlyInputMode);
+            this.showWeekdays = this.options.freq === Rrule.WEEKLY;
             this.showMonthOptions = this.options.freq === Rrule.MONTHLY;
-            this.showMonthDaysPast = this.monthDaysOption.indexOf('past') !== -1;
-            this.showMonthDaysRemained = this.monthDaysOption.indexOf('remained') !== -1;
+            this.calcPastOrRemained();
             if (!this.showWeekdays)
                 this.options.byweekday = [];
-            for (var key in this.options)
-                if (!this.options[key] || this.options[key].length === 0 || ['bynmonthday', 'bynweeday', 'bynsetpos', 'byhour', 'byminute', 'bysecond'].indexOf(key) !== -1)
-                    delete this.options[key];
-            this.rule = new Rrule(this.options);
-            var d = new Date();
-            var d2 = moment(d).add(366, 'd').toDate();
-            this.text = this.rule.between(d, d2).map(function (r) { return moment(r).format('ddd DD-MMM-YY'); }).splice(0, 10).join('\n');
-            this.RRuleStr = this.rule.toString();
-            this.validate();
-            this.RRuleStrChange.emit(this.RRuleStr);
+            this.emitChange();
         }
         catch (err) {
             console.log(err);
         }
+    };
+    RRuleComponent.prototype.calcPastOrRemained = function () {
+        this.monthDaysPast = this.bymonthday.filter(function (r) { return r > 0; });
+        if (this.monthDaysPast.length && this.monthDaysOption.indexOf('past')) {
+            this.monthDaysOption.push('past');
+        }
+        this.monthDaysRemained = this.bymonthday.filter(function (r) { return r < 0; });
+        if (this.monthDaysRemained.length)
+            this.monthDaysOption.push('remained');
+        this.showMonthDaysPast = this.monthDaysOption.indexOf('past') !== -1;
+        this.showMonthDaysRemained = this.monthDaysOption.indexOf('remained') !== -1;
+    };
+    RRuleComponent.prototype.emitChange = function () {
+        for (var key in this.options)
+            if (!this.options[key] || this.options[key].length === 0 || ['bynmonthday', 'bynweeday', 'bynsetpos', 'byhour', 'byminute', 'bysecond'].indexOf(key) !== -1)
+                delete this.options[key];
+        this.rule = new Rrule(this.options);
+        if (this.rule.options.freq) {
+            var d = new Date();
+            var d2 = moment(d).add(366, 'd').toDate();
+            this.text = this.rule.between(d, d2).map(function (r) { return moment(r).format('ddd DD-MMM-YY'); }).splice(0, 10).join('\n');
+        }
+        else {
+            this.text = '';
+        }
+        this.RRuleStrChange.emit({ value: this.rule.toString(), error: this.validate() });
     };
     RRuleComponent.prototype.validate = function () {
         var v = '';
@@ -126,18 +131,18 @@ var RRuleComponent = (function () {
         else if (this.options.freq === Rrule.WEEKLY && !this.byweekday.length) {
             v = 'choose a weekday';
         }
-        else if (this.rule.options.freq === Rrule.MONTHLY && this.showWeekdays) {
-            if (this.bysetpos.length && this.byweekday.length) {
-                v = 'choose week numbers in month';
-            }
-            else if (this.byweekday.length && this.bysetpos.length) {
+        else if (this.rule.options.freq === Rrule.MONTHLY && this.monthlyInputMode === 'week') {
+            if (this.bysetpos.length && !this.byweekday.length) {
                 v = 'choose weekdays';
             }
             else if (this.byweekday.length && !this.bysetpos.length) {
+                v = 'choose week numbers in month';
+            }
+            else if (!this.byweekday.length && !this.bysetpos.length) {
                 v = 'choose week numbers and weekdays';
             }
         }
-        else if (this.rule.options.freq === Rrule.MONTHLY && !this.showWeekdays) {
+        else if (this.rule.options.freq === Rrule.MONTHLY && this.monthlyInputMode === 'month') {
             if (this.showMonthDaysPast && !this.monthDaysPast.length) {
                 v = 'No days past month is chosen';
             }
@@ -148,12 +153,29 @@ var RRuleComponent = (function () {
                 v = 'choose a day';
             }
         }
-        this.validation.emit(v);
+        return v;
+    };
+    RRuleComponent.prototype.onMonthlyInputModeChange = function (event) {
+        delete this.options.byweekday;
+        delete this.options.bysetpos;
+        if (event === 'month') {
+            this.bymonthday = [moment().get('D')];
+            this.options.bymonthday = this.bymonthday;
+        }
+        else {
+            delete this.options.bymonthday;
+            this.bymonthday = [];
+        }
+        this.bysetpos = [];
+        this.byweekday = [];
+        this.calcPastOrRemained();
+        this.emitChange();
     };
     RRuleComponent.prototype.byweekdayChange = function (event) {
         this.multipleChoice(event, 'byweekday');
         this.options.byweekday = this.byweekday;
-        this.onChange();
+        delete this.options.bymonthday;
+        this.emitChange();
     };
     RRuleComponent.prototype.monthDaysPastOrRemainedChange = function (event) {
         this.multipleChoice(event, 'monthDaysOption');
@@ -165,28 +187,31 @@ var RRuleComponent = (function () {
             this.monthDaysRemained = [];
             this.bymonthday = this.bymonthday.filter(function (r) { return r > 0; });
         }
-        if (!this.bymonthday.length) {
-            var d = moment().get('D');
-            this.bymonthday.push(d);
-            this.monthDaysPast.push(d);
-        }
         this.options.bymonthday = this.bymonthday;
-        this.onChange();
+        this.calcPastOrRemained();
+        this.emitChange();
     };
-    RRuleComponent.prototype.monthDaysRemainedChange = function () {
+    RRuleComponent.prototype.monthDaysRemainedChange = function (event) {
+        this.monthDaysRemained = event;
         this.bymonthday = this.bymonthday.filter(function (r) { return r > 0; }).concat(this.monthDaysRemained.map(function (r) { return -r; }));
-        this.options.bymonthday = this.bymonthday;
-        this.onChange();
+        if (this.options.bymonthday !== this.bymonthday) {
+            this.options.bymonthday = this.bymonthday;
+            this.emitChange();
+        }
     };
-    RRuleComponent.prototype.monthDaysPastChange = function () {
+    RRuleComponent.prototype.monthDaysPastChange = function (event) {
+        this.monthDaysPast = event;
         this.bymonthday = this.bymonthday.filter(function (r) { return r < 0; }).concat(this.monthDaysPast);
-        this.options.bymonthday = this.bymonthday;
-        this.onChange();
+        if (this.options.bymonthday !== this.bymonthday) {
+            this.options.bymonthday = this.bymonthday;
+            this.emitChange();
+        }
     };
     RRuleComponent.prototype.weekposChange = function (event) {
         this.multipleChoice(event, 'bysetpos');
         this.options.bysetpos = this.bysetpos;
-        this.onChange();
+        delete this.options.bymonthday;
+        this.emitChange();
     };
     RRuleComponent.prototype.multipleChoice = function (event, member) {
         if (event.source.checked) {
@@ -207,10 +232,6 @@ var RRuleComponent = (function () {
         core_1.Output(), 
         __metadata('design:type', Object)
     ], RRuleComponent.prototype, "RRuleStrChange", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], RRuleComponent.prototype, "validation", void 0);
     RRuleComponent = __decorate([
         core_1.Component({
             selector: 'app-rrule',

@@ -21,7 +21,6 @@ var MonthdayComponent = (function () {
         },
         set: function (val) {
             this._days = val;
-            this.daysChange.emit(val);
         },
         enumerable: true,
         configurable: true

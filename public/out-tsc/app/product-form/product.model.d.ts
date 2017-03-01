@@ -8,5 +8,6 @@ export declare class ProductModel {
     getDifferentValues(product: Product): {};
     setProduct(product: Product): void;
     static toAnyObject(product: any): any;
+    static toAnyObjectOverride(product: any): any;
     static fromAnyObject(object: any): Product;
 }
