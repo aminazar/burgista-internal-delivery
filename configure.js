@@ -43,7 +43,7 @@ function prodTablesCreate() {
       .then(resolve())
       .catch((err) => {
         reject(err);
-      });
+    });
   });
 }
 

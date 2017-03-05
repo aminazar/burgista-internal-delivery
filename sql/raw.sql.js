@@ -28,6 +28,7 @@ module.exports = {
     get:      sql('units/get.sql'),
     getUnits: sql('units/get.units.sql'),
     select:   sql('units/select.sql'),
+    get_info_by_uid: sql('units/get_info_by_uid.sql'),
   },
   products: {
     create:      sql('products/create.sql'),
@@ -49,5 +50,13 @@ module.exports = {
     add:   sql('last_login/insert.sql'),
     delete:   sql('last_login/delete.sql'),
     get_login_uid: sql('last_login/get_login_uid.sql'),
+    get_previous_login_date: sql('last_login/get_previous_login_date.sql'),
+  },
+  branch_stock_delivery_date: {
+    create: sql('branch_stock_delivery_date/create.sql'),
+    drop: sql('branch_stock_delivery_date/drop.sql'),
+    delete: sql('branch_stock_delivery_date/delete.sql'),
+    get: sql('branch_stock_delivery_date/get.sql'),
+    update: sql('branch_stock_delivery_date/update.sql'),
   }
 };
