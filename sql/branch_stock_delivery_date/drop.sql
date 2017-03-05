@@ -1,0 +1,1 @@
+DROP TABLE branch_stock_delivery_date
