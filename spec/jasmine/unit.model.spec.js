@@ -176,7 +176,7 @@ describe("Unit model", ()=> {
 
   it("should save login_date after successful login", done=> {
     Unit.test = true;
-    Unit.saveDateAfterLogin(username, isBranch, 1)
+    Unit.saveDateAfterLogin(name,username, isBranch, 1)
     .then((res) => {
       expect(res).toBeTruthy();
       expect(res.user).toBe('Ali Alavi');

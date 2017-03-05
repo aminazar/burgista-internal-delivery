@@ -27,14 +27,14 @@ let resExpect = (res, statusCode) => {
 };
 
 describe("REST API", ()=> {
-  describe("root", ()=> {
-    it("returns 'respond with a resource'", done => {
-      request.get(base_url, function (error, response) {
-        expect(response.body).toBe("respond with a resource");
-        done();
-      })
-    });
-  });
+  // describe("root", ()=> {
+  //   it("returns 'respond with a resource'", done => {
+  //     request.get(base_url, function (error, response) {
+  //       expect(response.body).toBe("respond with a resource");
+  //       done();
+  //     })
+  //   });
+  // });
 
   describe("unit", ()=> {
     let branchUid;

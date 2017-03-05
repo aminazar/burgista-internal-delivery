@@ -2,7 +2,7 @@ const env = require('../../env');
 const sql = require('../../sql');
 
 
-fdescribe("Test 'branch_stoke_delivery_date' table", () => {
+describe("Test 'branch_stoke_delivery_date' table", () => {
   let test_uid=1;
   let test_last_login_lid = 1;
 
@@ -108,37 +108,40 @@ fdescribe("Test 'branch_stoke_delivery_date' table", () => {
   });
 
   it("should show branch ID if a branch logs in", (done) => {
-    sql.test.last_login.add({
-      login_uid: test_uid-2
+    return sql.test.last_login.get_previous_login_date({
+      login_uid: test_uid-2,
     })
-    .then(() => {
-      return sql.test.units.get_info_by_uid({
-        uid: test_uid-2
+      .then((res) => {
+        return sql.test.last_login.add({
+          login_uid: test_uid-2,
+          previous_login_date_time : res.length ? res[0].login_date_time : null,
+        })
       })
-    })
-    .then((res) => {
-      if(res[0].is_branch) {
-        return sql.test.last_login.get_previous_login_date({
-          login_uid: res[0].uid
+      .then(() => {
+        return sql.test.units.get_info_by_uid({
+          uid: test_uid-2
         })
-        .then((res) => {
-          expect(res).toBeTruthy();
-          console.log('********');
-          console.log(res);
-          console.log('********');
+      })
+      .then((res) => {
+        if(res[0].is_branch) {
+          return sql.test.last_login.get_previous_login_date({
+            login_uid: res[0].uid
+          })
+            .then((res) => {
+              expect(res).toBeTruthy();
+              done();
+            })
+        }
+        else {
+          console.log('user is not a branch');
           done();
-        })
-      }
-      else {
-        console.log('user is not a branch');
-         done();
-      }
-    })
-    .catch((err) => {
-      console.log(err.message);
-      fail(err.message);
-      done();
-    });
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+        fail(err.message);
+        done();
+      });
   });
 
   it("should add a new row to the table", (done) =>{
@@ -163,22 +166,22 @@ fdescribe("Test 'branch_stoke_delivery_date' table", () => {
 
   afterAll((done) => {
     sql.test.last_login.drop()
-    .then(() => {
-      return sql.test.branch_stock_delivery_date.drop()
-    })
-    .then(() => {
-      return sql.test.products.drop()
-    })
-    .then(() => {
-      return sql.test.units.drop()
-    })
-    .then(() =>{
-      done();
-    })
-    .catch((err) => {
-      console.log(err.message);
-      fail(err.message);
-      done();
-    });
+      .then(() => {
+        return sql.test.branch_stock_delivery_date.drop()
+      })
+      .then(() => {
+        return sql.test.products.drop()
+      })
+      .then(() => {
+        return sql.test.units.drop()
+      })
+      .then(() =>{
+        done();
+      })
+      .catch((err) => {
+        console.log(err.message);
+        fail(err.message);
+        done();
+      });
   });
 });

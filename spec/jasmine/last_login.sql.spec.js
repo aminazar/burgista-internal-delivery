@@ -59,6 +59,7 @@ describe("Test 'last_login' table", () => {
   it("should throw an error if login_uid is NOT exist in units table",(done) => {
     sql.test.last_login.add({
       login_uid : 10,
+      previous_login_date_time:null,
     })
     .then((res)=>{
       fail('this login_uid is NOT exist in units table!!');
@@ -81,6 +82,7 @@ describe("Test 'last_login' table", () => {
   it("should delete 0 row from last_login table if user logins for the first time",(done) =>{
     sql.test.last_login.add({
       login_uid : 1,
+      previous_login_date_time : null,
     })
     .then((res) => {
       test_last_login_lid = res.lid;
@@ -108,6 +110,7 @@ describe("Test 'last_login' table", () => {
   it("should add a new row to the table after successfull login", (done) => {
     sql.test.last_login.add({
       login_uid : test_uid,
+      previous_login_date_time : null,
       })
       .then((res) => {
         return sql.test.last_login.select()
@@ -116,6 +119,7 @@ describe("Test 'last_login' table", () => {
         expect(res.length).toBe(2);
         return sql.test.last_login.add({
           login_uid: test_uid-1,
+          previous_login_date_time: null,
         })
       })
       .then((res) => {
@@ -125,6 +129,7 @@ describe("Test 'last_login' table", () => {
         expect(res.length).toBe(3);
         return sql.test.last_login.add({
           login_uid: test_uid-2,
+          previous_login_date_time: null,
         })
       })
       .then((res) =>{
@@ -142,8 +147,14 @@ describe("Test 'last_login' table", () => {
   });
 
   it("should delete user all last logins(just 1 row) if there is after new login" ,(done) =>{
-    sql.test.last_login.add({
+    sql.test.last_login.get_previous_login_date({
       login_uid : 4,
+    })
+    .then((res) =>{
+      return sql.test.last_login.add({
+        login_uid : 4,
+        previous_login_date_time : res.length ? res[0].login_date_time : null,
+      })
     })
     .then ((res) => {
       test_last_login_lid = res.lid;
@@ -178,8 +189,14 @@ describe("Test 'last_login' table", () => {
     .then((res)=>{
       expect(typeof res.uid).toBe('number');
       test_uid = res.uid;
+      return sql.test.last_login.get_previous_login_date({
+        login_uid: test_uid,
+      })
+    })
+    .then((res) =>{
       return sql.test.last_login.add({
         login_uid : test_uid,
+        previous_login_date_time : res.length ? res[0].login_date_time : null,
       })
     })
     .then((res) => {
