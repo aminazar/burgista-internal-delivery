@@ -67,7 +67,7 @@ app.use(function(err, req, res, next) {
   let jsonError = req.app.get('env') === 'development' ? {
     Message: err.message,
     Stack: err.stack,
-  } : {};
+  } : {Message: err.message};
 
   res.status(err.status || 500).json(jsonError);
   console.log(err);
