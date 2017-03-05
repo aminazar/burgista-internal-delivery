@@ -40,9 +40,10 @@ function prodTablesCreate() {
       .then(createOrExist('products'))
       .then(createOrExist('branch_stock_rules'))
       .then(createOrExist('last_login'))
+      .then(resolve())
       .catch((err) => {
         reject(err);
-      });
+    });
   });
 }
 

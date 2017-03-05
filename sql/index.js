@@ -103,6 +103,14 @@ let tablesWithSqlCreatedByHelpers = [
     delete: false,
     idColumn: 'bsrid',
   },
+  {
+    name: 'branch_stock_delivery_date',
+    insert: true,
+    update: true,
+    select: true,
+    delete: true,
+    idColumn: 'bsddid',
+  }
 ];
 
 tablesWithSqlCreatedByHelpers.forEach((table)=> {
