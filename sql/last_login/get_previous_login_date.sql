@@ -1,0 +1,1 @@
+select lid,login_uid,login_date_time from last_login where login_uid = ${login_uid}
