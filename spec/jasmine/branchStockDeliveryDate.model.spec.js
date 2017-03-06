@@ -12,7 +12,7 @@ Product.test = true;
 
 describe("Branch Stock Delivery Date Model", () =>
 {
-  let prep_uid, branch_id_1, branch_id_2, product_id_1, product_id_2;
+  let prep_uid, branch_id_1, branch_id_2, product_id_1, product_id_2,bsddAfterBranch2;
   let product_data_1 = {
     code: 1011,
     name: 'apple',
@@ -163,12 +163,25 @@ describe("Branch Stock Delivery Date Model", () =>
       })
   });
 
-  it('should insert BSDD item for product/branch', done => {
+  it('should select right rows for inventory - branch 1', done => {
+    Stock.select(branch_id_1,new Date('13Mar17'))
+      .then(res => {
+        expect(res.length).toBe(2);
+        expect(res.filter(el=>el.bsddid===null).length).toBe(2);
+        done();
+      })
+      .catch(err => {
+        console.log(err);
+        done();
+      })
+  });
+
+  it('should insert BSDD item for product/branch 1', done => {
    Stock.branchStockDeliveryDateFunc(branch_id_1,true)
       .then(()=>{
         sql.test.branch_stock_delivery_date.select()
           .then(res=>{
-            expect(res.length).toBe(0);
+            expect(res.length).toBe(2);
             done()
           })
       })
@@ -178,6 +191,58 @@ describe("Branch Stock Delivery Date Model", () =>
       })
   });
 
+  it('should select right rows for inventory - branch 1', done => {
+    Stock.select(branch_id_1,new Date('13Mar17'))
+      .then(res => {
+        console.log(res);
+        done();
+      })
+      .catch(err => {
+        console.log(err);
+        done();
+      })
+  });
+
+  it('should select right rows for inventory - branch 2', done => {
+    Stock.select(branch_id_2,new Date('13Mar17'))
+      .then(res => {
+        console.log(res);
+        done();
+      })
+      .catch(err => {
+        console.log(err);
+        done();
+      })
+  });
+
+  it('should insert BSDD item for product/branch 2', done => {
+    Stock.branchStockDeliveryDateFunc(branch_id_2,true)
+      .then(()=>{
+        sql.test.branch_stock_delivery_date.select()
+          .then(res=>{
+            expect(res.length).toBe(4);
+            done();
+          })
+      })
+      .catch(err=>{
+        console.log(err);
+        done();
+      })
+  });
+
+  it('should select right rows for inventory - branch 2', done => {
+    Stock.select(branch_id_2,new Date('13Mar17'))
+      .then(res => {
+          bsddAfterBranch2 = res;
+          done();
+      })
+      .catch(err => {
+        console.log(err);
+        done();
+      })
+  });
+
+  it('should save row as ')
   afterAll((done) => {
     let dropOrNotExist = function(tableName) {
       return lib.helpers.dropOrNotExit(tableName,sql.test)

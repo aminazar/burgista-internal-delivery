@@ -1,25 +1,55 @@
-select max(counting_date) as last_count, bsddid, pid, product_code, product_name from (
+select
+    counting_date,
+    bsddid,
+    pid,
+    product_code,
+    product_name,
+    last_count
+from (
     select
-        bsddid, pid, products.code as product_code, products.name as product_name, counting_date
+        max(counting_date) as counting_date,
+        bsddid,
+        pid,
+        product_code,
+        product_name
+    from (
+        select
+            bsddid,
+            pid,
+            products.code as product_code,
+            products.name as product_name,
+            counting_date,
+            branch_id
+        from
+            products
+        left outer join
+            branch_stock_delivery_date
+        on
+            product_id = pid
+            and branch_id=${uid}
+            and counting_date <= ${date}
+            and product_count is null
+    ) as list
+    group by
+        bsddid,
+        pid,
+        product_code,
+        product_name
+) as main_list
+left outer join (
+    select
+        min(counting_date) as last_count,
+        product_id,
+        branch_id
     from
-        products
-    left outer join
         branch_stock_delivery_date
-    on
-        product_id = pid
-        and branch_id=3
+    where
+        branch_id=${uid}
+        and counting_date <= ${date}
         and product_count is not null
-        and counting_date = (
-            select
-                max(counting_date)
-            from
-                branch_stock_delivery_date
-            where
-                counting_date <= current_date
-                and branch_id=${uid}
-                and product_id=${pid}
-                and product_count is null
-        )
-)
-group by
-    bsdid, pid
+    group by
+    product_id,
+    branch_id
+) as last_count_list
+on
+    main_list.pid = last_count_list.product_id
