@@ -29,7 +29,6 @@ from (
             product_id = pid
             and branch_id=${uid}
             and counting_date <= ${date}
-            and product_count is null
     ) as list
     group by
         bsddid,
@@ -40,7 +39,7 @@ from (
 ) as main_list
 left outer join (
     select
-        min(counting_date) as last_count,
+        max(submission_time) as last_count,
         product_id,
         branch_id
     from
