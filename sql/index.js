@@ -16,11 +16,11 @@ let usingFunction = query=> {
     checkNone: 'none',
     test: 'one',
     add: 'one',
-    // delete: 'one',
+    delete: 'query',
   }[query];
 
   if (!res)
-    res = 'query';
+    res = query.indexOf('get')===-1 ? 'query' : 'any';
 
   return res;
 };

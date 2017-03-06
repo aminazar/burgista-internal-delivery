@@ -12,7 +12,7 @@ Product.test = true;
 
 describe("Branch Stock Delivery Date Model", () =>
 {
-  let prep_uid, branch_id_1, branch_id_2, product_id_1, product_id_2,bsddAfterBranch2;
+  let prep_uid, branch_id_1, branch_id_2, product_id_1, product_id_2,product_id_3,bsddAfterBranch2;
   let product_data_1 = {
     code: 1011,
     name: 'apple',
@@ -48,6 +48,26 @@ describe("Branch Stock Delivery Date Model", () =>
     default_sun_multiple: 1,
     default_usage: 1
   };
+
+  let product_data_3 = {
+    code: 1013,
+    name: 'banana',
+    size: 1,
+    measuring_unit: 'Kg',
+    default_max: 16,
+    default_min: 4,
+    default_date_rule: 'DTSTART=20170305;FREQ=DAILY;INTERVAL=10',
+    default_mon_multiple: 1,
+    default_tue_multiple: 1,
+    default_wed_multiple: 1,
+    default_thu_multiple: 1,
+    default_fri_multiple: 1,
+    default_sat_multiple: 1,
+    default_sun_multiple: 1,
+    default_usage: 6
+  };
+
+
 
   let override_2 = {
     date_rule: 'DTSTART=20170305;FREQ=DAILY;INTERVAL=2',
@@ -99,8 +119,13 @@ describe("Branch Stock Delivery Date Model", () =>
       })//adding product 2
       .then(res => {
         product_id_2 = res.pid;
-        return lib.helpers.createOrExist('branch_stock_rules',sql.test);
+        product_data_3.prep_unit_id = prep_uid;
+        return sql.test.products.add(product_data_3)
       })
+      .then(res =>{
+        product_id_3 = res.pid;
+        return lib.helpers.createOrExist('branch_stock_rules',sql.test);
+      })//adding product 3
       .then(() => {
         let product = new Product();
         product.update(override_2, product_id_2, 'admin', branch_id_1)
@@ -122,10 +147,10 @@ describe("Branch Stock Delivery Date Model", () =>
       })//updating last login for branch 2 to have constant login date
       .then(()=>{
         return sql.test.last_login.add({login_uid:prep_uid,previous_login_date_time:moment('2017-03-06').toDate()});
-      })//adding last_login for branch1
+      })//adding last_login for prep_unit
       .then(res =>{
         return sql.test.last_login.update({login_date_time:moment('2017-03-13').toDate()},res.lid);
-      })//updating last login for branch 2 to have constant login date
+      })//updating last login for prp_unit to have constant login date
       .then(() => {
         done();
       })//done
@@ -234,6 +259,7 @@ describe("Branch Stock Delivery Date Model", () =>
     Stock.select(branch_id_2,new Date('13Mar17'))
       .then(res => {
           bsddAfterBranch2 = res;
+          console.log(res);
           done();
       })
       .catch(err => {
@@ -242,7 +268,64 @@ describe("Branch Stock Delivery Date Model", () =>
       })
   });
 
-  it('should save row as ')
+  it('should save stock count', done => {
+    let s = new Stock();
+    bsddAfterBranch2[0].product_count = 3;
+    bsddAfterBranch2[0].product_id = product_id_1;
+    s.saveData(bsddAfterBranch2[0],branch_id_1)
+      .then(()=>{
+      done();
+      })
+      .catch(err => {
+        console.log(err);
+        done();
+      })
+  });
+  it('should save stock count - checking', done => {
+    Stock.select(branch_id_2,new Date('13Mar17'))
+      .then(res => {
+        bsddAfterBranch2 = res;
+        console.log(res);
+        done();
+      })
+      .catch(err => {
+        console.log(err);
+        done();
+      })
+  });
+  it('should save unlisted product', done => {
+    let s = new Stock();
+    let unlisted = bsddAfterBranch2.filter(r=>r.bsddid===null);
+    expect(unlisted.length).toBe(2);
+    if(unlisted.length>0) {
+      unlisted[0].product_id = product_id_3;
+      unlisted[0].product_count = 10;
+      s.saveData(unlisted[0], branch_id_2)
+        .then(res => {
+          console.log(res);
+          done()
+        })
+        .catch(err => {
+          console.log(err);
+          done();
+        });
+    }
+    else
+      done();
+  });
+
+  it('should save unlisted product', done => {
+    Stock.select(branch_id_2,new Date('13Mar17'))
+      .then(res => {
+        bsddAfterBranch2 = res;
+        console.log(res);
+        done();
+      })
+      .catch(err => {
+        console.log(err);
+        done();
+      })
+  });
   afterAll((done) => {
     let dropOrNotExist = function(tableName) {
       return lib.helpers.dropOrNotExit(tableName,sql.test)

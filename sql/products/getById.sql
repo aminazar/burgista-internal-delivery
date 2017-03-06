@@ -1,1 +1,1 @@
-select * from products-- where pid = ${pid}
+select * from products where pid = ${pid}

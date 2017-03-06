@@ -11,7 +11,8 @@ from (
         bsddid,
         pid,
         product_code,
-        product_name
+        product_name,
+        branch_id
     from (
         select
             bsddid,
@@ -34,7 +35,8 @@ from (
         bsddid,
         pid,
         product_code,
-        product_name
+        product_name,
+        branch_id
 ) as main_list
 left outer join (
     select
