@@ -4,6 +4,11 @@
 const env = require('./env');
 const sql = require('./sql');
 const Unit = require('./lib/unit.model');
+const lib = require('./lib');
+
+function createOrExist(tableName) {
+  return lib.helpers.createOrExist(tableName, sql);
+}
 
 function dbTestCreate() {
   return new Promise((resolve, reject) => {
@@ -19,19 +24,6 @@ function dbTestCreate() {
         // process.exit();
       });
   });
-}
-
-function createOrExist(tableName){
-  return new Promise((resolve, reject) => {
-    sql[tableName].create()
-      .then(resolve)
-      .catch(err => {
-        if(err.message.indexOf(`"${tableName}" already exists`)!==-1)
-          resolve();
-        else
-          reject(err);
-      })
-  })
 }
 
 function prodTablesCreate() {
