@@ -10,7 +10,7 @@ let Product = lib.Product;
 Stock.test = true;
 Product.test = true;
 
-describe("Branch Stock Delivery Date Model", () =>
+fdescribe("Branch Stock Delivery Date Model", () =>
 {
   let prep_uid, branch_id_1, branch_id_2, product_id_1, product_id_2;
   let product_data_1 = {
@@ -122,10 +122,10 @@ describe("Branch Stock Delivery Date Model", () =>
       })//updating last login for branch 2 to have constant login date
       .then(()=>{
         return sql.test.last_login.add({login_uid:prep_uid,previous_login_date_time:moment('2017-03-06').toDate()});
-      })//adding last_login for branch1
+      })//adding last_login for prep_unit
       .then(res =>{
         return sql.test.last_login.update({login_date_time:moment('2017-03-13').toDate()},res.lid);
-      })//updating last login for branch 2 to have constant login date
+      })//updating last login for prp_unit to have constant login date
       .then(() => {
         done();
       })//done
@@ -168,7 +168,9 @@ describe("Branch Stock Delivery Date Model", () =>
       .then(()=>{
         sql.test.branch_stock_delivery_date.select()
           .then(res=>{
-            expect(res.length).toBe(0);
+            expect(res.length).toBe(2);
+            expect(res[0].branch_id).toBe(1);
+            expect(res[1].branch_id).toBe(1);
             done()
           })
       })
