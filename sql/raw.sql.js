@@ -59,5 +59,6 @@ module.exports = {
     delete: sql('branch_stock_delivery_date/delete.sql'),
     get: sql('branch_stock_delivery_date/get.sql'),
     update: sql('branch_stock_delivery_date/update.sql'),
+    selectMaxDate: sql('branch_stock_delivery_date/selectMaxDate.sql'),
   }
 };
