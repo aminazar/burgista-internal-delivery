@@ -148,7 +148,7 @@ describe("Test 'branch_stoke_delivery_date' table", () => {
     sql.test.branch_stock_delivery_date.add({
       product_id: 1,
       branch_id: test_uid-2,
-      last_counting_date: '2016-12-14',
+      counting_date: '2016-12-14',
       submission_time: null,
       min_stock: 2,
       product_count: null,

@@ -207,6 +207,8 @@ describe("Branch Stock Delivery Date Model", () =>
         sql.test.branch_stock_delivery_date.select()
           .then(res=>{
             expect(res.length).toBe(2);
+            expect(res[0].branch_id).toBe(1);
+            expect(res[1].branch_id).toBe(1);
             done()
           })
       })
