@@ -6,5 +6,7 @@ CREATE TABLE branch_stock_delivery_date(
     submission_time time,
     min_stock integer not null,
     product_count integer,
-    real_delivery integer
+    real_delivery integer,
+    unique(branch_id,product_id,counting_date)
 )
+
