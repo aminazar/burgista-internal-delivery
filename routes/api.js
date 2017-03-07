@@ -76,5 +76,6 @@ router.post('/override/:pid', apiResponse('Product', 'update', false, ['body', '
 router.delete('/override/:pid', apiResponse('Product', 'delete', false, ['params.pid', 'user.username', 'query.uid', 'user.uid']));
 //Stock API
 router.get('/stock/:date', apiResponse('Stock', 'select', false, ['user.uid','params.date']));
-router.post('/stock', apiResponse('Stock', 'saveData', false, ['body', 'user.uid']));
+router.put('/stock', apiResponse('Stock', 'saveData', false, ['body', 'user.uid']));
+router.post('/stock/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'user.uid', 'params.bsddid']));
 module.exports = router;
