@@ -285,7 +285,6 @@ describe("Branch Stock Delivery Date Model", () =>
     Stock.select(branch_id_2,new Date('13Mar17'))
       .then(res => {
           bsddAfterBranch2 = res;
-          console.log(res);
           expect(true).toBe(true);
           done();
       })
@@ -301,7 +300,11 @@ describe("Branch Stock Delivery Date Model", () =>
     bsddAfterBranch2[0].product_id = bsddAfterBranch2[0].pid;
     s.saveData(bsddAfterBranch2[0],branch_id_2)
       .then(()=>{
-      done();
+        sql.test.branch_stock_delivery_date.select()
+          .then(res=>{
+            expect(res.length).toBe(4);
+            done();
+          })
       })
       .catch(err => {
         console.log(err);
@@ -309,7 +312,7 @@ describe("Branch Stock Delivery Date Model", () =>
       })
   });
   it('should save stock count - checking', done => {
-    Stock.select(branch_id_2,new Date('13Mar17'))
+    Stock.select(branch_id_2,new Date('7Mar17'))
       .then(res => {
         let p = res.filter(r=>r.bsddid===bsddAfterBranch2[0].bsddid);
         expect(p.length).toBe(1);
@@ -337,7 +340,8 @@ describe("Branch Stock Delivery Date Model", () =>
   it('should save unlisted product', done => {
     let s = new Stock();
     let unlisted = bsddAfterBranch2.filter(r=>r.bsddid===null);
-    expect(unlisted.length).toBe(1);
+    console.log(unlisted);
+    expect(unlisted.length).toBe(2);
     if(unlisted.length>0) {
       unlisted[0].product_id = product_id_3;
       unlisted[0].product_count = 10;

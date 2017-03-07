@@ -29,6 +29,7 @@ from (
             product_id = pid
             and branch_id=${uid}
             and counting_date <= ${date}
+            and (counting_date=${date} or product_count is null)
     ) as list
     group by
         bsddid,
