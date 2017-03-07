@@ -10,9 +10,9 @@ let Product = lib.Product;
 Stock.test = true;
 Product.test = true;
 
-describe("Branch Stock Delivery Date Model", () =>
+fdescribe("Branch Stock Delivery Date Model", () =>
 {
-  let prep_uid, branch_id_1, branch_id_2, product_id_1, product_id_2,bsddAfterBranch2;
+  let prep_uid, branch_id_1, branch_id_2, product_id_1, product_id_2, product_id_3,product_id_4,bsddAfterBranch2;
   let product_data_1 = {
     code: 1011,
     name: 'apple',
@@ -49,10 +49,47 @@ describe("Branch Stock Delivery Date Model", () =>
     default_usage: 1
   };
 
+  let product_data_3 = {
+    code: 1013,
+    name: 'banana',
+    size: 1,
+    measuring_unit: 'Kg',
+    default_max: 16,
+    default_min: 4,
+    default_date_rule: 'DTSTART=20170305;FREQ=DAILY;INTERVAL=10',
+    default_mon_multiple: 1,
+    default_tue_multiple: 1,
+    default_wed_multiple: 1,
+    default_thu_multiple: 1,
+    default_fri_multiple: 1,
+    default_sat_multiple: 1,
+    default_sun_multiple: 1,
+    default_usage: 6
+  };
+
+  let product_data_4 = {
+    code: 1014,
+    name: 'kabbage',
+    size: 2,
+    measuring_unit: 'Kg',
+    default_max: 13,
+    default_min: 7,
+    default_date_rule: 'DTSTART=20170305;INTERVAL=1;FREQ=WEEKLY;BYDAY=SA,SU',
+    default_mon_multiple: 1,
+    default_tue_multiple: 1,
+    default_wed_multiple: 1,
+    default_thu_multiple: 1,
+    default_fri_multiple: 1,
+    default_sat_multiple: 1,
+    default_sun_multiple: 1,
+    default_usage: 9
+  };
+
   let override_2 = {
     date_rule: 'DTSTART=20170305;FREQ=DAILY;INTERVAL=2',
     usage: 2,
   };
+
   beforeAll((done) => {
     lib.helpers.createOrExist('units',sql.test)
       .then(() => {
@@ -99,8 +136,18 @@ describe("Branch Stock Delivery Date Model", () =>
       })//adding product 2
       .then(res => {
         product_id_2 = res.pid;
+        product_data_3.prep_unit_id = prep_uid;
+        return sql.test.products.add(product_data_3)
+      })//adding product 3
+      .then(res =>{
+        product_id_3 = res.pid;
+        product_data_4.prep_unit_id = prep_uid;
+        return sql.test.products.add(product_data_4)
+      })//adding product 4
+      .then((res)=>{
+        product_id_4 = res.pid;
         return lib.helpers.createOrExist('branch_stock_rules',sql.test);
-      })
+      })//create branch_stock_rules table
       .then(() => {
         let product = new Product();
         product.update(override_2, product_id_2, 'admin', branch_id_1)
@@ -139,6 +186,7 @@ describe("Branch Stock Delivery Date Model", () =>
   it('should calculate minimum required of the product in a date', () => {
     expect(Stock.calcMin(product_data_1, moment('2017-03-09'))).toBe(9);
     expect(Stock.calcMin(product_data_1, moment('2017-03-10'))).toBe(18);
+    expect(Stock.calcMin(product_data_3, moment('2017-03-10'))).toBe(24);
   });
 
   it('should check if a date is included in the recursion rule of product', () => {
@@ -166,63 +214,28 @@ describe("Branch Stock Delivery Date Model", () =>
   it('should select right rows for inventory - branch 1', done => {
     Stock.select(branch_id_1,new Date('13Mar17'))
       .then(res => {
-        expect(res.length).toBe(2);
-        expect(res.filter(el=>el.bsddid===null).length).toBe(2);
+        expect(res.length).toBe(4);
+        expect(res.filter(el=>el.bsddid===null).length).toBe(4);
         done();
       })
       .catch(err => {
         console.log(err);
         done();
       })
-  });
+  });//before login
 
   it('should insert BSDD item for product/branch 1', done => {
    Stock.branchStockDeliveryDateFunc(branch_id_1,true)
       .then(()=>{
         sql.test.branch_stock_delivery_date.select()
           .then(res=>{
-            expect(res.length).toBe(2);
-            expect(res[0].branch_id).toBe(1);
-            expect(res[1].branch_id).toBe(1);
-            done()
-          })
-      })
-      .catch(err=>{
-        console.log(err);
-        done();
-      })
-  });
-
-  it('should select right rows for inventory - branch 1', done => {
-    Stock.select(branch_id_1,new Date('13Mar17'))
-      .then(res => {
-        console.log(res);
-        done();
-      })
-      .catch(err => {
-        console.log(err);
-        done();
-      })
-  });
-
-  it('should select right rows for inventory - branch 2', done => {
-    Stock.select(branch_id_2,new Date('13Mar17'))
-      .then(res => {
-        console.log(res);
-        done();
-      })
-      .catch(err => {
-        console.log(err);
-        done();
-      })
-  });
-
-  it('should insert BSDD item for product/branch 2', done => {
-    Stock.branchStockDeliveryDateFunc(branch_id_2,true)
-      .then(()=>{
-        sql.test.branch_stock_delivery_date.select()
-          .then(res=>{
-            expect(res.length).toBe(4);
+            expect(res.length).toBe(3);
+            expect(res.filter(el=>el.bsddid!==null).length).toBe(3);
+            expect(res.filter(el=>el.branch_id===1).length).toBe(3);
+            //TODO correct date
+            expect(moment(res[0].counting_date).utc().format('YY-MM-DD')).toContain('17-03-12');
+            expect(moment(res[1].counting_date).utc().format('YY-MM-DD')).toContain('17-03-11');
+            expect(moment(res[2].counting_date).utc().format('YY-MM-DD')).toContain('17-03-09');
             done();
           })
       })
@@ -230,21 +243,98 @@ describe("Branch Stock Delivery Date Model", () =>
         console.log(err);
         done();
       })
-  });
+  });//after login
 
-  it('should select right rows for inventory - branch 2', done => {
-    Stock.select(branch_id_2,new Date('13Mar17'))
+  it('should select right rows for inventory - branch 1', done => {
+    Stock.select(branch_id_1,new Date('13Mar17'))
       .then(res => {
-          bsddAfterBranch2 = res;
-          done();
+        expect(res.filter(el=>el.bsddid===null).length).toBe(1);
+        expect(res.filter(el=>el.bsddid!==null).length).toBe(3);
+        done();
       })
       .catch(err => {
         console.log(err);
         done();
       })
   });
+  //
+  // it('should select right rows for inventory - branch 2', done => {
+  //   Stock.select(branch_id_2,new Date('13Mar17'))
+  //     .then(res => {
+  //       console.log(res);
+  //       done();
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //       done();
+  //     })
+  // });
+  //
+  // it('should insert BSDD item for product/branch 2', done => {
+  //   Stock.branchStockDeliveryDateFunc(branch_id_2,true)
+  //     .then(()=>{
+  //       sql.test.branch_stock_delivery_date.select()
+  //         .then(res=>{
+  //           console.log(res);
+  //           expect(res.filter(el=>el.branch_id===2).length).toBe(2);
+  //           done();
+  //         })
+  //     })
+  //     .catch(err=>{
+  //       console.log(err);
+  //       done();
+  //     })
+  // });
+  //
+  // it('should select right rows for inventory - branch 2', done => {
+  //   Stock.select(branch_id_2,new Date('13Mar17'))
+  //     .then(res => {
+  //       bsddAfterBranch2 = res;
+  //       console.log(res);
+  //       expect(res.filter(el=>el.bsddid===null).length).toBe(2);
+  //       done();
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //       done();
+  //     })
+  // });
+  //
+  // it('should throw an error if branch logins for the first time', done =>{
+  //   return sql.test.last_login.add({login_uid:branch_id_1,previous_login_date_time:null})
+  //   .then((res) =>{
+  //     return Stock.branchStockDeliveryDateFunc(branch_id_1,true)
+  //       .then(()=>{
+  //         fail('Branch first login, previous login date is null');
+  //         done();
+  //       })
+  //    })
+  //   .catch(err=>{
+  //     console.log('previous login date is null');
+  //     done();
+  //   })
+  // })
 
-  it('should save row as ')
+  it('should NOT throw an error if branch logins for the first time', done =>{
+    return sql.test.last_login.add({login_uid:branch_id_2,previous_login_date_time:null})
+      .then(()=>{
+        Stock.branchStockDeliveryDateFunc(branch_id_2,true)
+          .then(()=>{
+            sql.test.branch_stock_delivery_date.select()
+              .then(res=>{
+                console.log(res.length,'*****',res);
+                done();
+              })
+          })
+      })
+      .catch(err=>{
+        console.log(err.message);
+        fail(err.message);
+        done();
+      })
+  })
+  
+  it('should save row as')
   afterAll((done) => {
     let dropOrNotExist = function(tableName) {
       return lib.helpers.dropOrNotExit(tableName,sql.test)
