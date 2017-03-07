@@ -141,6 +141,19 @@ describe("Test 'products' table", () => {
       })
   });
 
+  it('should get a specific product based on its id', (done) => {
+    sql.test.products.getById({pid: product_id})
+      .then((res) => {
+        expect(res.length).toBe(1);
+        expect(res[0].name).toBe('Frying Oil');
+        done();
+      })
+      .catch((err) => {
+        fail(err.message);
+        done();
+      })
+  });
+
   it('should update a specific row', (done) => {
     sql.test.products.update({size: 12}, product_id)
       .then((res) => {
