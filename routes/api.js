@@ -74,4 +74,7 @@ router.delete('/product/:pid', apiResponse('Product', 'delete', true, ['params.p
 router.get('/override', apiResponse('Product', 'select', false, ['user.username', 'query.uid', 'user.uid']));
 router.post('/override/:pid', apiResponse('Product', 'update', false, ['body', 'params.pid', 'user.username', 'query.uid', 'user.uid']));
 router.delete('/override/:pid', apiResponse('Product', 'delete', false, ['params.pid', 'user.username', 'query.uid', 'user.uid']));
+//Stock API
+router.get('/stock/:date', apiResponse('Stock', 'select', false, ['user.uid','params.date']));
+router.post('/stock', apiResponse('Stock', 'saveData', false, ['body', 'user.uid']));
 module.exports = router;

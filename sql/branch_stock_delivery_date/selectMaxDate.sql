@@ -11,7 +11,8 @@ from (
         bsddid,
         pid,
         product_code,
-        product_name
+        product_name,
+        branch_id
     from (
         select
             bsddid,
@@ -28,17 +29,18 @@ from (
             product_id = pid
             and branch_id=${uid}
             and counting_date <= ${date}
-            and product_count is null
+            and (counting_date=${date} or product_count is null)
     ) as list
     group by
         bsddid,
         pid,
         product_code,
-        product_name
+        product_name,
+        branch_id
 ) as main_list
 left outer join (
     select
-        min(counting_date) as last_count,
+        max(submission_time) as last_count,
         product_id,
         branch_id
     from
