@@ -228,6 +228,18 @@ describe("Branch Stock Delivery Date Model", () => {
       })
   });//before login
 
+  it('should return right delivery rows - branch 1', done => {
+    sql.test.branch_stock_delivery_date.getBranchDelivery({date: moment('17-03'),uid:branch_id_1})
+      .then( res => {
+        console.log(res);
+        done();
+      })
+      .catch( err => {
+        console.log(err);
+        done();
+      })
+  });
+
   it('should insert BSDD item for product/branch 1', done => {
     Stock.branchStockDeliveryDateFunc(branch_id_1, true)
       .then(() => {
@@ -321,7 +333,6 @@ describe("Branch Stock Delivery Date Model", () => {
           .then(() => {
             sql.test.branch_stock_delivery_date.select()
               .then(res => {
-                console.log(res.length, '*****', res);
                 done();
               })
           })
@@ -353,7 +364,6 @@ describe("Branch Stock Delivery Date Model", () => {
       .then(() => {
         sql.test.branch_stock_delivery_date.select()
           .then(res => {
-            console.log(res);
             expect(res.length).toBe(4);
             done();
           })
