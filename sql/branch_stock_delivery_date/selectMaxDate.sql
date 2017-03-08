@@ -4,7 +4,8 @@ select
     pid,
     product_code,
     product_name,
-    last_count
+    last_count,
+    product_count
 from (
     select
         max(counting_date) as counting_date,
@@ -12,7 +13,8 @@ from (
         pid,
         product_code,
         product_name,
-        branch_id
+        branch_id,
+        product_count
     from (
         select
             bsddid,
@@ -20,7 +22,8 @@ from (
             products.code as product_code,
             products.name as product_name,
             counting_date,
-            branch_id
+            branch_id,
+            product_count
         from
             products
         left outer join
@@ -36,7 +39,8 @@ from (
         pid,
         product_code,
         product_name,
-        branch_id
+        branch_id,
+        product_count
 ) as main_list
 left outer join (
     select
