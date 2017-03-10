@@ -1,6 +1,8 @@
 select
     *
 from
+    products
+left outer join
 (
     select
         bsddid,
@@ -13,17 +15,15 @@ from
         branch_stock_delivery_date
     where
         branch_id = ${uid}
-   --     and counting_date <= ${date}
+        and counting_date <= ${date}
     order by
         submission_time desc
     limit 1
 ) last_count
---join
---    products
---on
---    last_count.product_id = products.pid
---left outer join
---    branch_stock_rules
---on
---    last_count.product_id = branch_stock_rules.pid
---    and uid = ${uid}
+on
+    last_count.product_id = products.pid
+left outer join
+    branch_stock_rules
+on
+    products.product_id = branch_stock_rules.pid
+    and uid = ${uid}
