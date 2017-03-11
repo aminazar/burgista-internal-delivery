@@ -12,7 +12,7 @@ Product.test = true;
 
 describe("Branch Stock Delivery Date Model", () =>
 {
-  let prep_uid, branch_id_1, branch_id_2, product_id_1, product_id_2, product_id_3,product_id_4,product_id_5,bsddAfterBranch2,testing_lid,bsddid;
+  let prep_uid, prep_uid_2, branch_id_1, branch_id_2, product_id_1, product_id_2, product_id_3,product_id_4,product_id_5,bsddAfterBranch2,testing_lid,bsddid;
   let product_data_1 = {
     code: '1011',
     name: 'apple',
@@ -144,8 +144,17 @@ describe("Branch Stock Delivery Date Model", () =>
           is_branch: false
         })
       })//adding prep unit
-      .then((res) => {
+      .then(res => {
         prep_uid = res.uid;
+        return sql.test.units.add({
+          name: 'Amin Azar',
+          username: 'aminazar',
+          secret: 'qwerty',
+          is_branch: false
+        })
+      })//adding prep unit
+      .then((res) => {
+        prep_uid_2 = res.uid;
         return lib.helpers.createOrExist('products', sql.test);
       })//create products table
       .then(() => {
@@ -159,12 +168,12 @@ describe("Branch Stock Delivery Date Model", () =>
       })//adding product 2
       .then(res => {
         product_id_2 = res.pid;
-        product_data_3.prep_unit_id = prep_uid;
+        product_data_3.prep_unit_id = prep_uid_2;
         return sql.test.products.add(product_data_3)
       })//adding product 3
       .then(res =>{
         product_id_3 = res.pid;
-        product_data_4.prep_unit_id = prep_uid;
+        product_data_4.prep_unit_id = prep_uid_2;
         return sql.test.products.add(product_data_4)
       })//adding product 4
       .then((res)=>{
@@ -197,7 +206,7 @@ describe("Branch Stock Delivery Date Model", () =>
       })//updating last login for branch 2 to have constant login date
       .then(()=>{
         return sql.test.last_login.add({login_uid:prep_uid,previous_login_date_time:moment('2017-03-06').toDate()});
-      })//adding last_login for prep_unit
+      })//adding last_login for prep_unit 1
       .then(res =>{
         return sql.test.last_login.update({login_date_time:moment('2017-03-13').toDate()},res.lid);
       })//updating last login for prp_unit to have constant login date
@@ -351,44 +360,7 @@ describe("Branch Stock Delivery Date Model", () =>
       })
   });
 
-  it('should NOT throw an error if branch logins for the first time', done =>{
-    return sql.test.last_login.update({login_date_time:moment('2017-03-07').toDate(),previous_login_date_time:null },testing_lid)
-      .then(()=>{
-        Stock.branchStockDeliveryDateFunc(branch_id_2,true)
-          .then(()=>{
-            sql.test.branch_stock_delivery_date.select()
-              .then(res=>{
-                expect(res.length).toBe(5);
-                expect(res.filter(el=>el.product_id===1 && el.branch_id ===2 ).length).toBe(1);
-                done();
-              })
-          })
-      })
-      .catch(err=>{
-        console.log(err);
-        done();
-      })
-  });
 
-  // it('should NOT throw an error if branch logins for the first time', done =>{
-  //   return sql.test.last_login.update({login_date_time:moment('2017-03-15').toDate(),previous_login_date_time:null },testing_lid)
-  //     .then(()=>{
-  //       Stock.branchStockDeliveryDateFunc(branch_id_2,true)
-  //         .then(()=>{
-  //           sql.test.branch_stock_delivery_date.select()
-  //             .then(res=>{
-  //               expect(res.length).toBe(7);
-  //               expect(res.filter(el=>el.product_id===3).length).toBe(1);
-  //               console.log(res.length,res);
-  //               done();
-  //             })
-  //         })
-  //     })
-  //     .catch(err=>{
-  //       console.log(err);
-  //       done();
-  //     })
-  // });
 
   it('should save stock count', done => {
     let s = new Stock();
@@ -465,14 +437,15 @@ describe("Branch Stock Delivery Date Model", () =>
   });
 
   it('should return right delivery rows through SQL - branch 2', done => {
-    sql.test.branch_stock_delivery_date.getBranchDelivery({date: moment('2017-03-07').format('YYYY-MM-DD'),uid:branch_id_2})
+    sql.test.branch_stock_delivery_date.getBranchDelivery({prep_uid: prep_uid,date: moment('2017-03-07').format('YYYY-MM-DD'),uid:branch_id_2})
       .then( res => {
+        expect(res.length).toBe(1);
+        res = res.filter(r=>r.product_id===product_id_1);
         expect(res.length).toBe(1);
         if(res.length===1) {
           expect(res[0].product_count).toBe(3);
           expect(res[0].is_delivery_finalised).toBe(false);
           expect(res[0].real_delivery).toBe(null);
-          expect(res[0].product_id).toBe(product_id_1);
           expect(res[0].default_max).toBe(product_data_1.default_max);
           expect(res[0].max).toBe(override_1.max);
           expect(Stock.calcMax(res[0])).toBe(override_1.max);
@@ -488,15 +461,16 @@ describe("Branch Stock Delivery Date Model", () =>
   });
 
   it('should return right delivery rows through model - branch 2', done => {
-    Stock.deliverySelect(branch_id_2, '20170307')
+    Stock.deliverySelect(prep_uid, branch_id_2, '20170307')
       .then( res => {
+        expect(res.length).toBe(1);
+        res = res.filter(r=>r.productName===product_data_1.name);
         expect(res.length).toBe(1);
         if(res.length===1) {
           expect(res[0].stock).toBe(3);
           expect(res[0].isPrinted).toBe(false);
           expect(res[0].max).toBe(override_1.max);
           expect(res[0].min).toBe(18);
-          expect(res[0].productName).toBe(product_data_1.name);
           expect(res[0].productCode).toBe(product_data_1.code);
           expect(res[0].realDelivery).toBe(null);
           expect(res[0].id).not.toBe(null);
@@ -519,12 +493,92 @@ describe("Branch Stock Delivery Date Model", () =>
       is_delivery_finalised: true,
     }, branch_id_2, bsddid)
       .then( () => {
-        Stock.deliverySelect(branch_id_2, '20170307')
+        Stock.deliverySelect(prep_uid,branch_id_2, '20170307')
           .then( res => {
+            expect(res.length).toBe(1);
+            res = res.filter(r=>r.productName===product_data_1.name);
             expect(res.length).toBe(1);
             if(res.length===1) {
               expect(res[0].isPrinted).toBe(true);
               expect(res[0].realDelivery).toBe(10);
+              expect(res[0].id).toBe(bsddid);
+            }
+
+            done();
+          })
+      })
+      .catch( err => {
+        fail(err.message);
+        console.log(err);
+        done();
+      });
+  });
+
+  it('should NOT throw an error if branch logins for the second time', done =>{
+    return sql.test.last_login.update({login_date_time:'2017-03-10',previous_login_date_time:'2017-03-07' },testing_lid)
+      .then(()=>{
+        Stock.branchStockDeliveryDateFunc(branch_id_2,true)
+          .then(()=>{
+            sql.test.branch_stock_delivery_date.select()
+              .then(res=>{
+                console.log(res);
+                expect(res.length).toBe(7);
+                res = res.filter(el=>el.product_id===product_id_1 && el.branch_id ===branch_id_2 && moment(el.counting_date).isSame(moment('2017-03-10'),'day') );
+                expect(res.length).toBe(1);
+                if(res.length===1)
+                  bsddid = res[0].id;
+                done();
+              })
+          })
+      })
+      .catch(err=>{
+        console.log(err);
+        done();
+      })
+  });
+
+  it('should return right delivery rows through model for next day - branch 2 ', done => {
+    Stock.deliverySelect(prep_uid, branch_id_2, '20170310')
+      .then( res => {
+        expect(res.length).toBe(2);
+        res = res.filter(r=>r.productName===product_data_1.name);
+        expect(res.length).toBe(1);
+        if(res.length===1) {
+          expect(res[0].stock).toBe(null);
+          expect(res[0].isPrinted).toBe(false);
+          expect(res[0].max).toBe(override_1.max);
+          expect(res[0].min).toBe(18);
+          expect(res[0].productCode).toBe(product_data_1.code);
+          expect(res[0].realDelivery).toBe(null);
+          expect(res[0].id).not.toBe(null);
+          bsddid = res[0].id;
+        }
+
+        done();
+      })
+      .catch( err => {
+        fail(err.message);
+        console.log(err);
+        done();
+      });
+  });
+
+  it('should save real delivery for next day', done => {
+    let s = new Stock();
+    s.saveData({
+      real_delivery: 15,
+      is_delivery_finalised: true,
+    }, branch_id_2, bsddid)
+      .then( () => {
+        Stock.deliverySelect(prep_uid,branch_id_2, '20170310')
+          .then( res => {
+            expect(res.length).toBe(2);
+            console.log(res);
+            res = res.filter(r=>r.productName===product_data_1.name);
+            expect(res.length).toBe(1);
+            if(res.length===1) {
+              expect(res[0].isPrinted).toBe(true);
+              expect(res[0].realDelivery).toBe(15);
               expect(res[0].id).toBe(bsddid);
             }
 
@@ -554,13 +608,8 @@ describe("Branch Stock Delivery Date Model", () =>
           }, branch_id_2)
           .then(res => {
             bsddid = res;
-            sql.test.branch_stock_delivery_date.select()
-              .then(res=>{
-                //console.log(res);
-              })
-            Stock.deliverySelect(branch_id_2, moment().format('YYYYMMDD'))
+            return Stock.deliverySelect(prep_uid, branch_id_2, moment().format('YYYYMMDD'))
               .then(res => {
-                console.log(res)
                 res = res.filter(r=>r.id==bsddid);
                 expect(res.length).toBe(1);
                 if (res.length === 1) {
@@ -569,7 +618,6 @@ describe("Branch Stock Delivery Date Model", () =>
                   expect(res[0].realDelivery).toBe(11);
                   expect(res[0].productName).toBe(product_data_5.name);
                 }
-
                 done();
               })
           })
