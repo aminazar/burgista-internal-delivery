@@ -521,7 +521,6 @@ describe("Branch Stock Delivery Date Model", () =>
           .then(()=>{
             sql.test.branch_stock_delivery_date.select()
               .then(res=>{
-                console.log(res);
                 expect(res.length).toBe(7);
                 res = res.filter(el=>el.product_id===product_id_1 && el.branch_id ===branch_id_2 && moment(el.counting_date).isSame(moment('2017-03-10'),'day') );
                 expect(res.length).toBe(1);
@@ -573,7 +572,6 @@ describe("Branch Stock Delivery Date Model", () =>
         Stock.deliverySelect(prep_uid,branch_id_2, '20170310')
           .then( res => {
             expect(res.length).toBe(2);
-            console.log(res);
             res = res.filter(r=>r.productName===product_data_1.name);
             expect(res.length).toBe(1);
             if(res.length===1) {
