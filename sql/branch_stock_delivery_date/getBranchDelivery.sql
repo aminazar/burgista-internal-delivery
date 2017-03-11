@@ -6,11 +6,11 @@ join (
     select
         bsddid,
         product_count,
-        max(submission_time),
+        max(submission_time) as submission_time,
         is_delivery_finalised,
         real_delivery,
         product_id,
-        max(counting_date)
+        max(counting_date) as counting_date
     from
         products
     left outer join
