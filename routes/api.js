@@ -62,7 +62,7 @@ router.get('/logout', (req, res) => {
 router.get('/validUser', apiResponse('Unit', 'afterLogin', false, ['user.name', 'user.username', 'user.is_branch']));
 //Unit API
 router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
-router.get('/unit', apiResponse('Unit', 'select', true, ['query.isBranch']));
+router.get('/unit', apiResponse('Unit', 'select', false, ['query.isBranch']));
 router.post('/unit/:uid', apiResponse('Unit', 'update', true, ['params.uid', 'body']));
 router.delete('/unit/:uid', apiResponse('Unit', 'delete', true, ['params.uid']));
 //Product API
@@ -78,4 +78,9 @@ router.delete('/override/:pid', apiResponse('Product', 'delete', false, ['params
 router.get('/stock/:date', apiResponse('Stock', 'select', false, ['user.uid','params.date']));
 router.put('/stock', apiResponse('Stock', 'saveData', false, ['body', 'user.uid']));
 router.post('/stock/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'user.uid', 'params.bsddid']));
+//Delivery API
+router.get('/delivery/:date/:branchId', apiResponse('Stock', 'deliverySelect', false, ['user.uid', 'params.branchId', 'params.date']));
+router.put('/delivery/:uid', apiResponse('Stock', 'saveData', false, ['body', 'params.uid']));
+router.post('/delivery/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'notUsed', 'params.bsddid']));
+
 module.exports = router;
