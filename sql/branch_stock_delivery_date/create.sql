@@ -10,3 +10,4 @@ CREATE TABLE branch_stock_delivery_date(
     is_delivery_finalised boolean not null default false,
     unique(branch_id,product_id,counting_date)
 )
+

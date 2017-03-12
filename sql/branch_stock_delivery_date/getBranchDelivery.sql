@@ -2,7 +2,7 @@ select
     *
 from
     products
-join (
+left outer join (
     select
         bsddid,
         product_count,
@@ -13,7 +13,7 @@ join (
         max(counting_date) as counting_date
     from
         products
-    left outer join
+    join
     (
         select
             bsddid,
@@ -49,4 +49,5 @@ left outer join
     branch_stock_rules
 on
     products.pid = branch_stock_rules.pid
+    and products.prep_unit_id = ${prep_uid}
     and uid = ${uid}
