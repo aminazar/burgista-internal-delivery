@@ -38,7 +38,7 @@ describe("REST API/ Stock API", ()=> {
       usage: 2,
     };
     let override_2 = {
-      date_rule: 'DTSTART=20170303;FREQ=DAILY;INTERVAL=3',
+      date_rule: 'DTSTART=20170303;FREQ=DAILY;INTERVAL=2',
       usage: 2,
     };
 
@@ -192,11 +192,11 @@ describe("REST API/ Stock API", ()=> {
       });
     });
 
-    it('should a branch can login',(done) => {
+    it('should a branch can login/1',(done) => {
       req.post({
         url: base_url + 'login' + test_query,
         form: {
-          username: 'alisalehi',
+          username: 'sarehsalehi',
           password: '12345'
         }
       }, (error, response) => {
@@ -233,11 +233,11 @@ describe("REST API/ Stock API", ()=> {
         });
     });
 
-    it('should a branch can login',(done) => {
+    it('should a branch can login/2',(done) => {
       req.post({
         url: base_url + 'login' + test_query,
         form: {
-          username: 'sarehsalehi',
+          username: 'alisalehi',
           password: '12345'
         }
       }, (error, response) => {
@@ -249,6 +249,7 @@ describe("REST API/ Stock API", ()=> {
         done();
       })
     });
+
 
     it('should show correct row number of units & last_login & branch_stock_delivery_date table/3', done => {
       sql.test.units.select()
@@ -274,7 +275,7 @@ describe("REST API/ Stock API", ()=> {
         });
     });
 
-    it('should get related rows of BSDD table by get request/(related rows to branch 2)' ,(done) =>{
+    it('should get related rows of BSDD table by get request/(related rows to branch 1)' ,(done) =>{
       let date = 20170329;
       req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
         if(err){
@@ -284,22 +285,74 @@ describe("REST API/ Stock API", ()=> {
         let data = JSON.parse(res.body);
         expect(data.length).toBe(3);
         expect(data.filter(el=>el.bsddid === null).length).toBe(1);
-        console.log(data);
         done();
       })
     });
 
+    it('should update a not-null bsddid product from BSDD list',(done) =>{
+      let test_bsddid = 5;
+      req.post({
+        url: base_url + 'stock/'+ test_bsddid + test_query,
+        form: {
+          product_count : 13
+        }
+      }, (err, res) => {
+        if(err){
+          fail(err.message);
+          done();
+        }
+        expect(res).toBeTruthy();
+        done();
+      })
+    });
 
-    // it('should NOT add a row to the table if a prep unit logs in', (done) =>{
-    //
-    // });
+    it('should update a not-null bsddid product from BSDD list/checking it happend' ,(done) =>{
+      let date = 20170329;
+      req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
+        if(err){
+          fail(err.message);
+          done();
+        }
+        let data = JSON.parse(res.body);
+        expect(data.length).toBe(3);
+        expect(data[2].product_count).toBe(13);
+        expect(data[2].last_count).not.toBe(null);
+        expect(data.filter(el=>el.bsddid === null).length).toBe(1);
+        done();
+      })
+    });
 
-    // it("should show valid user", done => {
-    //   req.get(base_url + 'validUser' + test_query, (err, res) => {
-    //     expect(res).toBeTruthy();
-    //     done();
-    //   });
-    // });
+    it('should check put request/ branch1', (done) =>{
+      req.put({
+        url: base_url + 'stock/' + test_query,
+        form: {
+          product_count: 6,
+          product_id : 3
+        }
+      }, function (err, res) {
+        if(err){
+          fail(err.message);
+          done();
+        }
+        expect(res).toBeTruthy();
+        done();
+      })
+    });
+
+    it('should check put request/checking it happend' ,(done) =>{
+      let date = 20170329;
+      req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
+        if(err){
+          fail(err.message);
+          done();
+        }
+        let data = JSON.parse(res.body);
+        expect(data.length).toBe(3);
+        expect(data.filter(el=>el.bsddid === null).length).toBe(0);
+        done();
+      })
+    });
+
 
     it('tear down', () => {
       tearDown = true;
