@@ -62,7 +62,7 @@ router.get('/logout', (req, res) => {
 router.get('/validUser', apiResponse('Unit', 'afterLogin', false, ['user.name', 'user.username', 'user.is_branch']));
 //Unit API
 router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
-router.get('/unit', apiResponse('Unit', 'select', true, ['query.isBranch']));
+router.get('/unit', apiResponse('Unit', 'select', false, ['query.isBranch']));
 router.post('/unit/:uid', apiResponse('Unit', 'update', true, ['params.uid', 'body']));
 router.delete('/unit/:uid', apiResponse('Unit', 'delete', true, ['params.uid']));
 //Product API
