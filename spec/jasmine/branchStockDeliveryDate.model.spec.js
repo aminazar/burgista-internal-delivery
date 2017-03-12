@@ -448,7 +448,6 @@ describe("Branch Stock Delivery Date Model", () => {
       uid: branch_id_2
     })
       .then(res => {
-        console.log(res);
         expect(res.length).toBe(4);
         res = res.filter(r => r.product_id === product_id_1);
         expect(res.length).toBe(1);
@@ -473,7 +472,6 @@ describe("Branch Stock Delivery Date Model", () => {
   it('should return right delivery rows through model - branch 2', done => {
     Stock.deliverySelect(prep_uid, branch_id_2, '20170307')
       .then(res => {
-        console.log(res)
         expect(res.length).toBe(4);
         res = res.filter(r => r.productName === product_data_1.name);
         expect(res.length).toBe(1);
@@ -555,7 +553,7 @@ describe("Branch Stock Delivery Date Model", () => {
       .then(res => {
         expect(res.length).toBe(4);
         res = res.filter(r=>r.id);
-        expect(res.length).toBe(2);
+        expect(res.length).toBe(3);
         res = res.filter(r => r.productName === product_data_1.name);
         expect(res.length).toBe(1);
         if (res.length === 1) {
@@ -589,7 +587,7 @@ describe("Branch Stock Delivery Date Model", () => {
           .then(res => {
             expect(res.length).toBe(4);
             res = res.filter(r=>r.id);
-            expect(res.length).toBe(2);
+            expect(res.length).toBe(3);
             res = res.filter(r => r.productName === product_data_1.name);
             expect(res.length).toBe(1);
             if (res.length === 1) {
@@ -619,7 +617,7 @@ describe("Branch Stock Delivery Date Model", () => {
         s.saveData({
           branch_id: branch_id_2,
           product_id: product_id_5,
-          real_delivery: 11,
+          real_delivery: 15,
           is_delivery_finalised: true,
         }, branch_id_2)
           .then(res => {
@@ -627,13 +625,12 @@ describe("Branch Stock Delivery Date Model", () => {
             sql.test.branch_stock_delivery_date.get({id:bsddid}).then(res=>console.log('raw',res));
             return Stock.deliverySelect(prep_uid, branch_id_2, new Date())
               .then(res => {
-                console.log(res);
-                //res = res.filter(r => r.id == bsddid);
+                res = res.filter(r => r.id == bsddid);
                 expect(res.length).toBe(1);
                 if (res.length === 1) {
                   expect(res[0].id).toBe(bsddid);
                   expect(res[0].isPrinted).toBe(true);
-                  expect(res[0].realDelivery).toBe(11);
+                  expect(res[0].realDelivery).toBe(15);
                   expect(res[0].productName).toBe(product_data_5.name);
                 }
                 done();
