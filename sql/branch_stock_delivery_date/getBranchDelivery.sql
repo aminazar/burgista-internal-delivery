@@ -21,6 +21,8 @@ left outer join (
             max(counting_date) as counting_date
         from
             branch_stock_delivery_date
+        where
+            counting_date <= ${date}
         group by
             product_id,
             branch_id
@@ -38,6 +40,5 @@ left outer join
     branch_stock_rules
 on
     products.pid = branch_stock_rules.pid
---where
---    prep_unit_id = ${prep_uid}
---    and uid = ${uid}
+where
+    prep_unit_id = ${prep_uid}

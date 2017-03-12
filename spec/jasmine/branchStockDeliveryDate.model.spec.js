@@ -448,7 +448,7 @@ describe("Branch Stock Delivery Date Model", () => {
       uid: branch_id_2
     })
       .then(res => {
-        expect(res.length).toBe(4);
+        expect(res.length).toBe(2);
         res = res.filter(r => r.product_id === product_id_1);
         expect(res.length).toBe(1);
         if (res.length === 1) {
@@ -472,7 +472,7 @@ describe("Branch Stock Delivery Date Model", () => {
   it('should return right delivery rows through model - branch 2', done => {
     Stock.deliverySelect(prep_uid, branch_id_2, '20170307')
       .then(res => {
-        expect(res.length).toBe(4);
+        expect(res.length).toBe(2);
         res = res.filter(r => r.productName === product_data_1.name);
         expect(res.length).toBe(1);
         if (res.length === 1) {
@@ -504,7 +504,7 @@ describe("Branch Stock Delivery Date Model", () => {
       .then(() => {
         Stock.deliverySelect(prep_uid, branch_id_2, '20170307')
           .then(res => {
-            expect(res.length).toBe(4);
+            expect(res.length).toBe(2);
             res = res.filter(r => r.productName === product_data_1.name);
             expect(res.length).toBe(1);
             if (res.length === 1) {
@@ -551,9 +551,9 @@ describe("Branch Stock Delivery Date Model", () => {
   it('should return right delivery rows through model for next day - branch 2 ', done => {
     Stock.deliverySelect(prep_uid, branch_id_2, '20170310')
       .then(res => {
-        expect(res.length).toBe(4);
+        expect(res.length).toBe(2);
         res = res.filter(r=>r.id);
-        expect(res.length).toBe(3);
+        expect(res.length).toBe(2);
         res = res.filter(r => r.productName === product_data_1.name);
         expect(res.length).toBe(1);
         if (res.length === 1) {
@@ -585,9 +585,9 @@ describe("Branch Stock Delivery Date Model", () => {
       .then(() => {
         Stock.deliverySelect(prep_uid, branch_id_2, '20170310')
           .then(res => {
-            expect(res.length).toBe(4);
+            expect(res.length).toBe(2);
             res = res.filter(r=>r.id);
-            expect(res.length).toBe(3);
+            expect(res.length).toBe(2);
             res = res.filter(r => r.productName === product_data_1.name);
             expect(res.length).toBe(1);
             if (res.length === 1) {
