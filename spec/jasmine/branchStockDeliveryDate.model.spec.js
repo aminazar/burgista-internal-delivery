@@ -622,7 +622,6 @@ describe("Branch Stock Delivery Date Model", () => {
         }, branch_id_2)
           .then(res => {
             bsddid = res;
-            sql.test.branch_stock_delivery_date.get({id:bsddid}).then(res=>console.log('raw',res));
             return Stock.deliverySelect(prep_uid, branch_id_2, new Date())
               .then(res => {
                 res = res.filter(r => r.id == bsddid);

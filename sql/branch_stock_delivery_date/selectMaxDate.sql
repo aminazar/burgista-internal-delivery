@@ -1,62 +1,43 @@
 select
-    counting_date,
     bsddid,
     pid,
-    product_code,
-    product_name,
+    name as product_name,
+    code as product_code,
+    counting_date,
+    bsddid,
     last_count,
     product_count
-from (
+from
+    products
+left outer join
+(
     select
-        max(counting_date) as counting_date,
+        last_count.counting_date,
         bsddid,
-        pid,
-        product_code,
-        product_name,
-        branch_id,
-        product_count
-    from (
-        select
-            bsddid,
-            pid,
-            products.code as product_code,
-            products.name as product_name,
-            counting_date,
-            branch_id,
-            product_count
-        from
-            products
-        left outer join
-            branch_stock_delivery_date
-        on
-            product_id = pid
-            and branch_id=${uid}
-            and counting_date <= ${date}
-            and (counting_date=${date} or product_count is null)
-            and real_delivery is null
-    ) as list
-    group by
-        bsddid,
-        pid,
-        product_code,
-        product_name,
-        branch_id,
-        product_count
-) as main_list
-left outer join (
-    select
-        max(submission_time) as last_count,
-        product_id,
-        branch_id
+        product_count,
+        last_count.product_id,
+        submission_time as last_count
     from
-        branch_stock_delivery_date
-    where
-        branch_id=${uid}
-        and counting_date <= ${date}
-        and product_count is not null
-    group by
-    product_id,
-    branch_id
-) as last_count_list
+    (
+        select
+            branch_id,
+            product_id,
+            max(counting_date) as counting_date
+        from
+            branch_stock_delivery_date
+        where
+            (counting_date=${date} or (counting_date<${date} and product_count is null))
+            and branch_id = ${uid}
+        group by
+            branch_id,
+            product_id
+    ) last_count
+    join
+        branch_stock_delivery_date s
+    on
+        last_count.counting_date = s.counting_date
+        and last_count.product_id = s.product_id
+        and last_count.branch_id = s.branch_id
+) last_count_extended
 on
-    main_list.pid = last_count_list.product_id
+    pid = last_count_extended.product_id
