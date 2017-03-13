@@ -44,19 +44,20 @@ describe("REST API/ Stock API", ()=> {
     };
 
     beforeEach((done) => {
+      let create = tableName => lib.helpers.createOrExist(tableName,sql.test);
       if(setup){
-        sql.test.units.create() //create units table
+        create('units') //create units table
         .then ((res)=>{
-          return sql.test.last_login.create();
+          return create('last_login');
         })//Create last_login table
         .then((res) => {
-          return sql.test.products.create();
+          return create('products');
         })//Create products table
         .then((res) => {
-          return sql.test.branch_stock_rules.create();
+          return create('branch_stock_rules');
         })//Create branch_stock_rules table
         .then((res) => {
-          return sql.test.branch_stock_delivery_date.create();
+          return create('branch_stock_delivery_date');
         })//Create branch_stock_delivery_date table
         .then((res) => {
           let branch = new lib.Unit(true);
@@ -289,17 +290,20 @@ describe("REST API/ Stock API", ()=> {
     });
 
     it('should get related rows of BSDD table by get request/(related rows to branch 2)' ,(done) =>{
-      let date = moment().format('YYYY-MM-DD');
+      let date = moment().format('YYYYMMDD');
       req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
         if(err){
           fail(err.message);
           done();
         }
         let data = JSON.parse(res.body);
-        expect(data.length).toBe(4);
-        expect(data.filter(el=>el.bsddid === null).length).not.toBeGreaterThan(2);
-        expect(data.filter(el=>el.last_count === null).length).toBe(4);
-        test_data = data.filter(el=>el.bsddid !== null);
+        expect(data.length).toBeTruthy();
+        if(data.length) {
+          expect(data.length).toBe(4);
+          expect(data.filter(el => el.bsddid === null).length).not.toBeGreaterThan(2);
+          expect(data.filter(el => el.last_count === null).length).toBe(4);
+          test_data = data.filter(el => el.bsddid !== null);
+        }
         done();
       })
     });
@@ -329,10 +333,13 @@ describe("REST API/ Stock API", ()=> {
           done();
         }
         let data = JSON.parse(res.body);
-        expect(data.length).toBe(4);
-        expect(data.filter(el=>el.bsddid === test_bsddid)[0].product_count).toBe(13);
-        expect(data.filter(el=>el.bsddid === test_bsddid)[0].last_count).not.toBe(null);
-        expect(data.filter(el=>el.bsddid === null).length).not.toBeGreaterThan(2);
+        expect(data.length).toBeTruthy();
+        if(data.length) {
+          expect(data.length).toBe(4);
+          expect(data.filter(el => el.bsddid === test_bsddid)[0].product_count).toBe(13);
+          expect(data.filter(el => el.bsddid === test_bsddid)[0].last_count).not.toBe(null);
+          expect(data.filter(el => el.bsddid === null).length).not.toBeGreaterThan(2);
+        }
         done();
       })
     });
@@ -362,8 +369,11 @@ describe("REST API/ Stock API", ()=> {
           done();
         }
         let data = JSON.parse(res.body);
-        expect(data.length).toBe(4);
-        expect(data.filter(el=>el.bsddid === null).length).not.toBeGreaterThan(1);
+        expect(data.length);
+        if(data.length) {
+          expect(data.length).toBe(4);
+          expect(data.filter(el => el.bsddid === null).length).not.toBeGreaterThan(1);
+        }
         done();
       })
     });
@@ -403,19 +413,22 @@ describe("REST API/ Stock API", ()=> {
     });
 
     afterEach((done) => {
+      let dropOrNotExist = function (tableName) {
+        return lib.helpers.dropOrNotExit(tableName, sql.test)
+      }
       if(tearDown){
-      sql.test.last_login.drop()
+        dropOrNotExist('last_login')
         .then(() => {
-          return sql.test.branch_stock_delivery_date.drop()
+          return dropOrNotExist('branch_stock_delivery_date')
         })
         .then(()=> {
-          return sql.test.branch_stock_rules.drop()
+          return dropOrNotExist('branch_stock_rules')
         })
         .then(() => {
-          return sql.test.products.drop()
+          return dropOrNotExist('products')
         })
         .then(() => {
-          return sql.test.units.drop()
+          return dropOrNotExist('units')
         })
         .then(() =>{
           done();

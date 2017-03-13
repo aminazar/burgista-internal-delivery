@@ -41,16 +41,19 @@ describe("REST API", ()=> {
 
     beforeEach((done) => {
       if(setup){
-        sql.test.units.create()
+        lib.helpers.createOrExist('units', sql.test)
           .then ((res)=>{
-            return sql.test.last_login.create();
+            return lib.helpers.createOrExist('last_login', sql.test);
         })                          //Create last_login table
           .then((res) => {
-            return sql.test.products.create();
+            return lib.helpers.createOrExist('products', sql.test);
           })                        //Create products table
           .then((res) => {
-            return sql.test.branch_stock_rules.create();
+            return lib.helpers.createOrExist('branch_stock_rules', sql.test);
           })                        //Create branch_stock_rules table
+          .then((res) => {
+            return lib.helpers.createOrExist('branch_stock_delivery_date', sql.test);
+          })                        //Create branch_stock_delivery_date
           .then((res) => {
             let branch = new lib.Unit(true);
 
@@ -107,7 +110,7 @@ describe("REST API", ()=> {
 
             let a = new lib.Unit(true);
             a.name = 'Admin';
-            a.username = 'Admin';
+            a.username = 'admin';
             a.password = 'admin';
             a.is_branch = false;
 
@@ -177,6 +180,7 @@ describe("REST API", ()=> {
         }
       }, (error, response) => {
         if(error){
+          console.log(error.message);
           fail(error.message);
           done();
         }
@@ -194,7 +198,7 @@ describe("REST API", ()=> {
           fail(error.message);
           done();
         }
-
+        console.log(response.body);
         let data = JSON.parse(response.body);
         expect(data.length).toBe(2);
         expect(response.statusCode).toBe(200);
@@ -564,16 +568,22 @@ describe("REST API", ()=> {
     });
 
     afterEach((done) => {
+      let dropOrNotExist = function (tableName) {
+        return lib.helpers.dropOrNotExit(tableName, sql.test)
+      };
       if(tearDown){
-        sql.test.last_login.drop()
+        dropOrNotExist('last_login')
           .then(() => {
-            return sql.test.branch_stock_rules.drop()
+            return dropOrNotExist('branch_stock_rules')
           })
           .then(() => {
-            return sql.test.products.drop();
+            return dropOrNotExist('branch_stock_delivery_date')
           })
           .then(() => {
-            return sql.test.units.drop();
+            return dropOrNotExist('products');
+          })
+          .then(() => {
+            return dropOrNotExist('units');
           })
           .then(() => {
             done();
