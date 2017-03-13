@@ -4,6 +4,7 @@ const base_url = "http://localhost:3000/api/";
 const test_query = '?test=tEsT';
 const lib = require('../lib');
 const sql = require('../sql');
+const moment = require('moment');
 let req = request.defaults({jar: true});//enabling cookies
 
 let resExpect = (res, statusCode) => {
@@ -32,13 +33,13 @@ describe("REST API/ Stock API", ()=> {
   describe("stock", () => {
     let setup = true;
     let tearDown = false;
-    let test_uid1,test_uid2,test_uid3,test_uid4,test_pid1,test_pid2,test_pid3,adminUid;
+    let test_uid1,test_uid2,test_uid3,test_uid4,test_pid1,test_pid2,test_pid3,test_pid4,test_data,test_bsddid,adminUid;
     let override_1 = {
-      date_rule: 'DTSTART=20170303;FREQ=WEEKLY;INTERVAL=1;BYDAY=SA,TU',
+      date_rule: 'DTSTART=20170303;FREQ=WEEKLY;INTERVAL=1;BYDAY=SA,TH',
       usage: 2,
     };
     let override_2 = {
-      date_rule: 'DTSTART=20170303;FREQ=DAILY;INTERVAL=2',
+      date_rule: 'DTSTART=20170303;FREQ=DAILY;INTERVAL=3',
       usage: 2,
     };
 
@@ -133,6 +134,19 @@ describe("REST API/ Stock API", ()=> {
         }) //Add another product
         .then((res) => {
           test_pid3 = res;
+          let product = new lib.Product(true);
+          product.name = 'apple';
+          product.code = 'a01';
+          product.prep_unit_id = test_uid4;
+          product.size = 10;
+          product.measuring_unit = 'gr';
+          product.default_max = 20;
+          product.default_min = 2;
+          product.default_date_rule = 'FREQ=DAILY;DTSTART=20170303T121903Z;INTERVAL=1000';
+          return product.save();
+        }) //Add another product
+        .then((res) => {
+          test_pid4 = res;
           let a = new lib.Unit(true);
           a.name = 'Admin';
           a.username = 'admin';
@@ -163,9 +177,8 @@ describe("REST API/ Stock API", ()=> {
       }
     });
 
-    it('should pass a inevitable spec', (done) => {
+    it('should pass a inevitable spec', () => {
       expect(true).toBe(true);
-      done();
     });
 
     it('should show correct row number of units & last_login & branch_stock_delivery_date & branch_stock_rules table/1', done => {
@@ -192,11 +205,11 @@ describe("REST API/ Stock API", ()=> {
       });
     });
 
-    it('should a branch can login/1',(done) => {
+    it('should branch1 can login/1',(done) => {
       req.post({
         url: base_url + 'login' + test_query,
         form: {
-          username: 'sarehsalehi',
+          username: 'alisalehi',
           password: '12345'
         }
       }, (error, response) => {
@@ -220,7 +233,7 @@ describe("REST API/ Stock API", ()=> {
           return sql.test.branch_stock_delivery_date.select()
         })
         .then((res) =>{
-          expect(res.length).toBe(3);
+          expect(res.length).not.toBeLessThan(2);
           return sql.test.branch_stock_rules.select()
         })
         .then((res) =>{
@@ -233,11 +246,11 @@ describe("REST API/ Stock API", ()=> {
         });
     });
 
-    it('should a branch can login/2',(done) => {
+    it('should branch2 can login',(done) => {
       req.post({
         url: base_url + 'login' + test_query,
         form: {
-          username: 'alisalehi',
+          username: 'sarehsalehi',
           password: '12345'
         }
       }, (error, response) => {
@@ -250,7 +263,6 @@ describe("REST API/ Stock API", ()=> {
       })
     });
 
-
     it('should show correct row number of units & last_login & branch_stock_delivery_date table/3', done => {
       sql.test.units.select()
         .then((res) => {
@@ -262,7 +274,8 @@ describe("REST API/ Stock API", ()=> {
           return sql.test.branch_stock_delivery_date.select()
         })
         .then((res) =>{
-          expect(res.length).toBe(5);
+          // expect(res.length).toBe(5);
+          expect(res.length).not.toBeLessThan(4);
           return sql.test.branch_stock_rules.select()
         })
         .then((res) =>{
@@ -275,22 +288,24 @@ describe("REST API/ Stock API", ()=> {
         });
     });
 
-    it('should get related rows of BSDD table by get request/(related rows to branch 1)' ,(done) =>{
-      let date = 20170329;
+    it('should get related rows of BSDD table by get request/(related rows to branch 2)' ,(done) =>{
+      let date = moment().format('YYYY-MM-DD');
       req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
         if(err){
           fail(err.message);
           done();
         }
         let data = JSON.parse(res.body);
-        expect(data.length).toBe(3);
-        expect(data.filter(el=>el.bsddid === null).length).toBe(1);
+        expect(data.length).toBe(4);
+        expect(data.filter(el=>el.bsddid === null).length).not.toBeGreaterThan(2);
+        expect(data.filter(el=>el.last_count === null).length).toBe(4);
+        test_data = data.filter(el=>el.bsddid !== null);
         done();
       })
     });
 
     it('should update a not-null bsddid product from BSDD list',(done) =>{
-      let test_bsddid = 5;
+      test_bsddid = test_data[0].bsddid;
       req.post({
         url: base_url + 'stock/'+ test_bsddid + test_query,
         form: {
@@ -307,27 +322,27 @@ describe("REST API/ Stock API", ()=> {
     });
 
     it('should update a not-null bsddid product from BSDD list/checking it happend' ,(done) =>{
-      let date = 20170329;
+      let date = moment().format('YYYY-MM-DD');
       req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
         if(err){
           fail(err.message);
           done();
         }
         let data = JSON.parse(res.body);
-        expect(data.length).toBe(3);
-        expect(data[2].product_count).toBe(13);
-        expect(data[2].last_count).not.toBe(null);
-        expect(data.filter(el=>el.bsddid === null).length).toBe(1);
+        expect(data.length).toBe(4);
+        expect(data.filter(el=>el.bsddid === test_bsddid)[0].product_count).toBe(13);
+        expect(data.filter(el=>el.bsddid === test_bsddid)[0].last_count).not.toBe(null);
+        expect(data.filter(el=>el.bsddid === null).length).not.toBeGreaterThan(2);
         done();
       })
     });
 
-    it('should check put request/ branch1', (done) =>{
+    it('should check put request/ branch2', (done) =>{
       req.put({
         url: base_url + 'stock/' + test_query,
         form: {
           product_count: 6,
-          product_id : 3
+          product_id : test_pid4
         }
       }, function (err, res) {
         if(err){
@@ -340,19 +355,48 @@ describe("REST API/ Stock API", ()=> {
     });
 
     it('should check put request/checking it happend' ,(done) =>{
-      let date = 20170329;
+      let date = moment().format('YYYY-MM-DD');
       req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
         if(err){
           fail(err.message);
           done();
         }
         let data = JSON.parse(res.body);
-        expect(data.length).toBe(3);
-        expect(data.filter(el=>el.bsddid === null).length).toBe(0);
+        expect(data.length).toBe(4);
+        expect(data.filter(el=>el.bsddid === null).length).not.toBeGreaterThan(1);
         done();
       })
     });
 
+    it('should do nothing if a prep logs in',(done) =>{
+      req.post({
+        url: base_url + 'login' + test_query,
+        form: {
+          username: 'sadrasalehi',
+          password: '12345'
+        }
+      }, (error, response) => {
+        if(error){
+          fail(error.message);
+          done();
+        }
+        expect(response.statusCode).toBe(200);
+        done();
+      })
+    });
+
+    it('should do nothing if a prep logs in/ check it happened', done => {
+      sql.test.branch_stock_delivery_date.select()
+      .then((res)=>{
+        expect(res).toBeTruthy();
+        expect(res.filter(el=>el.branch_id === test_uid3).length).toBe(0);
+        done();
+      })
+      .catch((err)=> {
+        console.log(err.message);
+        done()
+      });
+    });
 
     it('tear down', () => {
       tearDown = true;
