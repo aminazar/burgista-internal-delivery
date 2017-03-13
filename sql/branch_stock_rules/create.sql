@@ -15,6 +15,5 @@ CREATE TABLE branch_stock_rules(
     sat_multiple integer,
     sun_multiple integer,
     usage integer,
-    PRIMARY KEY(pid, uid),
-    unique(pid,uid)
+    PRIMARY KEY(pid, uid)
 )
