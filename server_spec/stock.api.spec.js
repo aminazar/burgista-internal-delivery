@@ -223,13 +223,19 @@ describe("REST API/ Stock API", ()=> {
       })
     });
 
-    it("logs out a unit", done => {
-      req.get(base_url + 'logout' + test_query, (err, res) => {
-        expect(res.statusCode).toBe(200);
-        done();
-      });
-    });
-
+    // it("logs out a unit", done => {
+    //   req.get(base_url + 'logout' + test_query, (err, res) => {
+    //     expect(res.statusCode).toBe(200);
+    //     done();
+    //   });
+    // });
+    //
+    // it("logs out a unit - checking it happened", done => {
+    //   req.put(base_url + 'unit' + test_query, (err, res)=> {
+    //     expect(res.statusCode).toBe(403);
+    //     done();
+    //   });
+    // });
 
     it('should show correct row number of units & last_login & branch_stock_delivery_date table/2', done => {
       sql.test.units.select()
