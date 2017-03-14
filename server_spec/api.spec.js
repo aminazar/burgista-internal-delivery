@@ -386,7 +386,7 @@ describe("REST API", ()=> {
     });
 
     it("logs out a unit - checking it happened", done => {
-      req.get(base_url + 'unit' + test_query, (err, res)=> {
+      req.put(base_url + 'unit' + test_query, (err, res)=> {
         expect(res.statusCode).toBe(403);
         done();
       });
