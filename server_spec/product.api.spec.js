@@ -26,8 +26,6 @@ let resExpect = (res, statusCode) => {
   return true;
 };
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 300000;
-
 describe("REST API", ()=> {
 
   describe("product", () => {
@@ -401,6 +399,9 @@ describe("REST API", ()=> {
           done();
         }
 
+        let data = JSON.parse(response.body);
+
+        expect(data.name).toBe('Meat');
         expect(response.statusCode).toBe(200);
         done();
       });
@@ -414,8 +415,6 @@ describe("REST API", ()=> {
         }
 
         let data = JSON.parse(response.body);
-
-        console.log(data);
 
         expect(data.length).toBe(1);
         expect(data[0].isOverridden).toBe(undefined);
@@ -510,8 +509,6 @@ describe("REST API", ()=> {
         }
 
         let data = JSON.parse(response.body);
-
-        console.log(data);
 
         expect(data.length).toBe(1);
         expect(data[0].isOverridden).toBe(undefined);
