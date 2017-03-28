@@ -34,11 +34,11 @@ describe("REST API/ Stock API", ()=> {
     let tearDown = false;
     let test_uid1,test_uid2,test_uid3,test_uid4,test_pid1,test_pid2,test_pid3,adminUid;
     let override_1 = {
-      date_rule: 'DTSTART=20170303;FREQ=WEEKLY;INTERVAL=1,BYDAY=SA,SU',
+      date_rule: 'DTSTART=20170303;FREQ=WEEKLY;INTERVAL=1;BYDAY=SA,TU',
       usage: 2,
     };
     let override_2 = {
-      date_rule: 'DTSTART=20170303;FREQ=DAILY;INTERVAL=2',
+      date_rule: 'DTSTART=20170303;FREQ=DAILY;INTERVAL=3',
       usage: 2,
     };
 
@@ -69,7 +69,7 @@ describe("REST API/ Stock API", ()=> {
           test_uid1 = res;
           u = new lib.Unit(true);
           u.name = 'Sareh Salehi';
-          u.username = 'saresalehi';
+          u.username = 'sarehsalehi';
           u.password = '12345';
           u.is_branch = true;
           return u.save();
@@ -165,11 +165,10 @@ describe("REST API/ Stock API", ()=> {
 
     it('should pass a inevitable spec', (done) => {
       expect(true).toBe(true);
-      console.log('*************');
       done();
     });
 
-    it('should show correct row number of units & last_login & branch_stock_delivery_date & branch_stock_rules table', done => {
+    it('should show correct row number of units & last_login & branch_stock_delivery_date & branch_stock_rules table/1', done => {
       sql.test.units.select()
       .then((res) => {
         expect(res.length).toBe(4);
@@ -233,6 +232,74 @@ describe("REST API/ Stock API", ()=> {
           done()
         });
     });
+
+    it('should a branch can login',(done) => {
+      req.post({
+        url: base_url + 'login' + test_query,
+        form: {
+          username: 'sarehsalehi',
+          password: '12345'
+        }
+      }, (error, response) => {
+        if(error){
+          fail(error.message);
+          done();
+        }
+        expect(response.statusCode).toBe(200);
+        done();
+      })
+    });
+
+    it('should show correct row number of units & last_login & branch_stock_delivery_date table/3', done => {
+      sql.test.units.select()
+        .then((res) => {
+          expect(res.length).toBe(4);
+          return sql.test.last_login.select()
+        })
+        .then((res) => {
+          expect(res.length).toBe(2);
+          return sql.test.branch_stock_delivery_date.select()
+        })
+        .then((res) =>{
+          expect(res.length).toBe(5);
+          return sql.test.branch_stock_rules.select()
+        })
+        .then((res) =>{
+          expect(res.length).toBe(2);
+          done();
+        })
+        .catch((err)=> {
+          console.log(err.message);
+          done()
+        });
+    });
+
+    it('should get related rows of BSDD table by get request/(related rows to branch 2)' ,(done) =>{
+      let date = 20170329;
+      req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
+        if(err){
+          fail(err.message);
+          done();
+        }
+        let data = JSON.parse(res.body);
+        expect(data.length).toBe(3);
+        expect(data.filter(el=>el.bsddid === null).length).toBe(1);
+        console.log(data);
+        done();
+      })
+    });
+
+
+    // it('should NOT add a row to the table if a prep unit logs in', (done) =>{
+    //
+    // });
+
+    // it("should show valid user", done => {
+    //   req.get(base_url + 'validUser' + test_query, (err, res) => {
+    //     expect(res).toBeTruthy();
+    //     done();
+    //   });
+    // });
 
     it('tear down', () => {
       tearDown = true;
