@@ -89,6 +89,7 @@ describe("Branch Stock Delivery Date Model", () =>
     date_rule: 'DTSTART=20170305;FREQ=DAILY;INTERVAL=2',
     usage: 2,
   };
+
   beforeAll((done) => {
     lib.helpers.createOrExist('units',sql.test)
       .then(() => {

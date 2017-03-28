@@ -60,6 +60,8 @@ router.get('/logout', (req, res) => {
   res.sendStatus(200)
 });
 router.get('/validUser', apiResponse('Unit', 'afterLogin', false, ['user.name', 'user.username', 'user.is_branch']));
+
+
 //Unit API
 router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
 router.get('/unit', apiResponse('Unit', 'select', true, ['query.isBranch']));
