@@ -173,7 +173,6 @@ describe("Unit model", ()=> {
       });
   });
 
-
   it("should save login_date after successful login", done=> {
     Unit.test = true;
     Unit.saveDateAfterLogin(name,username, isBranch, 1)

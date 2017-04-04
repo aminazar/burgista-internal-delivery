@@ -1,4 +1,4 @@
-/** Created by 305-2 on 3/29/2017.**/
+/** Created by Sareh on 3/29/2017.**/
 const request = require("request");
 const base_url = "http://localhost:3000/api/";
 const test_query = '?test=tEsT';
@@ -223,19 +223,19 @@ describe("REST API/ Stock API", ()=> {
       })
     });
 
-    // it("logs out a unit", done => {
-    //   req.get(base_url + 'logout' + test_query, (err, res) => {
-    //     expect(res.statusCode).toBe(200);
-    //     done();
-    //   });
-    // });
-    //
-    // it("logs out a unit - checking it happened", done => {
-    //   req.put(base_url + 'unit' + test_query, (err, res)=> {
-    //     expect(res.statusCode).toBe(403);
-    //     done();
-    //   });
-    // });
+    it("logs out a unit", done => {
+      req.get(base_url + 'logout' + test_query, (err, res) => {
+        expect(res.statusCode).toBe(200);
+        done();
+      });
+    });
+
+    it("logs out a unit - checking it happened", done => {
+      req.put(base_url + 'unit' + test_query, (err, res)=> {
+        expect(res.statusCode).toBe(403);
+        done();
+      });
+    });
 
     it('should show correct row number of units & last_login & branch_stock_delivery_date table/2', done => {
       sql.test.units.select()
