@@ -1,7 +1,7 @@
 /** Created by Sareh on 3/29/2017.**/
 const request = require("request");
 const base_url = "http://localhost:3000/api/";
-const timed_test_query = '?test=tEsT'+ '&testDate=2017-03-29';
+const timed_test_query = '?test=tEsT';
 const lib = require('../lib');
 const sql = require('../sql');
 const moment = require('moment');
@@ -169,7 +169,7 @@ describe("REST API/ Stock API", ()=> {
             console.log(err.message);
             done();
           })
-    });
+      });
 
     it('should pass a inevitable spec', () => {
       expect(true).toBe(true);
@@ -201,7 +201,7 @@ describe("REST API/ Stock API", ()=> {
 
     it('should branch1 can login/1',(done) => {
       req.post({
-        url: base_url + 'login' + timed_test_query,
+        url: base_url + 'login' + timed_test_query + '&testDate=2017-04-04',
         form: {
           username: 'alisalehi',
           password: '12345'
@@ -212,18 +212,39 @@ describe("REST API/ Stock API", ()=> {
           done();
         }
         expect(response.statusCode).toBe(200);
-        done();
-      })
+        sql.test.last_login.select()
+          .then((res) => {
+            expect(res.length).toBe(1);
+            return sql.test.last_login.get_previous_login_date({
+              login_uid: 1,
+            })
+          })
+          .then((res) =>{
+            expect(res.length).toBe(1);
+            expect(res[0].previous_login_date_time).toBe(null);
+            expect(res[0].login_uid).toBe(1);
+            expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-04');
+            return sql.test.branch_stock_delivery_date.select()
+          })
+          .then((res) =>{
+            expect(res.length).not.toBeLessThan(2);
+            done();
+          })
+          .catch((err)=> {
+            console.log(err.message);
+            done()
+          });
+        });
     });
 
-    // it("logs out a unit", done => {
+    // it('logs out a unit', done => {
     //   req.get(base_url + 'logout' + timed_test_query, (err, res) => {
     //     expect(res.statusCode).toBe(200);
     //     done();
     //   });
     // });
     //
-    // it("logs out a unit - checking it happened", done => {
+    // it('logs out a unit - checking it happened', done => {
     //   req.put(base_url + 'unit' + timed_test_query, (err, res)=> {
     //     expect(res.statusCode).toBe(403);
     //     done();
@@ -253,6 +274,21 @@ describe("REST API/ Stock API", ()=> {
     //       done()
     //     });
     // });
+    //
+    // it('should save a coloumn by value 2017-04-09 in last_login table', done => {
+    //   return sql.test.last_login.get_previous_login_date({
+    //     login_uid: 1,
+    //   })
+    //   .then((res) =>{
+    //     expect(res.length).toBe(1);
+    //     expect(res[0].previous_login_date_time).toBe(null);
+    //     expect(res[0].login_uid).toBe(1);
+    //     expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-09');
+    //     done();
+    //   })
+    // });
+
+
 
     // it('should branch2 can login',(done) => {
     //   req.post({
@@ -270,7 +306,7 @@ describe("REST API/ Stock API", ()=> {
     //     done();
     //   })
     // });
-    //
+
     // it('should show correct row number of units & last_login & branch_stock_delivery_date table/3', done => {
     //   sql.test.units.select()
     //     .then((res) => {
@@ -295,7 +331,7 @@ describe("REST API/ Stock API", ()=> {
     //       done()
     //     });
     // });
-    //
+
     // it('should get related rows of BSDD table by get request/(related rows to branch 2)' ,(done) =>{
     //   let date = moment().format('YYYYMMDD');
     //   req.get(base_url + 'stock/' + date + timed_test_query, (err, res)=> {
@@ -415,31 +451,33 @@ describe("REST API/ Stock API", ()=> {
     //     });
     // });
 
+
+
     afterEach((done) => {
       let dropOrNotExist = function (tableName) {
         return lib.helpers.dropOrNotExit(tableName, sql.test)
       }
-      dropOrNotExist('last_login')
-        .then(() => {
-          return dropOrNotExist('branch_stock_delivery_date')
-        })
-        .then(()=> {
-          return dropOrNotExist('branch_stock_rules')
-        })
-        .then(() => {
-          return dropOrNotExist('products')
-        })
-        .then(() => {
-          return dropOrNotExist('units')
-        })
-        .then(() =>{
-          done();
-        })
-        .catch((err) => {
-          console.log(err.message);
-          fail(err.message);
-          done();
-        });
+        dropOrNotExist('last_login')
+          .then(() => {
+            return dropOrNotExist('branch_stock_delivery_date')
+          })
+          .then(()=> {
+            return dropOrNotExist('branch_stock_rules')
+          })
+          .then(() => {
+            return dropOrNotExist('products')
+          })
+          .then(() => {
+            return dropOrNotExist('units')
+          })
+          .then(() =>{
+            done();
+          })
+          .catch((err) => {
+            console.log(err.message);
+            fail(err.message);
+            done();
+          });
     });
   });
 
