@@ -3,6 +3,7 @@
  */
 const env = require('../../env');
 const sql = require('../../sql');
+const moment = require('moment');
 
 describe("Test 'last_login' table", () => {
   let test_uid;
@@ -82,6 +83,7 @@ describe("Test 'last_login' table", () => {
   it("should delete 0 row from last_login table if user logins for the first time",(done) =>{
     sql.test.last_login.add({
       login_uid : 1,
+      login_date: moment().format('YYYY-MM-DD'),
       previous_login_date_time : null,
     })
     .then((res) => {
@@ -110,6 +112,7 @@ describe("Test 'last_login' table", () => {
   it("should add a new row to the table after successfull login", (done) => {
     sql.test.last_login.add({
       login_uid : test_uid,
+      login_date: moment().format('YYYY-MM-DD'),
       previous_login_date_time : null,
       })
       .then((res) => {
@@ -119,6 +122,7 @@ describe("Test 'last_login' table", () => {
         expect(res.length).toBe(2);
         return sql.test.last_login.add({
           login_uid: test_uid-1,
+          login_date: moment().format('YYYY-MM-DD'),
           previous_login_date_time: null,
         })
       })
@@ -129,6 +133,7 @@ describe("Test 'last_login' table", () => {
         expect(res.length).toBe(3);
         return sql.test.last_login.add({
           login_uid: test_uid-2,
+          login_date: moment().format('YYYY-MM-DD'),
           previous_login_date_time: null,
         })
       })
@@ -153,6 +158,7 @@ describe("Test 'last_login' table", () => {
     .then((res) =>{
       return sql.test.last_login.add({
         login_uid : 4,
+        login_date: moment().format('YYYY-MM-DD'),
         previous_login_date_time : res.length ? res[0].login_date_time : null,
       })
     })
@@ -196,6 +202,7 @@ describe("Test 'last_login' table", () => {
     .then((res) =>{
       return sql.test.last_login.add({
         login_uid : test_uid,
+        login_date: moment().format('YYYY-MM-DD'),
         previous_login_date_time : res.length ? res[0].login_date_time : null,
       })
     })

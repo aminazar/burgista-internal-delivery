@@ -2,6 +2,7 @@ const lib = require('../lib');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const moment = require('moment');
 
 /* GET api listing. */
 function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) {
@@ -22,6 +23,8 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
   return (function (req, res) {
     let user = req.user ? req.user.username : req.user;
     req.test = lib.helpers.isTestReq(req);
+    //Get testDate
+    req.date = req.param('testDate', moment().format('YYYY-MM-DD'));
     if (adminOnly && !lib.helpers.adminCheck(user)) {
       res.status(403)
         .send('Only admin can do this.');
@@ -33,8 +36,9 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
 
       let allArgs = dynamicArgs.concat(args);
       lib[className].test = req.test;
+      lib[className].date = req.date;
       let isStaticFunction = typeof lib[className][functionName] === 'function';
-      let model = isStaticFunction ? lib[className] : new lib[className](req.test);
+      let model = isStaticFunction ? lib[className] : new lib[className](req.test, req.date);
       model[functionName].apply(isStaticFunction ? null : model, allArgs)
         .then(data => {
           res.status(200)

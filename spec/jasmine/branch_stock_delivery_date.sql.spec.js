@@ -1,6 +1,6 @@
 const env = require('../../env');
 const sql = require('../../sql');
-
+const moment = require('moment');
 
 describe("Test 'branch_stoke_delivery_date' table", () => {
   let test_uid1,test_uid2,test_uid3,test_uid4,test_pid1,test_pid2;
@@ -117,6 +117,7 @@ describe("Test 'branch_stoke_delivery_date' table", () => {
       .then((res) => {
         return sql.test.last_login.add({
           login_uid: test_uid2,
+          login_date: moment().format('YYYY-MM-DD'),
           previous_login_date_time : res.length ? res[0].login_date_time : null,
         })
       })

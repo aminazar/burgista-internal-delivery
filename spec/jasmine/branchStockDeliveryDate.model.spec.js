@@ -194,6 +194,7 @@ describe("Branch Stock Delivery Date Model", () => {
       .then(() => {
         return sql.test.last_login.add({
           login_uid: branch_id_1,
+          login_date: moment().format('YYYY-MM-DD'),
           previous_login_date_time: moment('2017-03-06').toDate()
         });
       })//adding last_login for branch 1
@@ -203,6 +204,7 @@ describe("Branch Stock Delivery Date Model", () => {
       .then(() => {
         return sql.test.last_login.add({
           login_uid: branch_id_2,
+          login_date: moment().format('YYYY-MM-DD'),
           previous_login_date_time: moment('2017-03-06').toDate()
         });
       })//adding last_login for branch 2
@@ -211,7 +213,7 @@ describe("Branch Stock Delivery Date Model", () => {
         return sql.test.last_login.update({login_date_time: moment('2017-03-08').toDate()}, res.lid);
       })//updating last login for branch 2 to have constant login date
       .then(() => {
-        return sql.test.last_login.add({login_uid: prep_uid, previous_login_date_time: moment('2017-03-06').toDate()});
+        return sql.test.last_login.add({login_uid: prep_uid, login_date: moment().format('YYYY-MM-DD'), previous_login_date_time: moment('2017-03-06').toDate()});
       })//adding last_login for prep_unit 1
       .then(res => {
         return sql.test.last_login.update({login_date_time: moment('2017-03-13').toDate()}, res.lid);
