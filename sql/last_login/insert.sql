@@ -1,1 +1,1 @@
-insert into last_login(login_uid,login_date_time,previous_login_date_time) values (${login_uid}, current_date, ${previous_login_date_time}) returning lid
+insert into last_login(login_uid,login_date_time,previous_login_date_time) values (${login_uid}, ${login_date}, ${previous_login_date_time}) returning lid
