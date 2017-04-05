@@ -272,7 +272,7 @@ describe("REST API/ Stock API", ()=> {
                   expect(res[3].product_id ).toBe(test_pid2);
                   expect(res[4].product_id ).toBe(test_pid3);
                   expect(moment(res[4].counting_date).format('YYYY-MM-DD')).toBe('2017-03-20');
-                   //*****************************
+                   //add 1 *****************************
                   req.get(base_url + 'logout' + test_query, (err, res) => {  //alisalehi logouts at 2017-03-20
                     if (err) {
                       fail(error.message);
@@ -301,28 +301,69 @@ describe("REST API/ Stock API", ()=> {
                             })
                           })
                           .then((res) => {
-                            expect(res.length).toBe(1);
-                            expect(res[0].login_uid).toBe(1);
-                            expect(res[0].previous_login_date_time).not.toBe(null);
-                            expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-03-20');
-                            expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-03-20');
-                            return sql.test.branch_stock_delivery_date.select()
+                          expect(res.length).toBe(1);
+                          expect(res[0].login_uid).toBe(1);
+                          expect(res[0].previous_login_date_time).not.toBe(null);
+                          expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-03-20');
+                          expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-03-20');
+                          return sql.test.branch_stock_delivery_date.select()
                           })
                           .then((res) => {
-                            expect(res.length).toBe(5);
-                            expect(res[0].product_id ).toBe(test_pid1);
-                            expect(res[1].product_id ).toBe(test_pid2);
-                            expect(res[2].product_id ).toBe(test_pid1);
-                            expect(res[3].product_id ).toBe(test_pid2);
-                            expect(res[4].product_id ).toBe(test_pid3);
-                            done();
+                          expect(res.length).toBe(5);
+                          expect(res[0].product_id ).toBe(test_pid1);
+                          expect(res[1].product_id ).toBe(test_pid2);
+                          expect(res[2].product_id ).toBe(test_pid1);
+                          expect(res[3].product_id ).toBe(test_pid2);
+                          expect(res[4].product_id ).toBe(test_pid3);
+                            //add 3 **********************************************
+                          let date = '2017-03-20';
+                          req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
+                            if(err){
+                              fail(err.message);
+                              done();
+                            }
+                            let data = JSON.parse(res.body);
+                            expect(data.length).toBe(4);
+                            expect(data.filter(el => el.bsddid === null).length).toBe(1);
+                            req.put({
+                              url: base_url + 'stock/' + test_query  +'&testDate=2017-03-20',
+                              form: {
+                                product_count: 26,
+                                product_id : test_pid4
+                              }
+                            }, function (err, res) {
+                              if(err){
+                                fail(err.message);
+                                done();
+                              }
+                              else if(res){
+                                expect(res).toBeTruthy();
+                                return sql.test.branch_stock_delivery_date.select()
+                                .then((res)=>{
+                                  expect(res.length).toBe(6);
+                                  expect(res[5].product_count).toBe(26);
+                                  date = '2017-03-20';
+                                  req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
+                                    if(err){
+                                      fail(err.message);
+                                      done();
+                                    }
+                                    let data = JSON.parse(res.body);
+                                    expect(data.length).toBe(4);
+                                    expect(data.filter(el => el.bsddid === null).length).toBe(0);
+                                    expect(moment(data[3].counting_date).format('YYYY-MM-DD')).toBe('2017-03-20');
+                                    done();
+                                  })
+                                })
+                              }
+                            })
                           })
-                        }
+                          //add 3 **********************************************
+                        })
+                      }
                       });
                     }
                   });
-                  //*******************************
-                  // done();
                 })
               }
             });
