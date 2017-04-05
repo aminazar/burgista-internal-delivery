@@ -24,7 +24,7 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
     let user = req.user ? req.user.username : req.user;
     req.test = lib.helpers.isTestReq(req);
     //Get testDate
-    req.date = req.params.testDate ? req.params.testDate : moment().format('YYYY-MM-DD');
+    req.date = req.param('testDate', moment().format('YYYY-MM-DD'));
     if (adminOnly && !lib.helpers.adminCheck(user)) {
       res.status(403)
         .send('Only admin can do this.');

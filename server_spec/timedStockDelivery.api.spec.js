@@ -201,7 +201,7 @@ describe("REST API/ Stock API", ()=> {
 
     it('should branch1 can login/1',(done) => {
       req.post({
-        url: base_url + 'login' + test_query + '&testDate=2017-03-09',
+        url: base_url + 'login' + test_query + '&testDate=2017-03-09', //alisalehi logins at 2017-03-09
         form: {
           username: 'alisalehi',
           password: '12345'
@@ -214,80 +214,129 @@ describe("REST API/ Stock API", ()=> {
         else if(response){
         expect(response.statusCode).toBe(200);
         sql.test.last_login.select()
-          .then((res) => {
-            expect(res.length).toBe(1);
-            return sql.test.last_login.get_previous_login_date({
-              login_uid: 1,
-            })
+        .then((res) => {
+          expect(res.length).toBe(1);
+          return sql.test.last_login.get_previous_login_date({
+            login_uid: 1,
           })
-          .then((res) => {
-            expect(res.length).toBe(1);
-            expect(res[0].previous_login_date_time).toBe(null);
-            expect(res[0].login_uid).toBe(1);
-            expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-03-09');
-            return sql.test.branch_stock_delivery_date.select()
-          })
-          .then((res) => {
-            expect(res.length).not.toBeLessThan(2);
-            //***********************************
-
-            req.get(base_url + 'logout' + test_query, (err, res) => {
-              if (err) {
+        })
+        .then((res) => {
+          expect(res.length).toBe(1);
+          expect(res[0].previous_login_date_time).toBe(null);
+          expect(res[0].login_uid).toBe(1);
+          expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-03-09');
+          return sql.test.branch_stock_delivery_date.select()
+        })
+        .then((res) => {
+        expect(res.length).toBe(2);
+        req.get(base_url + 'logout' + test_query, (err, res) => {   //alisalehi logouts at 2017-03-09
+          if (err) {
+            fail(error.message);
+            done();
+          }
+          else if(res){
+            expect(res.statusCode).toBe(200);
+            req.post({
+              url: base_url + 'login' + test_query + '&testDate=2017-03-20',  //alisalehi logins at 2017-03-20
+              form: {
+                username: 'alisalehi',
+                password: '12345'
+              }
+            }, (error, response) => {
+              if (error) {
                 fail(error.message);
                 done();
               }
-              else if(res){
-                expect(res.statusCode).toBe(200);
-                req.post({
-                  url: base_url + 'login' + test_query + '&testDate=2017-03-20',
-                  form: {
-                    username: 'alisalehi',
-                    password: '12345'
-                  }
-                }, (error, response) => {
-                  if (error) {
-                    fail(error.message);
-                    done();
-                  }
-                  else if(response){
-                    expect(response.statusCode).toBe(200);
-                    sql.test.last_login.select()
-                      .then((res) => {
-                        expect(res.length).toBe(1);
-                        return sql.test.last_login.get_previous_login_date({
-                          login_uid: 1,
-                        })
-                      })
-                      .then((res) => {
-                        expect(res.length).toBe(1);
-                        expect(res[0].login_uid).toBe(1);
-                        expect(res[0].previous_login_date_time).not.toBe(null);
-                        expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-03-20');
-                        expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-03-09');
-                        return sql.test.branch_stock_delivery_date.select()
-                      })
-                      .then((res) => {
-                        expect(res.length).not.toBe(3);
-                        done();
-                      })
-                      .catch((err) => {
-                        console.log(err.message);
-                        done()
+              else if(response){
+                expect(response.statusCode).toBe(200);
+                sql.test.last_login.select()
+                .then((res) => {
+                  expect(res.length).toBe(1);
+                  return sql.test.last_login.get_previous_login_date({
+                    login_uid: 1,
+                  })
+                })
+                .then((res) => {
+                  expect(res.length).toBe(1);
+                  expect(res[0].login_uid).toBe(1);
+                  expect(res[0].previous_login_date_time).not.toBe(null);
+                  expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-03-20');
+                  expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-03-09');
+                  return sql.test.branch_stock_delivery_date.select()
+                })
+                .then((res) => {
+                  expect(res.length).toBe(5);
+                  expect(res[0].product_id ).toBe(test_pid1);
+                  expect(res[1].product_id ).toBe(test_pid2);
+                  expect(res[2].product_id ).toBe(test_pid1);
+                  expect(res[3].product_id ).toBe(test_pid2);
+                  expect(res[4].product_id ).toBe(test_pid3);
+                  expect(moment(res[4].counting_date).format('YYYY-MM-DD')).toBe('2017-03-20');
+                   //*****************************
+                  req.get(base_url + 'logout' + test_query, (err, res) => {  //alisalehi logouts at 2017-03-20
+                    if (err) {
+                      fail(error.message);
+                      done();
+                    }
+                    else if(res){
+                      expect(res.statusCode).toBe(200);
+                      req.post({
+                        url: base_url + 'login' + test_query + '&testDate=2017-03-20', //alisalehi logins at 2017-03-20 again
+                        form: {
+                          username: 'alisalehi',
+                          password: '12345'
+                        }
+                      }, (error, response) => {
+                        if (error) {
+                          fail(error.message);
+                          done();
+                        }
+                        else if(response){
+                          expect(response.statusCode).toBe(200);
+                          sql.test.last_login.select()
+                          .then((res) => {
+                            expect(res.length).toBe(1);
+                            return sql.test.last_login.get_previous_login_date({
+                              login_uid: 1,
+                            })
+                          })
+                          .then((res) => {
+                            expect(res.length).toBe(1);
+                            expect(res[0].login_uid).toBe(1);
+                            expect(res[0].previous_login_date_time).not.toBe(null);
+                            expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-03-20');
+                            expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-03-20');
+                            return sql.test.branch_stock_delivery_date.select()
+                          })
+                          .then((res) => {
+                            expect(res.length).toBe(5);
+                            expect(res[0].product_id ).toBe(test_pid1);
+                            expect(res[1].product_id ).toBe(test_pid2);
+                            expect(res[2].product_id ).toBe(test_pid1);
+                            expect(res[3].product_id ).toBe(test_pid2);
+                            expect(res[4].product_id ).toBe(test_pid3);
+                            done();
+                          })
+                        }
                       });
-                  }
-                });
+                    }
+                  });
+                  //*******************************
+                  // done();
+                })
               }
             });
-
-            //***********************************
-            // done();
-          })
-          .catch((err) => {
-            console.log(err.message);
-            done()
-          });
+          }
+        });
+        })
+        .catch((err) => {
+          console.log(err.message);
+          done()
+        });
         }
         });
+
+      //***********
     });
 
     afterEach((done) => {
