@@ -1,7 +1,7 @@
 /** Created by Sareh on 3/29/2017.**/
 const request = require("request");
 const base_url = "http://localhost:3000/api/";
-const timed_test_query = '?test=tEsT';
+const test_query = '?test=tEsT';
 const lib = require('../lib');
 const sql = require('../sql');
 const moment = require('moment');
@@ -201,16 +201,17 @@ describe("REST API/ Stock API", ()=> {
 
     it('should branch1 can login/1',(done) => {
       req.post({
-        url: base_url + 'login' + timed_test_query + '&testDate=2017-04-04',
+        url: base_url + 'login' + test_query + '&testDate=2017-03-09',
         form: {
           username: 'alisalehi',
           password: '12345'
         }
       }, (error, response) => {
-        if(error){
+        if (error) {
           fail(error.message);
           done();
         }
+        else if(response){
         expect(response.statusCode).toBe(200);
         sql.test.last_login.select()
           .then((res) => {
@@ -219,21 +220,73 @@ describe("REST API/ Stock API", ()=> {
               login_uid: 1,
             })
           })
-          .then((res) =>{
+          .then((res) => {
             expect(res.length).toBe(1);
             expect(res[0].previous_login_date_time).toBe(null);
             expect(res[0].login_uid).toBe(1);
-            expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-04');
+            expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-03-09');
             return sql.test.branch_stock_delivery_date.select()
           })
-          .then((res) =>{
+          .then((res) => {
             expect(res.length).not.toBeLessThan(2);
-            done();
+            //***********************************
+
+            req.get(base_url + 'logout' + test_query, (err, res) => {
+              if (err) {
+                fail(error.message);
+                done();
+              }
+              else if(res){
+                expect(res.statusCode).toBe(200);
+                req.post({
+                  url: base_url + 'login' + test_query + '&testDate=2017-03-20',
+                  form: {
+                    username: 'alisalehi',
+                    password: '12345'
+                  }
+                }, (error, response) => {
+                  if (error) {
+                    fail(error.message);
+                    done();
+                  }
+                  else if(response){
+                    expect(response.statusCode).toBe(200);
+                    sql.test.last_login.select()
+                      .then((res) => {
+                        expect(res.length).toBe(1);
+                        return sql.test.last_login.get_previous_login_date({
+                          login_uid: 1,
+                        })
+                      })
+                      .then((res) => {
+                        expect(res.length).toBe(1);
+                        expect(res[0].login_uid).toBe(1);
+                        expect(res[0].previous_login_date_time).not.toBe(null);
+                        expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-03-20');
+                        expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-03-09');
+                        return sql.test.branch_stock_delivery_date.select()
+                      })
+                      .then((res) => {
+                        expect(res.length).not.toBe(3);
+                        done();
+                      })
+                      .catch((err) => {
+                        console.log(err.message);
+                        done()
+                      });
+                  }
+                });
+              }
+            });
+
+            //***********************************
+            // done();
           })
-          .catch((err)=> {
+          .catch((err) => {
             console.log(err.message);
             done()
           });
+        }
         });
     });
 
