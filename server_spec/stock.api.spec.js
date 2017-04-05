@@ -289,7 +289,7 @@ describe("REST API/ Stock API", ()=> {
           return sql.test.branch_stock_delivery_date.select()
         })
         .then((res) =>{
-          // expect(res.length).toBe(5);
+          console.log(res);
           expect(res.length).not.toBeLessThan(4);
           return sql.test.branch_stock_rules.select()
         })
@@ -304,7 +304,7 @@ describe("REST API/ Stock API", ()=> {
     });
 
     it('should get related rows of BSDD table by get request/(related rows to branch 2)' ,(done) =>{
-      let date = moment().format('YYYYMMDD');
+      let date = moment().format('YYYY-MM-DD');
       req.get(base_url + 'stock/' + date + test_query, (err, res)=> {
         if(err){
           fail(err.message);
@@ -313,6 +313,7 @@ describe("REST API/ Stock API", ()=> {
         let data = JSON.parse(res.body);
         expect(data.length).toBeTruthy();
         if(data.length) {
+          console.log(data);
           expect(data.length).toBe(4);
           expect(data.filter(el => el.bsddid === null).length).not.toBeGreaterThan(2);
           expect(data.filter(el => el.last_count === null).length).toBe(4);
@@ -362,7 +363,7 @@ describe("REST API/ Stock API", ()=> {
       req.put({
         url: base_url + 'stock/' + test_query,
         form: {
-          product_count: 6,
+          product_count: 61,
           product_id : test_pid4
         }
       }, function (err, res) {
@@ -383,7 +384,6 @@ describe("REST API/ Stock API", ()=> {
           done();
         }
         let data = JSON.parse(res.body);
-        expect(data.length);
         if(data.length) {
           expect(data.length).toBe(4);
           expect(data.filter(el => el.bsddid === null).length).not.toBeGreaterThan(1);

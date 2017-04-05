@@ -24,6 +24,7 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
     let user = req.user ? req.user.username : req.user;
     req.test = lib.helpers.isTestReq(req);
     //Get testDate
+
     req.date = req.query.testDate || moment().format('YYYY-MM-DD');
     if (adminOnly && !lib.helpers.adminCheck(user)) {
       res.status(403)
