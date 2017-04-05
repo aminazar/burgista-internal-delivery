@@ -131,10 +131,10 @@ describe("Test 'branch_stoke_delivery_date' table", () => {
           return sql.test.last_login.get_previous_login_date({
             login_uid: res[0].uid
           })
-          .then((res) => {
-            expect(res).toBeTruthy();
-            done();
-          })
+            .then((res) => {
+              expect(res).toBeTruthy();
+              done();
+            })
         }
         else {
           console.log('user is not a branch');
@@ -168,23 +168,6 @@ describe("Test 'branch_stoke_delivery_date' table", () => {
       })
   });
 
-
-  // it('should NOT add a new row to the table if a prep_unit logs in', (done) =>{
-  //   sql.test.last_login.get_previous_login_date({
-  //     login_uid: test_uid3,
-  //   })
-  //   .then((res) =>{
-  //     return sql.test.last_login.add({
-  //       login_uid: res.login_uid,
-  //       previous_login_date_time : res.length ? res[0].login_date_time : null,
-  //     })
-  //   })
-  //   .then((res) =>{
-  //
-  //
-  //   })
-  // })
-
   afterAll((done) => {
     sql.test.last_login.drop()
       .then(() => {
@@ -207,6 +190,3 @@ describe("Test 'branch_stoke_delivery_date' table", () => {
   });
 });
 
-// console.log('*************');
-// console.log(res);
-// console.log('*************');

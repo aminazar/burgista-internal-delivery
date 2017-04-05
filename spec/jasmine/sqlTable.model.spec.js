@@ -53,7 +53,7 @@ describe('SqlTable abstract class',()=>{
       .catch(err=>{
         fail(err.message);
         done();
-        });
+      });
   });
   it("should call exportData and sql.units.add on save and work with plain object instead of promise",done=>{
     spies.exportData = spyOn(instance,'exportData');

@@ -368,7 +368,6 @@ describe("Branch Stock Delivery Date Model", () => {
       })
   });
 
-
   it('should save stock count', done => {
     let s = new Stock();
     bsddAfterBranch2[0].product_count = 3;

@@ -1,4 +1,4 @@
-/** Created by 305-2 on 3/29/2017.**/
+/** Created by Sareh on 3/29/2017.**/
 const request = require("request");
 const base_url = "http://localhost:3000/api/";
 const test_query = '?test=tEsT';
@@ -35,7 +35,7 @@ describe("REST API/ Stock API", ()=> {
     let tearDown = false;
     let test_uid1,test_uid2,test_uid3,test_uid4,test_pid1,test_pid2,test_pid3,test_pid4,test_data,test_bsddid,adminUid;
     let override_1 = {
-      date_rule: 'DTSTART=20170303;FREQ=WEEKLY;INTERVAL=1;BYDAY=SA,TH',
+      date_rule: 'DTSTART=20170303;FREQ=WEEKLY;INTERVAL=1;BYDAY=SA,MO',
       usage: 2,
     };
     let override_2 = {
@@ -221,6 +221,20 @@ describe("REST API/ Stock API", ()=> {
         expect(response.statusCode).toBe(200);
         done();
       })
+    });
+
+    it("logs out a unit", done => {
+      req.get(base_url + 'logout' + test_query, (err, res) => {
+        expect(res.statusCode).toBe(200);
+        done();
+      });
+    });
+
+    it("logs out a unit - checking it happened", done => {
+      req.put(base_url + 'unit' + test_query, (err, res)=> {
+        expect(res.statusCode).toBe(403);
+        done();
+      });
     });
 
     it('should show correct row number of units & last_login & branch_stock_delivery_date table/2', done => {
