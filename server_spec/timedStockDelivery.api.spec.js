@@ -338,7 +338,6 @@ describe("REST API/ Stock API", ()=> {
 
       //***********
     });
-
     afterEach((done) => {
       let dropOrNotExist = function (tableName) {
         return lib.helpers.dropOrNotExit(tableName, sql.test)
