@@ -24,7 +24,7 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
     let user = req.user ? req.user.username : req.user;
     req.test = lib.helpers.isTestReq(req);
     //Get testDate
-    req.date = req.param('testDate', moment().format('YYYY-MM-DD'));
+    req.date = req.params.testDate ? req.params.testDate : moment().format('YYYY-MM-DD');
     if (adminOnly && !lib.helpers.adminCheck(user)) {
       res.status(403)
         .send('Only admin can do this.');
@@ -53,9 +53,6 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
   });
 }
 
-router.get('/', function (req, res) {
-  res.send('respond with a resource');
-});
 //Login API & last login API
 router.post('/login', passport.authenticate('local', {}), apiResponse('Unit', 'saveDateAfterLogin', false, ['user.name', 'user.username', 'user.is_branch', 'user.uid']));
 router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
@@ -64,6 +61,14 @@ router.get('/logout', (req, res) => {
   res.sendStatus(200)
 });
 router.get('/validUser', apiResponse('Unit', 'afterLogin', false, ['user.name', 'user.username', 'user.is_branch']));
+
+//checks to be sure users are authenticated
+router.all("*", function(req, res, next){
+  if (!req.user && req.originalUrl.indexOf('login') === -1 && req.originalUrl.indexOf('validUser') === -1 )
+    res.sendStatus(403);
+  else
+    next();
+});
 //Unit API
 router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
 router.get('/unit', apiResponse('Unit', 'select', false, ['query.isBranch']));
