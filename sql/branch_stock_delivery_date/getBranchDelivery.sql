@@ -40,5 +40,6 @@ left outer join
     branch_stock_rules
 on
     products.pid = branch_stock_rules.pid
+    and branch_stock_rules.uid = ${uid}
 where
     prep_unit_id = ${prep_uid}

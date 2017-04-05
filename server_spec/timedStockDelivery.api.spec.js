@@ -7,31 +7,10 @@ const sql = require('../sql');
 const moment = require('moment');
 let req = request.defaults({jar: true});//enabling cookies
 
-let resExpect = (res, statusCode) => {
-  if (res.statusCode !== statusCode) {
-    let jres = '';
-    try {
-      jres = res.body ? JSON.parse(res.body) : '';
-    }
-    catch (err) {
-    }
-    let msg = jres.Message ? jres.Message : jres;
-    expect(res.statusCode).toBe(statusCode, `Expected response code ${statusCode}, received ${res.statusCode}. Server response: ${msg}`);
-    if (jres.Stack) {
-      let err = new Error();
-      err.message = jres.Message;
-      err.stack = jres.Stack;
-      console.log(`Server responds with unexpected error:`, err);
-    }
-    return false;
-  }
-  return true;
-};
-
 describe("REST API/ Stock API", ()=> {
 
   describe("stock", () => {
-    let test_uid1,test_uid2,test_uid3,test_uid4,test_pid1,test_pid2,test_pid3,test_pid4,test_data,test_bsddid,adminUid;
+    let test_uid1,test_uid2,test_uid3,test_uid4,test_uid5,test_pid1,test_pid2,test_pid3,test_pid4,test_data,test_bsddid,adminUid;
     let override_1 = {
       date_rule: 'DTSTART=20170303;FREQ=WEEKLY;INTERVAL=1;BYDAY=SA,MO',
       usage: 2,
@@ -40,11 +19,44 @@ describe("REST API/ Stock API", ()=> {
       date_rule: 'DTSTART=20170303;FREQ=DAILY;INTERVAL=3',
       usage: 2,
     };
+    let override_3 = {
+      date_rule: 'DTSTART=20170303;FREQ=DAILY;INTERVAL=3'
+    };
+    let originalTimeout;
+    let clearDB = done => {
+      let dropOrNotExist = function (tableName) {
+        return lib.helpers.dropOrNotExit(tableName, sql.test)
+      }
+      dropOrNotExist('last_login')
+        .then(() => {
+          return dropOrNotExist('branch_stock_delivery_date')
+        })
+        .then(()=> {
+          return dropOrNotExist('branch_stock_rules')
+        })
+        .then(() => {
+          return dropOrNotExist('products')
+        })
+        .then(() => {
+          return dropOrNotExist('units')
+        })
+        .then(() =>{
+          done();
+        })
+        .catch((err) => {
+          console.log(err.message);
+          fail(err.message);
+          done();
+        });
+    };
 
     beforeEach((done) => {
+      originalTimeout = jasmine.getEnv().defaultTimeoutInterval;
+      jasmine.getEnv().defaultTimeoutInterval = 20000;
       let create = tableName => lib.helpers.createOrExist(tableName,sql.test);
+      clearDB(()=> {
         create('units') //create units table
-          .then ((res)=>{
+          .then((res) => {
             return create('last_login');
           })//Create last_login table
           .then((res) => {
@@ -93,6 +105,15 @@ describe("REST API/ Stock API", ()=> {
           }) //Add another unit (prep unit)
           .then((res) => {
             test_uid4 = res;
+            let branch = new lib.Unit(true);
+            branch.name = 'Amin';
+            branch.username = 'amin';
+            branch.password = '12345';
+            branch.is_branch = true;
+            return branch.save();
+          })//Add an unit (branch unit)
+          .then((res) => {
+            test_uid5 = res;
             p = new lib.Product(true);
             p.name = 'Frying oil';
             p.code = 'fo01';
@@ -155,12 +176,16 @@ describe("REST API/ Stock API", ()=> {
           .then((res) => {
             adminUid = res;
             let product = new lib.Product(true);
-            return product.update(override_1, test_pid3, 'admin',test_uid1)
+            return product.update(override_1, test_pid3, 'admin', test_uid1)
           })//override product 3 for branch 1
           .then(() => {
             let product = new lib.Product(true);
-            return product.update(override_2, test_pid3, 'admin',test_uid2)
+            return product.update(override_2, test_pid3, 'admin', test_uid2)
           })//override product 3 for branch 2
+          .then(() => {
+            let product = new lib.Product(true);
+            return product.update(override_3, test_pid1, 'admin', test_uid5)
+          })//override product 1 for branch 5
           .then(() => {
             setup = false;
             done();
@@ -169,7 +194,8 @@ describe("REST API/ Stock API", ()=> {
             console.log(err.message);
             done();
           })
-      });
+      })
+    });
 
     it('should pass a inevitable spec', () => {
       expect(true).toBe(true);
@@ -178,7 +204,7 @@ describe("REST API/ Stock API", ()=> {
     it('should show correct row number of units & last_login & branch_stock_delivery_date & branch_stock_rules table/1', done => {
       sql.test.units.select()
         .then((res) => {
-          expect(res.length).toBe(4);
+          expect(res.length).toBe(5);
           return sql.test.last_login.select()
         })
         .then((res) => {
@@ -190,7 +216,7 @@ describe("REST API/ Stock API", ()=> {
           return sql.test.branch_stock_rules.select()
         })
         .then((res) =>{
-          expect(res.length).toBe(2);
+          expect(res.length).toBe(3);
           done();
         })
         .catch((err)=> {
@@ -255,7 +281,7 @@ describe("REST API/ Stock API", ()=> {
                       .then((res) => {
                         expect(res.length).toBe(1);
                         return sql.test.last_login.get_previous_login_date({
-                          login_uid: 1,
+                          login_uid: test_uid1,
                         })
                       })
                       .then((res) => {
@@ -268,7 +294,16 @@ describe("REST API/ Stock API", ()=> {
                       })
                       .then((res) => {
                         expect(res.length).not.toBe(3);
-                        done();
+                        req.get(base_url + 'logout' + test_query, (err, res) => {
+                          if (err) {
+                            fail(error.message);
+                            done();
+                          }
+                          else if (res) {
+                            expect(res.statusCode).toBe(200);
+                            done();
+                          }
+                        });
                       })
                       .catch((err) => {
                         console.log(err.message);
@@ -279,8 +314,7 @@ describe("REST API/ Stock API", ()=> {
               }
             });
 
-            //***********************************
-            // done();
+            done();
           })
           .catch((err) => {
             console.log(err.message);
@@ -290,34 +324,117 @@ describe("REST API/ Stock API", ()=> {
         });
     });
 
+    let testDate = '20170309';
+    it('should behave correctly where branch did not login', done => {
+      req.post({
+        url: base_url + 'login' + test_query + '&testDate=' + testDate,
+        form: {
+          username: 'sadrasalehi',
+          password: '12345'
+        }
+      }, (error, response) => {
+        if (error) {
+          fail(error.message);
+          done();
+        }
+        else if (response) {
+          expect(response.statusCode).toBe(200);
+          req.get(base_url+ 'unit' + test_query +'&isBranch=true', (err,res) => {
+            res = JSON.parse(res.body);
+            if(err || !res){fail(err.message);done();}
+            else {
+              expect(res.length).toBe(3);
+              expect(res[2].uid).toBe(test_uid5);
+              if(res[2].uid===test_uid5){
+                let deliveryUrl = `${base_url}delivery/${testDate}/${res[2].uid}${test_query}`;
+                req.get(deliveryUrl, (err,res) => {
+                  res = JSON.parse(res.body);
+                  if(err || !res){fail(err.message);done()}
+                  else {
+                    expect(res.length).toBe(2);
+                    expect(res.map(r=>r.productName)).toContain('orange');
+                    expect(res.map(r=>r.productName)).toContain('Frying oil');
+                    expect(res.filter(r=>r.stock===null).length).toBe(2);
+                    expect(moment(res.filter(r=>r.productId===1)[0].stockDate).format('YYYYMMDD')).toBe('20170309');
+                    let bsddid = res.filter(r=>r.productId===1)[0].id;
+                    expect(bsddid).toBeTruthy();
+                    if(bsddid) {
+                      let realDelivery = 10;
+                      req.post({
+                        url: `${base_url}delivery/${bsddid}${test_query}&testDate=${testDate}`,
+                        form: {
+                          real_delivery: realDelivery,
+                          is_delivery_finalised: true,
+                        }
+                      }, (err, res) => {
+                        res = JSON.parse(res.body);
+                        if(err || !res){fail(err.message);done()}
+                        else {
+                          expect(res).toBe(bsddid+'');
+                          console.log(deliveryUrl);
+                          req.get(deliveryUrl, (err,res) => {
+                            res = JSON.parse(res.body);
+                            if (err || !res) {
+                              fail(err.message);
+                              done();
+                            }
+                            else{
+                              let f = res.filter(r=>r.productId===1)[0];
+                              expect(moment(f.stockDate).format('YYYYMMDD')).toBe('20170309');
+                              expect(f.id).toBe(bsddid);
+                              expect(f.realDelivery).toBe(realDelivery);
+                              expect(f.isPrinted).toBe(true);
+                              req.get(`${base_url}logout${test_query}`, (err,res)=>{
+                                expect(res.statusCode).toBe(200);
+                                let stockDate = '20170311';
+                                req.post({
+                                  url: `${base_url}login${test_query}&testDate=${stockDate}`,
+                                  form: {
+                                    username: 'amin',
+                                    password: '12345'
+                                  }
+                                }, (err, res) => {
+                                  if (err) {
+                                    fail(error.message);
+                                    done();
+                                  }
+                                  else {
+                                    expect(res.statusCode).toBe(200);
+                                    req.get(`${base_url}stock/${stockDate}${test_query}&testDate=${stockDate}`, (err,res)=>{
+                                      res = JSON.parse(res.body);
+                                      if(err || !res){fail(err.message);done()}
+                                      else {
+                                        let f = res.filter(r=>r.bsddid===bsddid)[0];
+                                        expect(moment(f.counting_date).format('YYYYMMDD')).toBe('20170309');
+                                        expect(f.last_count).toBe(null);
+                                        expect(f.product_count).toBe(null);
+                                        done();
+                                      }
+                                    })
+                                  }
+                                });
+                              })
+                            }
+                          });
+                        }
+
+                      });
+                    }
+                    else done();
+                  }
+                })
+              }
+              else done();
+            }
+          })
+        }
+      })
+    });
+
     afterEach((done) => {
-      let dropOrNotExist = function (tableName) {
-        return lib.helpers.dropOrNotExit(tableName, sql.test)
-      }
-        dropOrNotExist('last_login')
-          .then(() => {
-            return dropOrNotExist('branch_stock_delivery_date')
-          })
-          .then(()=> {
-            return dropOrNotExist('branch_stock_rules')
-          })
-          .then(() => {
-            return dropOrNotExist('products')
-          })
-          .then(() => {
-            return dropOrNotExist('units')
-          })
-          .then(() =>{
-            done();
-          })
-          .catch((err) => {
-            console.log(err.message);
-            fail(err.message);
-            done();
-          });
+      clearDB(done);
+      jasmine.getEnv().defaultTimeoutInterval = originalTimeout;
     });
   });
 
 });
-
-
