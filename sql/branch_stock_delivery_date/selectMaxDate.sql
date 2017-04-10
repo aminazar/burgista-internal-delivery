@@ -40,8 +40,8 @@ left outer join
         and s.counting_date = last_count.counting_date
     where
         s.counting_date = ${date}
-        or s.product_count = null
---        or s.real_delivery < s.min_stock
+        or s.product_count is null
+        or s.real_delivery < s.min_stock
 ) last_count_extended
 on
     pid = last_count_extended.product_id

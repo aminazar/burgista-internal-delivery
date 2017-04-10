@@ -225,7 +225,7 @@ describe("REST API/ Stock API", () => {
         });
     });
 
-    it('should branch1 can login/1', (done) => {
+    xit('branch1 should be able to login/1', (done) => {
       req.post({
         url: base_url + 'login' + test_query + '&testDate=2017-03-09', //alisalehi logins at 2017-03-09
         form: {
@@ -401,7 +401,7 @@ describe("REST API/ Stock API", () => {
                                                           expect(data.length).toBe(4);
                                                           expect(data.filter(el => el.bsddid === null).length).toBe(0);
                                                           expect(data.filter(el => el.bsddid === test_bsddid)[0].product_count).toBe(14);
-                                                //          expect(data.filter(el => el.product_count === 14)[0].last_count).not.toBe(null);
+                                                          //          expect(data.filter(el => el.product_count === 14)[0].last_count).not.toBe(null);
                                                           done();
                                                         })
                                                       }
@@ -429,244 +429,244 @@ describe("REST API/ Stock API", () => {
             });
         }
       });
+    });
 
-    it('should behave correctly when lagin without submit', (done) =>{
+    it('should behave correctly when login without submit', (done) => {
       req.post({
-        url: base_url + 'login' + test_query + '&testDate=2017-04-08', //alisalehi logins at 2017-04-07
+        url: base_url + 'login' + test_query + '&testDate=2017-04-08', //alisalehi logins at 2017-04-08
         form: {
           username: 'alisalehi',
           password: '12345'
         }
-      }, (error,response) =>{
-      if (error) {
-        fail(error.message);
-        done();
-      }
-      else if(response){
-        sql.test.last_login.select()
-        .then((res) =>{
-        expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-08');
-        expect(res[0].previous_login_date_time).toBe(null);
-        sql.test.branch_stock_delivery_date.select()
-        .then((res) =>{
-        expect(res.length).toBe(3);
-        expect(res[0].submission_time).toBe(null);
-        expect(res[0].product_count).toBe(null);
-        expect(res[1].submission_time).toBe(null);
-        expect(res[1].product_count).toBe(null);
-        expect(res[0].min_stock).toBe(11);
-        expect(res[0].branch_id).toBe(test_uid1);
-        let date ='2017-04-08';
-        req.get(base_url + 'stock/' + date + test_query, (error, response) =>{
+      }, (error, response) => {
         if (error) {
           fail(error.message);
           done();
         }
-        else if(response){
-        let data = JSON.parse(response.body);
-        expect(data.length).toBe(4);
-        expect(data.filter(el => el.bsddid === null).length).toBe(1);
-        expect(data.filter(el => el.product_count === null).length).toBe(4);
-        expect(data.filter(el => el.counting_date !==null).length).toBe(3);
-        console.log('**get1**');
-        console.log(data);
-        console.log('**get1**');
-        req.get(base_url + 'logout' + test_query, (error, response) => { //alisalehi logs out at 2017-04-08
-        if (error) {
-          fail(error.message);
-          done();
-        }
-        else if(response){
-        req.post({
-          url: base_url + 'login' + test_query + '&testDate=2017-04-09', //alisalehi logins at 2017-04-09
-          form: {
-            username: 'alisalehi',
-            password: '12345'
-          }
-        },(error,response) => {
-        if(error){
-          fail(error.message);
-          done();
-        }
-        else if(response){
-          date = '2017-04-09';
+        else if (response) {
           sql.test.last_login.select()
-          .then((res) => {
-          expect(res.length).toBe(1);
-          expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-09');
-          expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-04-08');
-          req.get(base_url + 'stock/' + date + test_query, (error, response) =>{
-          if(error){
-            fail(error.message);
-            done();
-          }
-          else if(response){
-            let data = JSON.parse(response.body);
-            expect(data.length).toBe(4);
-            expect(data.filter(el => el.bsddid === null).length).toBe(1);
-            expect(data.filter(el => el.product_count === null).length).toBe(4);
-            expect(data.filter(el => el.counting_date !==null).length).toBe(3);
-            console.log('**get2**');
-            console.log(data);
-            console.log('**get2**');
-            req.get(base_url + 'logout' + test_query, (error, response) => {
-            if (error) {
-            fail(error.message);
-            done();
-            }
-            else if (response) {
-            req.post({
-              url: base_url + 'login' + test_query + '&testDate=2017-04-12', //alisalehi logins at 2017-04-12
-              form: {
-                username: 'alisalehi',
-                password: '12345'
-              }
-            },(error,response)=>{
-            if (error) {
-              fail(error.message);
-              done();
-            }
-            else if(response){
-            sql.test.last_login.select()
-            .then((res) =>{
-            expect(res.length).toBe(1);
-            expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-12');
-            expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-04-09');
-            date = '2017-04-12';
-            req.get(base_url + 'stock/' + date + test_query, (error, response) => {
-              if (error) {
-              fail(error.message);
-              done();
-              }
-              else if (response) {
-              let data = JSON.parse(response.body);
-              expect(data.length).toBe(4);
-              expect(data.filter(el => el.bsddid === null).length).toBe(1);
-              expect(data.filter(el => el.product_count === null).length).toBe(4);
-              expect(data.filter(el => el.counting_date !== null).length).toBe(3);
-              // expect(data.filter(el => moment(el.counting_date).format('YYYY-MM-DD') === '2017-04-10').length.toBe(1));
-              console.log('**get3**');
-              console.log(data);
-              console.log('**get3**');
-              req.post({       //test post API(update a not-null bsddid product/enter its product_count)
-                url: base_url + 'stock/' + 7 + test_query + '&testDate=2017-04-12',
-                form: {
-                  product_count: 14
-                }
-              }, (err, res) => {
-              if(err){
-              fail(error.message);
-              done();
-              }
-              else if(res){
-              expect(res).toBeTruthy();
-              req.get(base_url + 'stock/' + '2017-04-12' + test_query, (err, res) => {
-              if (err) {
-                fail(err.message);
-                done();
-              }
-              let data = JSON.parse(res.body);
-              expect(data.length).toBeTruthy();
-              expect(data.length).toBe(4);
-              console.log('**get4**');
-              console.log(data);
-              console.log('**get4**');
-              //************************
-                let test_bsddid1 = data.filter(el => el.product_name === 'orange')[0].bsddid;
-                console.log(test_bsddid1);
-                req.post({       //test post API(update a not-null bsddid product/enter its product_count)
-                  url: base_url + 'stock/' + test_bsddid1 + test_query + '&testDate=2017-04-12',
-                  form: {
-                    product_count: 17
-                  }
-                }, (err, res) => {
-                  if (err) {
-                    fail(error.message);
-                    done();
-                  }
-                  else if (res) {
-                    expect(res).toBeTruthy();
-                    req.get(base_url + 'stock/' + '2017-04-12' + test_query, (err, res) => {
-                      if (err) {
-                        fail(err.message);
-                        done();
-                      }
-                      let data = JSON.parse(res.body);
-                      expect(data.length).toBeTruthy();
+            .then((res) => {
+              expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-08');
+              expect(res[0].previous_login_date_time).toBe(null);
+              sql.test.branch_stock_delivery_date.select()
+                .then((res) => {
+                  expect(res.length).toBe(3);
+                  expect(res[0].submission_time).toBe(null);
+                  expect(res[0].product_count).toBe(null);
+                  expect(res[1].submission_time).toBe(null);
+                  expect(res[1].product_count).toBe(null);
+                  expect(res[0].min_stock).toBe(11);
+                  expect(res[0].branch_id).toBe(test_uid1);
+                  let date = '2017-04-08';
+                  req.get(base_url + 'stock/' + date + test_query, (error, response) => {
+                    if (error) {
+                      fail(error.message);
+                      done();
+                    }
+                    else if (response) {
+                      let data = JSON.parse(response.body);
                       expect(data.length).toBe(4);
-                      console.log('**get5**');
+                      expect(data.filter(el => el.bsddid === null).length).toBe(1);
+                      expect(data.filter(el => el.product_count === null).length).toBe(4);
+                      expect(data.filter(el => el.counting_date !== null).length).toBe(3);
+                      console.log('**get1**');
                       console.log(data);
-                      console.log('**get5**');
-                      //************
-                      let test_bsddid2 =  data.filter(el => el.product_name === 'orange')[0].bsddid;
-                      expect(test_bsddid2).toBe(test_bsddid1);
-                      req.post({       //test post API(update a not-null bsddid product/enter its product_count)
-                        url: base_url + 'stock/' + test_bsddid2 + test_query + '&testDate=2017-04-12',
-                        form: {
-                          product_count: 20
-                        }
-                      }, (err, res) => {
-                        if (err) {
+                      console.log('**get1**');
+                      req.get(base_url + 'logout' + test_query, (error, response) => { //alisalehi logs out at 2017-04-08
+                        if (error) {
                           fail(error.message);
                           done();
                         }
-                        else if (res) {
-                          expect(res).toBeTruthy();
-                          req.get(base_url + 'stock/' + '2017-04-12' + test_query, (err, res) => {
-                            if (err) {
-                              fail(err.message);
-                              done();
+                        else if (response) {
+                          req.post({
+                              url: base_url + 'login' + test_query + '&testDate=2017-04-09', //alisalehi logins at 2017-04-09
+                              form: {
+                                username: 'alisalehi',
+                                password: '12345'
+                              }
+                            }, (error, response) => {
+                              if (error) {
+                                fail(error.message);
+                                done();
+                              }
+                              else if (response) {
+                                date = '2017-04-09';
+                                sql.test.last_login.select()
+                                  .then((res) => {
+                                    expect(res.length).toBe(1);
+                                    expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-09');
+                                    expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-04-08');
+                                    req.get(base_url + 'stock/' + date + test_query, (error, response) => {
+                                      if (error) {
+                                        fail(error.message);
+                                        done();
+                                      }
+                                      else if (response) {
+                                        let data = JSON.parse(response.body);
+                                        expect(data.length).toBe(4);
+                                        expect(data.filter(el => el.bsddid === null).length).toBe(1);
+                                        expect(data.filter(el => el.product_count === null).length).toBe(4);
+                                        expect(data.filter(el => el.counting_date !== null).length).toBe(3);
+                                        console.log('**get2**');
+                                        console.log(data);
+                                        console.log('**get2**');
+                                        req.get(base_url + 'logout' + test_query, (error, response) => {
+                                          if (error) {
+                                            fail(error.message);
+                                            done();
+                                          }
+                                          else if (response) {
+                                            req.post({
+                                              url: base_url + 'login' + test_query + '&testDate=2017-04-12', //alisalehi logins at 2017-04-12
+                                              form: {
+                                                username: 'alisalehi',
+                                                password: '12345'
+                                              }
+                                            }, (error, response) => {
+                                              if (error) {
+                                                fail(error.message);
+                                                done();
+                                              }
+                                              else if (response) {
+                                                sql.test.last_login.select()
+                                                  .then((res) => {
+                                                    expect(res.length).toBe(1);
+                                                    expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-12');
+                                                    expect(moment(res[0].previous_login_date_time).format('YYYY-MM-DD')).toBe('2017-04-09');
+                                                    date = '2017-04-12';
+                                                    req.get(base_url + 'stock/' + date + test_query, (error, response) => {
+                                                      if (error) {
+                                                        fail(error.message);
+                                                        done();
+                                                      }
+                                                      else if (response) {
+                                                        let data = JSON.parse(response.body);
+                                                        expect(data.length).toBe(4);
+                                                        expect(data.filter(el => el.bsddid === null).length).toBe(1);
+                                                        expect(data.filter(el => el.product_count === null).length).toBe(4);
+                                                        expect(data.filter(el => el.counting_date !== null).length).toBe(3);
+                                                        // expect(data.filter(el => moment(el.counting_date).format('YYYY-MM-DD') === '2017-04-10').length.toBe(1));
+                                                        console.log('**get3**');
+                                                        console.log(data);
+                                                        console.log('**get3**');
+                                                        req.post({       //test post API(update a not-null bsddid product/enter its product_count)
+                                                          url: base_url + 'stock/' + 7 + test_query + '&testDate=2017-04-12',
+                                                          form: {
+                                                            product_count: 14
+                                                          }
+                                                        }, (err, res) => {
+                                                          if (err) {
+                                                            fail(error.message);
+                                                            done();
+                                                          }
+                                                          else if (res) {
+                                                            expect(res).toBeTruthy();
+                                                            req.get(base_url + 'stock/' + '2017-04-12' + test_query, (err, res) => {
+                                                              if (err) {
+                                                                fail(err.message);
+                                                                done();
+                                                              }
+                                                              let data = JSON.parse(res.body);
+                                                              expect(data.length).toBeTruthy();
+                                                              expect(data.length).toBe(4);
+                                                              console.log('**get4**');
+                                                              console.log(data);
+                                                              console.log('**get4**');
+                                                              //************************
+                                                              let test_bsddid1 = data.filter(el => el.product_name === 'orange')[0].bsddid;
+                                                              console.log(test_bsddid1);
+                                                              req.post({       //test post API(update a not-null bsddid product/enter its product_count)
+                                                                url: base_url + 'stock/' + test_bsddid1 + test_query + '&testDate=2017-04-12',
+                                                                form: {
+                                                                  product_count: 17
+                                                                }
+                                                              }, (err, res) => {
+                                                                if (err) {
+                                                                  fail(error.message);
+                                                                  done();
+                                                                }
+                                                                else if (res) {
+                                                                  expect(res).toBeTruthy();
+                                                                  req.get(base_url + 'stock/' + '2017-04-12' + test_query, (err, res) => {
+                                                                    if (err) {
+                                                                      fail(err.message);
+                                                                      done();
+                                                                    }
+                                                                    let data = JSON.parse(res.body);
+                                                                    expect(data.length).toBeTruthy();
+                                                                    expect(data.length).toBe(4);
+                                                                    console.log('**get5**');
+                                                                    console.log(data);
+                                                                    console.log('**get5**');
+                                                                    //************
+                                                                    let test_bsddid2 = data.filter(el => el.product_name === 'orange')[0].bsddid;
+                                                                    expect(test_bsddid2).toBe(test_bsddid1);
+                                                                    req.post({       //test post API(update a not-null bsddid product/enter its product_count)
+                                                                      url: base_url + 'stock/' + test_bsddid2 + test_query + '&testDate=2017-04-12',
+                                                                      form: {
+                                                                        product_count: 20
+                                                                      }
+                                                                    }, (err, res) => {
+                                                                      if (err) {
+                                                                        fail(error.message);
+                                                                        done();
+                                                                      }
+                                                                      else if (res) {
+                                                                        expect(res).toBeTruthy();
+                                                                        req.get(base_url + 'stock/' + '2017-04-12' + test_query, (err, res) => {
+                                                                          if (err) {
+                                                                            fail(err.message);
+                                                                            done();
+                                                                          }
+                                                                          let data = JSON.parse(res.body);
+                                                                          expect(data.length).toBeTruthy();
+                                                                          expect(data.length).toBe(4);
+                                                                          console.log('**get6**');
+                                                                          console.log(data);
+                                                                          console.log('**get6**');
+                                                                          done();
+                                                                        })
+                                                                      }
+                                                                    })
+
+
+                                                                    //************
+                                                                  })
+                                                                }
+                                                              })
+                                                              //************************
+                                                            })
+                                                          }
+                                                        })
+                                                      }
+                                                    })
+                                                  })
+                                              }
+                                            })
+                                          }
+                                        })
+                                      }
+                                    })
+                                  })
+                              }
                             }
-                            let data = JSON.parse(res.body);
-                            expect(data.length).toBeTruthy();
-                            expect(data.length).toBe(4);
-                            console.log('**get6**');
-                            console.log(data);
-                            console.log('**get6**');
-                            done();
-                          })
+                          )
                         }
                       })
-
-
-
-                      //************
-                    })
-                  }
+                    }
+                  })
                 })
-              //************************
-              })
-              }
-              })
-              }
             })
-            })
-            }
-            })
-            }
-            })
-          }
-          })
-          })
+            .catch((err) => {
+              console.log(err.message);
+              done()
+            });
         }
-        }
-        )
-        }
-        })
-        }
-        })
-        })
-        })
-        .catch((err) => {
-        console.log(err.message);
-        done()
-        });
-      }
       });
     });
 
     let testDate = '20170309';
-    it('should behave correctly where branch did not login', done => {
+    xit('should behave correctly where branch did not login', done => {
       req.post({
         url: base_url + 'login' + test_query + '&testDate=' + testDate,
         form: {
@@ -758,9 +758,12 @@ describe("REST API/ Stock API", () => {
                                       }
                                       else {
                                         let f = res.filter(r => r.bsddid === bsddid)[0];
-                                        expect(moment(f.counting_date).format('YYYYMMDD')).toBe('20170309');
-                                        expect(f.last_count).toBe(null);
-                                        expect(f.product_count).toBe(null);
+                                        expect(f).toBeTruthy();
+                                        if(f) {
+                                          expect(moment(f.counting_date).format('YYYYMMDD')).toBe('20170309');
+                                          expect(f.last_count).toBe(null);
+                                          expect(f.product_count).toBe(null);
+                                        }
                                         done();
                                       }
                                     })
