@@ -368,7 +368,7 @@ describe("REST API/ Stock API", () => {
                             .then((res) => {
                              console.log('369',res);
                               expect(res.length).toBe(6);
-                              expect(res[4].product_count).toBe(26);
+                              expect(res[5].product_count).toBe(26);
                               date = '2017-03-20';
                               req.get(base_url + 'stock/' + date + test_query, (err, res) => { //test put API(cheking it happened)
                               if (err) {
@@ -441,7 +441,7 @@ describe("REST API/ Stock API", () => {
       });
     });
 
-    xit('should behave correctly when login without submit', (done) => {
+    it('should behave correctly when login without submit', (done) => {
       req.post({
         url: base_url + 'login' + test_query + '&testDate=2017-04-08', //alisalehi logins at 2017-04-08
         form: {
@@ -690,7 +690,7 @@ describe("REST API/ Stock API", () => {
     });
 
     let testDate = '20170309';
-    xit('should behave correctly where branch did not login', done => {
+    it('should behave correctly where branch did not login', done => {
       req.post({
         url: base_url + 'login' + test_query + '&testDate=' + testDate,
         form: {
