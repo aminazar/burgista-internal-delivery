@@ -598,7 +598,7 @@ describe("REST API/ Stock API", () => {
                                                                 }
                                                                 else if (res) {
                                                                   expect(res).toBeTruthy();
-                                                                  req.get(base_url + 'stock/' + '2017-04-12' + test_query, (err, res) => {
+                                                                  req.get(base_url + 'stock/' + '2017-04-10' + test_query, (err, res) => {
                                                                     if (err) {
                                                                       fail(err.message);
                                                                       done();
@@ -610,11 +610,14 @@ describe("REST API/ Stock API", () => {
                                                                     console.log(data);
                                                                     console.log('**get5**');
                                                                     //************
-                                                                    let test_bsddid2 = data.filter(el => el.product_name === 'orange')[0].bsddid;
-                                                                    expect(test_bsddid2).toBe(test_bsddid1);
-                                                                    req.post({       //test post API(update a not-null bsddid product/enter its product_count)
-                                                                      url: base_url + 'stock/' + test_bsddid2 + test_query + '&testDate=2017-04-12',
+                                                                    let f = data.filter(el => el.product_name === 'orange')[0];
+                                                                    expect(f.bsddid).toBe(test_bsddid1);
+                                                                    expect(f.product_count).toBe(17);
+                                                                    let sd = new Date();
+                                                                    req.put({       //test put API(update a null bsddid product/enter its product_count)
+                                                                      url: base_url + 'stock' + test_query + '&testDate=2017-04-12',
                                                                       form: {
+                                                                        product_id: f.pid,
                                                                         product_count: 20
                                                                       }
                                                                     }, (err, res) => {
@@ -632,6 +635,12 @@ describe("REST API/ Stock API", () => {
                                                                           let data = JSON.parse(res.body);
                                                                           expect(data.length).toBeTruthy();
                                                                           expect(data.length).toBe(4);
+                                                                          let orange = data.filter(r=>r.pid===f.pid)[0];
+                                                                          expect(orange).toBeTruthy();
+                                                                          if(orange){
+                                                                            expect(moment(orange.counting_date).format('YYMMDD')).toBe('170412');
+                                                                            expect(moment(orange.last_count).toDate()).not.toBeLessThan(sd);
+                                                                          }
                                                                           console.log('**get6**');
                                                                           console.log(data);
                                                                           console.log('**get6**');
