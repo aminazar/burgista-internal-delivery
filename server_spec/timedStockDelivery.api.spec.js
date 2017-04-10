@@ -446,6 +446,7 @@ describe("REST API/ Stock API", () => {
         else if (response) {
           sql.test.last_login.select()
             .then((res) => {
+            console.log(res);
               expect(moment(res[0].login_date_time).format('YYYY-MM-DD')).toBe('2017-04-08');
               expect(res[0].previous_login_date_time).toBe(null);
               sql.test.branch_stock_delivery_date.select()
@@ -656,6 +657,10 @@ describe("REST API/ Stock API", () => {
                     }
                   })
                 })
+                .catch(err=>{
+                  console.log(err.message);
+                  done();
+                });
             })
             .catch((err) => {
               console.log(err.message);
