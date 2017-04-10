@@ -197,11 +197,11 @@ describe("REST API/ Stock API", () => {
       })
     });
 
-    xit('should pass a inevitable spec', () => {
+    it('should pass a inevitable spec', () => {
       expect(true).toBe(true);
     });
 
-    xit('should show correct row number of units & last_login & branch_stock_delivery_date & branch_stock_rules table/1', done => {
+    it('should show correct row number of units & last_login & branch_stock_delivery_date & branch_stock_rules table/1', done => {
       sql.test.units.select()
         .then((res) => {
           expect(res.length).toBe(5);
@@ -441,7 +441,7 @@ describe("REST API/ Stock API", () => {
       });
     });
 
-    xit('should behave correctly when login without submit', (done) => {
+    it('should behave correctly when login without submit', (done) => {
       req.post({
         url: base_url + 'login' + test_query + '&testDate=2017-04-08', //alisalehi logins at 2017-04-08
         form: {
@@ -713,7 +713,6 @@ describe("REST API/ Stock API", () => {
                     done()
                   }
                   else {
-                    console.log('test elivery',res);
                     expect(res.length).toBe(2);
                     expect(res.map(r => r.productName)).toContain('orange');
                     expect(res.map(r => r.productName)).toContain('Frying oil');
