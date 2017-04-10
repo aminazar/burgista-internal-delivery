@@ -26,7 +26,8 @@ left outer join
         from
             branch_stock_delivery_date
         where
-            (counting_date=${date} or (counting_date<${date} and product_count is null) or (min_stock is not null and min_stock > real_delivery))
+            counting_date<=${date}
+            and ((product_count is null and counting_date=${date}) or product_count is not null or min_stock > real_delivery)
             and branch_id = ${uid}
         group by
             branch_id,
