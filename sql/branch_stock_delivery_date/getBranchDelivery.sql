@@ -38,6 +38,7 @@ left outer join (
             s.counting_date = ${date}
             or s.submission_time = ${date}
             or s.real_delivery + s.product_count < s.min_stock
+            or s.real_delivery is null
         )
     ) aggreg
 on
