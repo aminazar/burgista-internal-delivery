@@ -12,7 +12,7 @@ left outer join (
         last_count.product_id,
         last_count.counting_date
     from
-        branch_stock_delivery_date
+        branch_stock_delivery_date s
     join
     (
         select
@@ -28,11 +28,18 @@ left outer join (
             branch_id
     ) last_count
     on
-        last_count.product_id = branch_stock_delivery_date.product_id
-        and last_count.counting_date = branch_stock_delivery_date.counting_date
-        and last_count.branch_id = branch_stock_delivery_date.branch_id
+        last_count.product_id = s.product_id
+        and last_count.counting_date = s.counting_date
+        and last_count.branch_id = s.branch_id
     where
-        branch_stock_delivery_date.branch_id = ${uid}
+        s.branch_id = ${uid}
+        and
+        (
+            s.counting_date = ${date}
+            or s.submission_time = ${date}
+            or s.real_delivery + s.product_count < s.min_stock
+            or s.real_delivery is null
+        )
     ) aggreg
 on
     aggreg.product_id = products.pid
@@ -40,5 +47,6 @@ left outer join
     branch_stock_rules
 on
     products.pid = branch_stock_rules.pid
+    and branch_stock_rules.uid = ${uid}
 where
     prep_unit_id = ${prep_uid}
