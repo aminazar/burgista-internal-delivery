@@ -59,7 +59,7 @@ genericUpdate = (tableName, idColumn, isTest)=> {
 genericSelect = (tableName, isTest)=> {
   let db = chooseDb(tableName, isTest);
   return () => {
-    return db.query(`select * from ${tableName}`);
+    return db.any(`select * from ${tableName}`);
   };
 };
 
