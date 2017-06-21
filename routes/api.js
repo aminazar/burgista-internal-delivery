@@ -33,7 +33,7 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
     else {
       let dynamicArgs = [];
       for (let i in reqFuncs)
-        dynamicArgs.push((typedof reqFuncs[i] === 'function') ? reqFuncs[i](req) : deepFind(req, reqFuncs[i]));
+        dynamicArgs.push((typeof reqFuncs[i] === 'function') ? reqFuncs[i](req) : deepFind(req, reqFuncs[i]));
 
       let allArgs = dynamicArgs.concat(args);
       lib[className].test = req.test;

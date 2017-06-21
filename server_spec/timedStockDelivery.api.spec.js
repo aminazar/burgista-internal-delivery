@@ -74,6 +74,7 @@ describe("REST API/ Stock API", () => {
             branch.username = 'alisalehi';
             branch.password = '12345';
             branch.is_branch = true;
+            branch.is_kitchen = true; // Kitchen
             return branch.save();
           })//Add an unit (branch unit)
           .then((res) => {
@@ -83,6 +84,7 @@ describe("REST API/ Stock API", () => {
             u.username = 'sarehsalehi';
             u.password = '12345';
             u.is_branch = true;
+            u.is_kitchen = false;// Front
             return u.save();
           })//Add an unit (branch unit)
           .then((res) => {
@@ -92,6 +94,7 @@ describe("REST API/ Stock API", () => {
             u.username = 'sadrasalehi';
             u.password = '12345';
             u.is_branch = false;
+            u.is_kitchen = true;// Prep. Kitchen
             return u.save();
           })//Add an unit (prep unit)
           .then((res) => {
@@ -101,6 +104,7 @@ describe("REST API/ Stock API", () => {
             u.username = 'negarsalehi';
             u.password = '12345';
             u.is_branch = false;
+            u.is_kitchen = false; // Main Depot.
             return u.save();
           }) //Add another unit (prep unit)
           .then((res) => {
@@ -110,6 +114,7 @@ describe("REST API/ Stock API", () => {
             branch.username = 'amin';
             branch.password = '12345';
             branch.is_branch = true;
+            branch.is_kitchen = true; // Kitchen
             return branch.save();
           })//Add an unit (branch unit)
           .then((res) => {
@@ -704,7 +709,7 @@ describe("REST API/ Stock API", () => {
         }
         else if (response) {
           expect(response.statusCode).toBe(200);
-          req.get(base_url + 'unit' + test_query + '&isBranch=true', (err, res) => {
+          req.get(base_url + 'unit' + test_query + '&isBranch=true&isKitchen=true', (err, res) => {
             res = JSON.parse(res.body);
             console.log('########');
             console.log(res);
@@ -713,10 +718,10 @@ describe("REST API/ Stock API", () => {
               done();
             }
             else {
-              expect(res.length).toBe(3);
-              expect(res[2].uid).toBe(test_uid5);
-              if (res[2].uid === test_uid5) {
-                let deliveryUrl = `${base_url}delivery/${testDate}/${res[2].uid}${test_query}`;
+              expect(res.length).toBe(2);
+              expect(res[1].uid).toBe(test_uid5);
+              if (res[1].uid === test_uid5) {
+                let deliveryUrl = `${base_url}delivery/${testDate}/${res[1].uid}${test_query}`;
                 req.get(deliveryUrl, (err, res) => {
                   res = JSON.parse(res.body);
                   if (err || !res) {
