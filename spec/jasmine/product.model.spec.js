@@ -113,7 +113,7 @@ describe('Product model', () => {
       .then((res) => {
         expect(res[0].isOverridden).toBe(true);
         expect(res[0].default_max).toBe(5);
-        expect(res[0].default_mon_multiple).toBe(2);
+        expect(parseInt(res[0].default_mon_multiple, 10)).toBe(2);
         Product.test = false;
         done();
       })

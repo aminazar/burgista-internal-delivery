@@ -459,7 +459,7 @@ describe("Branch Stock Delivery Date Model", () => {
           expect(res[0].default_max).toBe(product_data_1.default_max);
           expect(res[0].max).toBe(override_1.max);
           expect(Stock.calcMax(res[0])).toBe(override_1.max);
-          expect(Stock.calcMin(res[0], new Date('7Mar17'))).toBe(18);
+          expect(Stock.calcMin(res[0], new Date('7Mar17'))).toBe(60);
         }
         done();
       })
@@ -480,7 +480,7 @@ describe("Branch Stock Delivery Date Model", () => {
           expect(res[0].stock).toBe(3);
           expect(res[0].isPrinted).toBe(false);
           expect(res[0].max).toBe(override_1.max);
-          expect(res[0].min).toBe(18);
+          expect(res[0].min).toBe(60);
           expect(res[0].productCode).toBe(product_data_1.code);
           expect(res[0].realDelivery).toBe(null);
           expect(res[0].id).not.toBe(null);
@@ -561,7 +561,7 @@ describe("Branch Stock Delivery Date Model", () => {
           expect(res[0].stock).toBe(null);
           expect(res[0].isPrinted).toBe(false);
           expect(res[0].max).toBe(override_1.max);
-          expect(res[0].min).toBe(18);
+          expect(res[0].min).toBe(60);
           expect(res[0].productCode).toBe(product_data_1.code);
           expect(res[0].realDelivery).toBe(null);
           expect(res[0].id).not.toBe(null);

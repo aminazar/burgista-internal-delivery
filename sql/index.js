@@ -45,6 +45,7 @@ chooseDb = (tableName, isTest) => tableName === 'db' ? env.initDb : (isTest ? en
 genericInsert = (tableName, idColumn, isTest)=> {
   let db = chooseDb(tableName, isTest);
   return (data)=> {
+    console.log(`generating the insert query, data: ${data}`);
     return db.one(env.pgp.helpers.insert(data, null, tableName) + ' returning ' + idColumn);
   }
 };

@@ -36,6 +36,7 @@ module.exports = {
     getByUnitId: sql('products/getByUnitId.sql'),
     getByName:   sql('products/getByName.sql'),
     getById:     sql('products/getById.sql'),
+    getWithPrepUnitData:  sql('products/getWithPrepUnitData.sql')
   },
   branch_stock_rules: {
     create:             sql('branch_stock_rules/create.sql'),

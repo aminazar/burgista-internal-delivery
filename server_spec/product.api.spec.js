@@ -254,7 +254,7 @@ describe("REST API", ()=> {
         expect(data.length).toBe(2);
         expect(data[0].isOverridden).toBe(true);
         expect(data[0].default_max).toBe(20);
-        expect(data[0].default_mon_multiple).toBe(2);
+        expect(parseInt(data[0].default_mon_multiple, 10)).toBe(2);
         expect(response.statusCode).toBe(200);
         done();
       });
@@ -291,8 +291,8 @@ describe("REST API", ()=> {
         expect(data[0].isOverridden).toBe(true);
         expect(data[0].name).toBe('Frying oil');
         expect(data[0].default_max).toBe(30);
-        expect(data[0].default_mon_multiple).toBe(2);
-        expect(data[0].default_sun_multiple).toBe(10);
+        expect(parseInt(data[0].default_mon_multiple), 10).toBe(2);
+        expect(parseInt(data[0].default_sun_multiple), 10).toBe(10);
         done();
       })
     });
@@ -391,7 +391,7 @@ describe("REST API", ()=> {
         expect(data[0].isOverridden).toBe(true);
         expect(data[0].name).toBe('Meat');
         expect(data[0].default_max).toBe(20);
-        expect(data[0].default_mon_multiple).toBe(2);
+        expect(parseInt(data[0].default_mon_multiple, 10)).toBe(2);
         done();
       })
     });
@@ -423,7 +423,7 @@ describe("REST API", ()=> {
         expect(data.length).toBe(1);
         expect(data[0].isOverridden).toBe(undefined);
         expect(data[0].default_max).toBe(5);
-        expect(data[0].default_mon_multiple).toBe(1);
+        expect(parseInt(data[0].default_mon_multiple, 10)).toBe(1);
         done();
       })
     });
