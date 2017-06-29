@@ -16,6 +16,9 @@ describe("Test 'products' table", () => {
         return sql.test.products.create();
       })
       .then(() => {
+        return sql.test.prices.create();
+      })
+      .then(() => {
         return sql.test.units.add({
           name: 'Baker Street',
           username: 'JohnSmith',
@@ -184,7 +187,10 @@ describe("Test 'products' table", () => {
 
   afterAll((done) => {
     if(product_id){
-      sql.test.products.drop()
+      sql.test.prices.drop()
+        .then(() => {
+          return sql.test.products.drop()
+        })
         .then(() => {
           return sql.test.units.drop();
         })

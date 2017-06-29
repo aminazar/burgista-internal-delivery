@@ -14,10 +14,13 @@ describe('Product model', () => {
     sql.test.units.create()                       //Create units table
       .then((res) => {
         return sql.test.products.create();
-      })                       //Create products table
+      }) // Create products table
+      .then((res) => {
+          return sql.test.prices.create();
+      })   // Create prices table
       .then((res) => {
         return sql.test.branch_stock_rules.create();
-      })                       //Create branch_stock_rules table
+      })   //Create branch_stock_rules table
       .then((res) => {
         return sql.test.units.add({
           name: 'Baker Street',
@@ -111,9 +114,10 @@ describe('Product model', () => {
     Product.test = true;
     Product.select('JohnSmith', unit_id)
       .then((res) => {
-        expect(res[0].isOverridden).toBe(true);
-        expect(res[0].default_max).toBe(5);
-        expect(parseInt(res[0].default_mon_multiple, 10)).toBe(2);
+        let prod1 = res[0].pid === product_id ? res[0] : res[1];
+        expect(prod1.isOverridden).toBe(true);
+        expect(prod1.default_max).toBe(5);
+        expect(parseInt(prod1.default_mon_multiple, 10)).toBe(2);
         Product.test = false;
         done();
       })
@@ -125,6 +129,9 @@ describe('Product model', () => {
 
   afterAll((done) => {
     sql.test.branch_stock_rules.drop()
+      .then(() => {
+        return sql.test.prices.drop();
+      })
       .then(() => {
         return sql.test.products.drop();
       })

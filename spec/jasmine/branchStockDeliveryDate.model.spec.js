@@ -158,6 +158,9 @@ describe("Branch Stock Delivery Date Model", () => {
         return lib.helpers.createOrExist('products', sql.test);
       })//create products table
       .then(() => {
+          return lib.helpers.createOrExist('prices', sql.test);
+      })//create prices
+      .then(() => {
         product_data_1.prep_unit_id = prep_uid;
         return sql.test.products.add(product_data_1)
       })//adding product 1
@@ -654,6 +657,9 @@ describe("Branch Stock Delivery Date Model", () => {
       })
       .then(() => {
         return dropOrNotExist('branch_stock_rules')
+      })
+      .then(() => {
+        return dropOrNotExist('prices')
       })
       .then(() => {
         return dropOrNotExist('products')

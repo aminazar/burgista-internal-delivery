@@ -121,16 +121,19 @@ describe("REST API", ()=> {
             return product.save();
           })                        //Add another product
           .then((res) => {
-            product_2_id = res;
+              product_2_id = res;
 
-            let a = new lib.Unit(true);
-            a.name = 'Admin';
-            a.username = 'admin';
-            a.password = 'admin';
-            a.is_branch = false;
-
-            return a.save();
-          })                        //Add admin user (into units table)
+              let price = new lib.Price(true);
+              return price.insert(product_2_id, 60);
+          }) // set price for product 2
+          .then((res)=>{
+            let adminUnit = new lib.Unit(true);
+            adminUnit.name = 'Admin';
+            adminUnit.username = 'admin';
+            adminUnit.password = 'admin';
+            adminUnit.is_branch = false;
+            return adminUnit.save();
+          }) // creating admin unit
           .then((res) => {
             admin_id = res;
             setup = false;
@@ -218,6 +221,93 @@ describe("REST API", ()=> {
         expect(response.statusCode).toBe(200);
         done();
       })
+    });
+
+    it('product #2 should have price set to 60', (done) => {
+        req.get({
+            url: base_url + 'product' + test_query
+        }, (error, response) => {
+            if(error){
+                fail(error.message);
+                done();
+            }
+            let data = JSON.parse(response.body);
+            expect(response.statusCode).toBe(200);
+            expect(data.length).toBe(2);
+            if (data.length === 2) {
+              let prod2 = data[1].pid === product_2_id ? data[1] : data[0];
+              expect(prod2.price.substring(1)).toBe('60.00');
+            }
+            done();
+        })
+    });
+
+    it('should be able to set price for product 1', (done) => {
+        req.post({
+            url: base_url + 'product/' + product_1_id + test_query,
+            form: {
+              price: 20
+            }
+        }, (error, response) => {
+            if(error){
+                fail(error.message);
+                done();
+            }
+            expect(response.statusCode).toBe(200);
+            req.get({
+                url: base_url + 'product' + test_query
+            }, (error, response) => {
+                if(error){
+                    fail(error.message);
+                    done();
+                }
+                let data = JSON.parse(response.body);
+                expect(response.statusCode).toBe(200);
+                expect(data.length).toBe(2);
+                if (data.length === 2) {
+                    let prod1 = data[0].pid === product_1_id ? data[0] : data[1];
+                    expect(prod1.price).not.toBeNull();
+                    if (prod1.price) {
+                      expect(prod1.price.substring(1)).toBe('20.00');
+                    }
+                }
+                done();
+            })
+        })
+    });
+
+    it('should update price of product 2', (done) => {
+        req.post({
+            url: base_url + 'product/' + product_2_id + test_query,
+            form: {
+                price: 65
+            }
+        }, (error, response) => {
+            if(error){
+                fail(error.message);
+                done();
+            }
+            expect(response.statusCode).toBe(200);
+            req.get({
+                url: base_url + 'product' + test_query
+            }, (error, response) => {
+                if(error){
+                    fail(error.message);
+                    done();
+                }
+                let data = JSON.parse(response.body);
+                expect(response.statusCode).toBe(200);
+                expect(data.length).toBe(2);
+                if (data.length === 2) {
+                    let prod2 = data[1].pid === product_2_id ? data[1] : data[0];
+                    expect(prod2.price).not.toBeNull();
+                    if (prod2.price) {
+                        expect(prod2.price.substring(1)).toBe('65.00');
+                    }
+                }
+                done();
+            })
+        })
     });
 
     it("should a branch can login", (done) => {
