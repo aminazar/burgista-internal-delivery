@@ -10,7 +10,7 @@ let req = request.defaults({jar: true});//enabling cookies
 describe("REST API/ Stock API", () => {
 
   describe("stock", () => {
-    let test_uid1, test_uid2, test_uid3, test_uid4, test_uid5, test_pid1, test_pid2, test_pid3, test_pid4, test_data, test_bsddid, adminUid;
+    let branch1_k_id, branch2_f_id, prep_kitchen_id, main_depot_id, branch3_k_id, prod1_id, prod2_id, prod3_id, prod4_id, test_data, test_bsddid, adminUid;
     let override_1 = {
       date_rule: 'DTSTART=20170303;FREQ=WEEKLY;INTERVAL=1;BYDAY=SA,MO',
       usage: 2,
@@ -33,6 +33,9 @@ describe("REST API/ Stock API", () => {
         })
         .then(() => {
           return dropOrNotExist('branch_stock_rules')
+        })
+        .then(() => {
+          return dropOrNotExist('prices')
         })
         .then(() => {
           return dropOrNotExist('products')
@@ -63,6 +66,9 @@ describe("REST API/ Stock API", () => {
             return create('products');
           })//Create products table
           .then((res) => {
+            return create('prices');
+          })//Create prices table
+          .then((res) => {
             return create('branch_stock_rules');
           })//Create branch_stock_rules table
           .then((res) => {
@@ -78,7 +84,7 @@ describe("REST API/ Stock API", () => {
             return branch.save();
           })//Add an unit (branch unit)
           .then((res) => {
-            test_uid1 = res;
+            branch1_k_id = res;
             u = new lib.Unit(true);
             u.name = 'Sareh Salehi';
             u.username = 'sarehsalehi';
@@ -88,7 +94,7 @@ describe("REST API/ Stock API", () => {
             return u.save();
           })//Add an unit (branch unit)
           .then((res) => {
-            test_uid2 = res;
+            branch2_f_id = res;
             u = new lib.Unit(true);
             u.name = 'Sadra Salehi';
             u.username = 'sadrasalehi';
@@ -98,7 +104,7 @@ describe("REST API/ Stock API", () => {
             return u.save();
           })//Add an unit (prep unit)
           .then((res) => {
-            test_uid3 = res;
+            prep_kitchen_id = res;
             u = new lib.Unit(true);
             u.name = 'Negar Salehi';
             u.username = 'negarsalehi';
@@ -108,7 +114,7 @@ describe("REST API/ Stock API", () => {
             return u.save();
           }) //Add another unit (prep unit)
           .then((res) => {
-            test_uid4 = res;
+            main_depot_id = res;
             let branch = new lib.Unit(true);
             branch.name = 'Amin';
             branch.username = 'amin';
@@ -118,11 +124,11 @@ describe("REST API/ Stock API", () => {
             return branch.save();
           })//Add an unit (branch unit)
           .then((res) => {
-            test_uid5 = res;
+            branch3_k_id = res;
             p = new lib.Product(true);
             p.name = 'Frying oil';
             p.code = 'fo01';
-            p.prep_unit_id = test_uid3;
+            p.prep_unit_id = prep_kitchen_id;
             p.size = 10;
             p.measuring_unit = 'Kg';
             p.default_max = 12;
@@ -131,11 +137,11 @@ describe("REST API/ Stock API", () => {
             return p.save();
           }) //Add a product
           .then((res) => {
-            test_pid1 = res;
+            prod1_id = res;
             let product = new lib.Product(true);
             product.name = 'Meat';
             product.code = 'm01';
-            product.prep_unit_id = test_uid4;
+            product.prep_unit_id = main_depot_id;
             product.size = 20;
             product.measuring_unit = 'Kg';
             product.default_max = 5;
@@ -144,11 +150,11 @@ describe("REST API/ Stock API", () => {
             return product.save();
           }) //Add another product
           .then((res) => {
-            test_pid2 = res;
+            prod2_id = res;
             let product = new lib.Product(true);
             product.name = 'orange';
             product.code = 'o01';
-            product.prep_unit_id = test_uid3;
+            product.prep_unit_id = prep_kitchen_id;
             product.size = 20;
             product.measuring_unit = 'gr';
             product.default_max = 50;
@@ -157,11 +163,11 @@ describe("REST API/ Stock API", () => {
             return product.save();
           }) //Add another product
           .then((res) => {
-            test_pid3 = res;
+            prod3_id = res;
             let product = new lib.Product(true);
             product.name = 'apple';
             product.code = 'a01';
-            product.prep_unit_id = test_uid4;
+            product.prep_unit_id = main_depot_id;
             product.size = 10;
             product.measuring_unit = 'gr';
             product.default_max = 20;
@@ -170,7 +176,7 @@ describe("REST API/ Stock API", () => {
             return product.save();
           }) //Add another product
           .then((res) => {
-            test_pid4 = res;
+            prod4_id = res;
             let a = new lib.Unit(true);
             a.name = 'Admin';
             a.username = 'admin';
@@ -181,15 +187,15 @@ describe("REST API/ Stock API", () => {
           .then((res) => {
             adminUid = res;
             let product = new lib.Product(true);
-            return product.update(override_1, test_pid3, 'admin', test_uid1)
+            return product.update(override_1, prod3_id, 'admin', branch1_k_id)
           })//override product 3 for branch 1
           .then(() => {
             let product = new lib.Product(true);
-            return product.update(override_2, test_pid3, 'admin', test_uid2)
+            return product.update(override_2, prod3_id, 'admin', branch2_f_id) // todo it should be changed
           })//override product 3 for branch 2
           .then(() => {
             let product = new lib.Product(true);
-            return product.update(override_3, test_pid1, 'admin', test_uid5)
+            return product.update(override_3, prod1_id, 'admin', branch3_k_id)
           })//override product 1 for branch 5
           .then(() => {
             setup = false;
@@ -230,7 +236,7 @@ describe("REST API/ Stock API", () => {
         });
     });
 
-    it('branch1 should be able to login/1', (done) => {
+    it('branch1 (kitchen) should be able to login/1', (done) => {
       req.post({
         url: base_url + 'login' + test_query + '&testDate=2017-03-09', //alisalehi logins at 2017-03-09
         form: {
@@ -297,11 +303,11 @@ describe("REST API/ Stock API", () => {
                 })
                 .then((res) => {
                   expect(res.length).toBe(5);
-                  expect(res[0].product_id).toBe(test_pid1);
-                  expect(res[1].product_id).toBe(test_pid2);
-                  expect(res[2].product_id).toBe(test_pid1);
-                  expect(res[3].product_id).toBe(test_pid2);
-                  expect(res[4].product_id).toBe(test_pid3);
+                  expect(res[0].product_id).toBe(prod1_id);
+                  expect(res[1].product_id).toBe(prod2_id);
+                  expect(res[2].product_id).toBe(prod1_id);
+                  expect(res[3].product_id).toBe(prod2_id);
+                  expect(res[4].product_id).toBe(prod3_id);
                   expect(moment(res[4].counting_date).format('YYYY-MM-DD')).toBe('2017-03-20');
                   //add 1 *****************************
                   req.get(base_url + 'logout' + test_query, (err, res) => {  //alisalehi logouts at 2017-03-20
@@ -341,11 +347,11 @@ describe("REST API/ Stock API", () => {
                       })
                       .then((res) => {
                         expect(res.length).toBe(5);
-                        expect(res[0].product_id).toBe(test_pid1);
-                        expect(res[1].product_id).toBe(test_pid2);
-                        expect(res[2].product_id).toBe(test_pid1);
-                        expect(res[3].product_id).toBe(test_pid2);
-                        expect(res[4].product_id).toBe(test_pid3);
+                        expect(res[0].product_id).toBe(prod1_id);
+                        expect(res[1].product_id).toBe(prod2_id);
+                        expect(res[2].product_id).toBe(prod1_id);
+                        expect(res[3].product_id).toBe(prod2_id);
+                        expect(res[4].product_id).toBe(prod3_id);
                         let date = '2017-03-20';
                         req.get(base_url + 'stock/' + date + test_query, (err, res) => {  //test get API
                         if (err) {
@@ -360,7 +366,7 @@ describe("REST API/ Stock API", () => {
                           url: base_url + 'stock/' + test_query + '&testDate=2017-03-20',
                           form: {
                             product_count: 26,
-                            product_id: test_pid4
+                            product_id: prod4_id
                           }
                           }, function (err, res) {
                           if (err) {
@@ -472,7 +478,7 @@ describe("REST API/ Stock API", () => {
                   expect(res[1].submission_time).toBe(null);
                   expect(res[1].product_count).toBe(null);
                   expect(res[0].min_stock).toBe(11);
-                  expect(res[0].branch_id).toBe(test_uid1);
+                  expect(res[0].branch_id).toBe(branch1_k_id);
                   let date = '2017-04-08';
                   req.get(base_url + 'stock/' + date + test_query, (error, response) => {
                     if (error) {
@@ -719,8 +725,8 @@ describe("REST API/ Stock API", () => {
             }
             else {
               expect(res.length).toBe(2);
-              expect(res[1].uid).toBe(test_uid5);
-              if (res[1].uid === test_uid5) {
+              expect(res[1].uid).toBe(branch3_k_id);
+              if (res[1].uid === branch3_k_id) {
                 let deliveryUrl = `${base_url}delivery/${testDate}/${res[1].uid}${test_query}`;
                 req.get(deliveryUrl, (err, res) => {
                   res = JSON.parse(res.body);

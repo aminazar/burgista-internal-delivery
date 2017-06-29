@@ -34,6 +34,7 @@ module.exports = {
   products: {
     create:      sql('products/create.sql'),
     drop:        sql('products/drop.sql'),
+    select:      sql('products/select.sql'),
     getByUnitId: sql('products/getByUnitId.sql'),
     getByName:   sql('products/getByName.sql'),
     getById:     sql('products/getById.sql'),
@@ -67,6 +68,8 @@ module.exports = {
   },
   prices: {
       create: sql('prices/create.sql'),
-      drop: sql('prices/drop.sql')
+      drop: sql('prices/drop.sql'),
+      findByProductId: sql('prices/findByProductId.sql'),
+      updatePriceOfProduct: sql('prices/updatePriceOfProduct.sql')
   }
 };
