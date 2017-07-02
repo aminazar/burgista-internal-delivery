@@ -45,6 +45,7 @@ chooseDb = (tableName, isTest) => tableName === 'db' ? env.initDb : (isTest ? en
 genericInsert = (tableName, idColumn, isTest)=> {
   let db = chooseDb(tableName, isTest);
   return (data)=> {
+    console.log(`generating the insert query, data: ${data}`);
     return db.one(env.pgp.helpers.insert(data, null, tableName) + ' returning ' + idColumn);
   }
 };
@@ -73,7 +74,7 @@ genericDelete = (tableName,idColumn,isTest)=>{
 let tablesWithSqlCreatedByHelpers = [
   {
     name: 'units',
-    insert: true,
+    insert: true, // insert is renamed to add when exported
     update: true,
     select: false,
     delete: true,
@@ -91,7 +92,7 @@ let tablesWithSqlCreatedByHelpers = [
     name: 'products',
     insert: true,
     update: true,
-    select: true,
+    select: false,
     delete: true,
     idColumn: 'pid',
   },
@@ -110,7 +111,16 @@ let tablesWithSqlCreatedByHelpers = [
     select: true,
     delete: true,
     idColumn: 'bsddid',
-  }
+  },
+    {
+      name: 'prices',
+        insert: true,
+        update: true,
+        select: true,
+        delete: true,
+        idColumn: 'price_id'
+    }
+
 ];
 
 tablesWithSqlCreatedByHelpers.forEach((table)=> {

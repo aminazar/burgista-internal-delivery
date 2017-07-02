@@ -55,13 +55,13 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
 }
 
 //Login API & last login API
-router.post('/login', passport.authenticate('local', {}), apiResponse('Unit', 'saveDateAfterLogin', false, ['user.name', 'user.username', 'user.is_branch', 'user.uid']));
+router.post('/login', passport.authenticate('local', {}), apiResponse('Unit', 'saveDateAfterLogin', false, ['user.name', 'user.username', 'user.is_branch', 'user.uid', 'user.is_kitchen']));
 router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
 router.get('/logout', (req, res) => {
   req.logout();
   res.sendStatus(200)
 });
-router.get('/validUser', apiResponse('Unit', 'afterLogin', false, ['user.name', 'user.username', 'user.is_branch']));
+router.get('/validUser', apiResponse('Unit', 'afterLogin', false, ['user.name', 'user.username', 'user.is_branch', 'user.is_kitchen']));
 
 //checks to be sure users are authenticated
 router.all("*", function(req, res, next){
@@ -72,7 +72,7 @@ router.all("*", function(req, res, next){
 });
 //Unit API
 router.put('/unit', apiResponse('Unit', 'insert', true, ['body']));
-router.get('/unit', apiResponse('Unit', 'select', false, ['query.isBranch']));
+router.get('/unit', apiResponse('Unit', 'select', false, ['query.isBranch', 'query.isKitchen']));
 router.post('/unit/:uid', apiResponse('Unit', 'update', true, ['params.uid', 'body']));
 router.delete('/unit/:uid', apiResponse('Unit', 'delete', true, ['params.uid']));
 //Product API
@@ -90,7 +90,7 @@ router.put('/stock', apiResponse('Stock', 'saveData', false, ['body', 'user.uid'
 router.post('/stock/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'user.uid', 'params.bsddid']));
 router.put('/stock/batch', apiResponse('Stock', 'batchCU', false, ['body', 'user.uid']));
 //Delivery API
-router.get('/delivery/:date/:branchId', apiResponse('Stock', 'deliverySelect', false, ['user.uid', 'params.branchId', 'params.date']));
+router.get('/delivery/:date/:branchId', apiResponse('Stock', 'deliverySelect', false, ['user.uid', 'params.branchId', 'params.date', 'user.is_kitchen']));
 router.put('/delivery/:uid', apiResponse('Stock', 'saveData', false, ['body', 'params.uid']));
 router.post('/delivery/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'notUsed', 'params.bsddid']));
 

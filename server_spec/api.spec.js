@@ -53,6 +53,7 @@ describe("REST API", ()=> {
         u.password = 'test';
         u.name = 'amin';
         u.is_branch = false;
+        u.is_kitchen = false;
         sql.test.units.create()
         .then(() => {
           setup = false;
@@ -64,6 +65,7 @@ describe("REST API", ()=> {
             a.password = 'atest';
             a.name = '';
             a.is_branch = false;
+            a.is_kitchen = false;
             a.save()
             .then(aid=> {
               adminUid = aid;
@@ -74,6 +76,7 @@ describe("REST API", ()=> {
                 b.username = 'bk';
                 b.password = '123';
                 b.is_branch = true;
+                b.is_kitchen = false;
 
                 return b.save();
               })
@@ -208,7 +211,7 @@ describe("REST API", ()=> {
     });
 
     it("allows admin to list all prep units (except admin user)", done => {
-      req.get(base_url + 'unit' + test_query + '&isBranch=false', (err, res) => {
+      req.get(base_url + 'unit' + test_query + '&isBranch=false&isKitchen=false', (err, res) => {
         if(resExpect(res, 200)) {
           let data = JSON.parse(res.body);
           expect(data.length).toBe(1);

@@ -29,11 +29,12 @@ let resExpect = (res, statusCode) => {
 describe("REST API", ()=> {
 
   describe("product", () => {
-    let uid;
-    let pid;
-    let bid;
-    let anotherPid;
-    let adminUid;
+    let main_depot_id;
+    let product_1_id;
+    let product_2_id;
+    let branch_id;
+    let prep_kitchen_id;
+    let admin_id;
     let u;
     let p;
     let tearDown = false;
@@ -49,6 +50,9 @@ describe("REST API", ()=> {
             return lib.helpers.createOrExist('products', sql.test);
           })                        //Create products table
           .then((res) => {
+            return lib.helpers.createOrExist('prices', sql.test);
+          })                        //Create products table
+          .then((res) => {
             return lib.helpers.createOrExist('branch_stock_rules', sql.test);
           })                        //Create branch_stock_rules table
           .then((res) => {
@@ -61,27 +65,38 @@ describe("REST API", ()=> {
             branch.username = 'bk';
             branch.password = '123';
             branch.is_branch = true;
-
+            branch.is_kitchen = true;
             return branch.save();
           })                        //Add an unit (branch unit)
+            .then((res) => {
+              branch_id = res;
+
+              u = new lib.Unit(true);
+              u.name = 'Prep Kitchen';
+              u.username = 'pk';
+              u.password = '123';
+              u.is_branch = false;
+              u.is_kitchen = true;
+              return u.save();
+            })
           .then((res) => {
-            bid = res;
+            prep_kitchen_id = res;
 
             u = new lib.Unit(true);
             u.name = 'Main Depot';
             u.username = 'md';
             u.password = '123';
             u.is_branch = false;
-
+            u.is_kitchen = false;
             return u.save();
           })                        //Add another unit (prep unit)
           .then((res) => {
-            uid = res;
+            main_depot_id = res;
             p = new lib.Product(true);
 
             p.name = 'Frying oil';
             p.code = 'fo01';
-            p.prep_unit_id = uid;
+            p.prep_unit_id = main_depot_id;
             p.size = 10;
             p.measuring_unit = 'Kg';
             p.default_max = 12;
@@ -91,12 +106,12 @@ describe("REST API", ()=> {
             return p.save();
           })                        //Add a product
           .then((res) => {
-            pid = res;
+            product_1_id = res;
 
             let product = new lib.Product(true);
             product.name = 'Meat';
             product.code = 'm01';
-            product.prep_unit_id = uid;
+            product.prep_unit_id = main_depot_id;
             product.size = 20;
             product.measuring_unit = 'Kg';
             product.default_max = 5;
@@ -106,18 +121,21 @@ describe("REST API", ()=> {
             return product.save();
           })                        //Add another product
           .then((res) => {
-            anotherPid = res;
+              product_2_id = res;
 
-            let a = new lib.Unit(true);
-            a.name = 'Admin';
-            a.username = 'admin';
-            a.password = 'admin';
-            a.is_branch = false;
-
-            return a.save();
-          })                        //Add admin user (into units table)
+              let price = new lib.Price(true);
+              return price.insert(product_2_id, 60);
+          }) // set price for product 2
+          .then((res)=>{
+            let adminUnit = new lib.Unit(true);
+            adminUnit.name = 'Admin';
+            adminUnit.username = 'admin';
+            adminUnit.password = 'admin';
+            adminUnit.is_branch = false;
+            return adminUnit.save();
+          }) // creating admin unit
           .then((res) => {
-            adminUid = res;
+            admin_id = res;
             setup = false;
             done();
           })
@@ -152,7 +170,7 @@ describe("REST API", ()=> {
         form: {
           name: 'Ketchup Sauce',
           code: 'ks01',
-          prep_unit_id: uid,
+          prep_unit_id: main_depot_id,
           size: 10,
           measuring_unit: 'Packs',
           default_max: 10,
@@ -198,12 +216,98 @@ describe("REST API", ()=> {
           fail(error.message);
           done();
         }
-        console.log(response.body);
         let data = JSON.parse(response.body);
         expect(data.length).toBe(2);
         expect(response.statusCode).toBe(200);
         done();
       })
+    });
+
+    it('product #2 should have price set to 60', (done) => {
+        req.get({
+            url: base_url + 'product' + test_query
+        }, (error, response) => {
+            if(error){
+                fail(error.message);
+                done();
+            }
+            let data = JSON.parse(response.body);
+            expect(response.statusCode).toBe(200);
+            expect(data.length).toBe(2);
+            if (data.length === 2) {
+              let prod2 = data[1].pid === product_2_id ? data[1] : data[0];
+              expect(prod2.price.substring(1)).toBe('60.00');
+            }
+            done();
+        })
+    });
+
+    it('should be able to set price for product 1', (done) => {
+        req.post({
+            url: base_url + 'product/' + product_1_id + test_query,
+            form: {
+              price: 20
+            }
+        }, (error, response) => {
+            if(error){
+                fail(error.message);
+                done();
+            }
+            expect(response.statusCode).toBe(200);
+            req.get({
+                url: base_url + 'product' + test_query
+            }, (error, response) => {
+                if(error){
+                    fail(error.message);
+                    done();
+                }
+                let data = JSON.parse(response.body);
+                expect(response.statusCode).toBe(200);
+                expect(data.length).toBe(2);
+                if (data.length === 2) {
+                    let prod1 = data[0].pid === product_1_id ? data[0] : data[1];
+                    expect(prod1.price).not.toBeNull();
+                    if (prod1.price) {
+                      expect(prod1.price.substring(1)).toBe('20.00');
+                    }
+                }
+                done();
+            })
+        })
+    });
+
+    it('should update price of product 2', (done) => {
+        req.post({
+            url: base_url + 'product/' + product_2_id + test_query,
+            form: {
+                price: 65
+            }
+        }, (error, response) => {
+            if(error){
+                fail(error.message);
+                done();
+            }
+            expect(response.statusCode).toBe(200);
+            req.get({
+                url: base_url + 'product' + test_query
+            }, (error, response) => {
+                if(error){
+                    fail(error.message);
+                    done();
+                }
+                let data = JSON.parse(response.body);
+                expect(response.statusCode).toBe(200);
+                expect(data.length).toBe(2);
+                if (data.length === 2) {
+                    let prod2 = data[1].pid === product_2_id ? data[1] : data[0];
+                    expect(prod2.price).not.toBeNull();
+                    if (prod2.price) {
+                        expect(prod2.price.substring(1)).toBe('65.00');
+                    }
+                }
+                done();
+            })
+        })
     });
 
     it("should a branch can login", (done) => {
@@ -226,7 +330,7 @@ describe("REST API", ()=> {
 
     it("should add a new override on a specific product", (done) => {
       req.post({
-        url: base_url + 'override/' + pid + test_query + '&uid=' + bid ,
+        url: base_url + 'override/' + product_1_id + test_query + '&uid=' + branch_id ,
         form: {
           max: 20,
           mon_multiple: 2
@@ -243,18 +347,18 @@ describe("REST API", ()=> {
     });
 
     it("should get all products (with overridden values)", (done) => {
-      req.get({url: base_url + 'override' + test_query + '&uid=' + bid}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
         }
 
         let data = JSON.parse(response.body);
-
         expect(data.length).toBe(2);
-        expect(data[0].isOverridden).toBe(true);
-        expect(data[0].default_max).toBe(20);
-        expect(data[0].default_mon_multiple).toBe(2);
+        let prod1 = data[0].pid === 1 ?  data[0] : data[1];
+        expect(prod1.isOverridden).toBe(true);
+        expect(prod1.default_max).toBe(20);
+        expect(parseInt(prod1.default_mon_multiple, 10)).toBe(2);
         expect(response.statusCode).toBe(200);
         done();
       });
@@ -262,7 +366,7 @@ describe("REST API", ()=> {
 
     it("should update a product overridden values", (done) => {
       req.post({
-        url: base_url + 'override/' + pid + test_query + '&uid=' + bid,
+        url: base_url + 'override/' + product_1_id + test_query + '&uid=' + branch_id,
         form: {
           max: 30,
           sun_multiple: 10
@@ -279,20 +383,20 @@ describe("REST API", ()=> {
     });
 
     it("should get all products with overridden values", (done) => {
-      req.get({url: base_url + 'override' + test_query + '&uid=' + bid}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
         }
 
         let data = JSON.parse(response.body);
-
         expect(data.length).toBe(2);
-        expect(data[0].isOverridden).toBe(true);
-        expect(data[0].name).toBe('Frying oil');
-        expect(data[0].default_max).toBe(30);
-        expect(data[0].default_mon_multiple).toBe(2);
-        expect(data[0].default_sun_multiple).toBe(10);
+        let prod1 = data[0].pid === 1 ? data[0] : data[1];
+        expect(prod1.isOverridden).toBe(true);
+        expect(prod1.name).toBe('Frying oil');
+        expect(prod1.default_max).toBe(30);
+        expect(parseInt(prod1.default_mon_multiple), 10).toBe(2);
+        expect(parseInt(prod1.default_sun_multiple), 10).toBe(10);
         done();
       })
     });
@@ -316,7 +420,7 @@ describe("REST API", ()=> {
     });
 
     it("should delete a product from products table", (done) => {
-      req.delete({url: base_url + 'product/' + pid + test_query}, (error, response) => {
+      req.delete({url: base_url + 'product/' + product_1_id + test_query}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -362,7 +466,7 @@ describe("REST API", ()=> {
 
     it("should add a new override on a specific product", (done) => {
       req.post({
-        url: base_url + 'override/' + anotherPid + test_query + '&uid=' + bid ,
+        url: base_url + 'override/' + product_2_id + test_query + '&uid=' + branch_id ,
         form: {
           max: 20,
           mon_multiple: 2
@@ -379,7 +483,7 @@ describe("REST API", ()=> {
     });
 
     it("should get all products with overridden values", (done) => {
-      req.get({url: base_url + 'override' + test_query + '&uid=' + bid}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -391,13 +495,13 @@ describe("REST API", ()=> {
         expect(data[0].isOverridden).toBe(true);
         expect(data[0].name).toBe('Meat');
         expect(data[0].default_max).toBe(20);
-        expect(data[0].default_mon_multiple).toBe(2);
+        expect(parseInt(data[0].default_mon_multiple, 10)).toBe(2);
         done();
       })
     });
 
     it("should delete a product overridden from branch_stock_rules table", (done) => {
-      req.delete({url: base_url + 'override/' + anotherPid + test_query + '&uid=' + bid}, (error, response) => {
+      req.delete({url: base_url + 'override/' + product_2_id + test_query + '&uid=' + branch_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -412,7 +516,7 @@ describe("REST API", ()=> {
     });
 
     it("should get all products with overridden values (but there is no overridden values)", (done) => {
-      req.get({url: base_url + 'override' + test_query + '&uid=' + bid}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -423,14 +527,14 @@ describe("REST API", ()=> {
         expect(data.length).toBe(1);
         expect(data[0].isOverridden).toBe(undefined);
         expect(data[0].default_max).toBe(5);
-        expect(data[0].default_mon_multiple).toBe(1);
+        expect(parseInt(data[0].default_mon_multiple, 10)).toBe(1);
         done();
       })
     });
 
     it("should raise error when updating a product without admin user and no uid", (done) => {
       req.post({
-        url: base_url + 'product/' + anotherPid + test_query,
+        url: base_url + 'product/' + product_2_id + test_query,
         form: {
           default_usage: 3
         }
@@ -446,7 +550,7 @@ describe("REST API", ()=> {
     });
 
     it("should raise error when deleting a product without admin user and no uid", (done) => {
-      req.delete({url: base_url + 'product/' + anotherPid + test_query}, (error, response) => {
+      req.delete({url: base_url + 'product/' + product_2_id + test_query}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -489,7 +593,7 @@ describe("REST API", ()=> {
 
     it("should update main product (not overridden values)", (done) => {
       req.post({
-        url: base_url + 'product/' + pid + test_query,
+        url: base_url + 'product/' + product_1_id + test_query,
         form: {
           default_max: 2,
           default_min: 1
@@ -528,7 +632,7 @@ describe("REST API", ()=> {
         form: {
           name: 'Ketchup Sauce',
           code: 'ks01',
-          prep_unit_id: uid,
+          prep_unit_id: main_depot_id,
           size: 10,
           measuring_unit: 'Packs',
           default_max: 10,
@@ -578,6 +682,9 @@ describe("REST API", ()=> {
           })
           .then(() => {
             return dropOrNotExist('branch_stock_delivery_date')
+          })
+          .then(() => {
+            return dropOrNotExist('prices');
           })
           .then(() => {
             return dropOrNotExist('products');

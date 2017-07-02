@@ -16,6 +16,9 @@ describe("Test 'products' table", () => {
         return sql.test.products.create();
       })
       .then(() => {
+        return sql.test.prices.create();
+      })
+      .then(() => {
         return sql.test.units.add({
           name: 'Baker Street',
           username: 'JohnSmith',
@@ -81,8 +84,8 @@ describe("Test 'products' table", () => {
   it('should get last product inserted', (done) => {
     sql.test.products.getByName({name: 'Ketchup Sauce'})
       .then((res) => {
-        expect(res[0].default_mon_multiple).toBe(1);
-        expect(res[0].default_usage).toBe(1);
+        expect(parseInt(res[0].default_mon_multiple, 10)).toBe(1);
+        expect(parseInt(res[0].default_usage, 10)).toBe(1);
         done();
       })
       .catch((err) => {
@@ -184,7 +187,10 @@ describe("Test 'products' table", () => {
 
   afterAll((done) => {
     if(product_id){
-      sql.test.products.drop()
+      sql.test.prices.drop()
+        .then(() => {
+          return sql.test.products.drop()
+        })
         .then(() => {
           return sql.test.units.drop();
         })

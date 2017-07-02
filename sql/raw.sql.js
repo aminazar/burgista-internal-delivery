@@ -28,14 +28,17 @@ module.exports = {
     get:      sql('units/get.sql'),
     getUnits: sql('units/get.units.sql'),
     select:   sql('units/select.sql'),
+    getByType: sql('units/getByType.sql'),
     get_info_by_uid: sql('units/get_info_by_uid.sql'),
   },
   products: {
     create:      sql('products/create.sql'),
     drop:        sql('products/drop.sql'),
+    select:      sql('products/select.sql'),
     getByUnitId: sql('products/getByUnitId.sql'),
     getByName:   sql('products/getByName.sql'),
     getById:     sql('products/getById.sql'),
+    getWithPrepUnitData:  sql('products/getWithPrepUnitData.sql')
   },
   branch_stock_rules: {
     create:             sql('branch_stock_rules/create.sql'),
@@ -62,5 +65,11 @@ module.exports = {
     selectMaxDate: sql('branch_stock_delivery_date/selectMaxDate.sql'),
     getProductWithOverride: sql('branch_stock_delivery_date/getProductWithOverride.sql'),
     getBranchDelivery: sql('branch_stock_delivery_date/getBranchDelivery.sql'),
+  },
+  prices: {
+      create: sql('prices/create.sql'),
+      drop: sql('prices/drop.sql'),
+      findByProductId: sql('prices/findByProductId.sql'),
+      updatePriceOfProduct: sql('prices/updatePriceOfProduct.sql')
   }
 };

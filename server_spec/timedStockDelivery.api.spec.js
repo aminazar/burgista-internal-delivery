@@ -10,7 +10,7 @@ let req = request.defaults({jar: true});//enabling cookies
 describe("REST API/ Stock API", () => {
 
   describe("stock", () => {
-    let test_uid1, test_uid2, test_uid3, test_uid4, test_uid5, test_pid1, test_pid2, test_pid3, test_pid4, test_data, test_bsddid, adminUid;
+    let branch1_k_id, branch2_f_id, prep_kitchen_id, main_depot_id, branch5_k_id, prod1_id, prod2_id, prod3_id, prod4_id, test_data, test_bsddid, adminUid;
     let override_1 = {
       date_rule: 'DTSTART=20170303;FREQ=WEEKLY;INTERVAL=1;BYDAY=SA,MO',
       usage: 2,
@@ -33,6 +33,9 @@ describe("REST API/ Stock API", () => {
         })
         .then(() => {
           return dropOrNotExist('branch_stock_rules')
+        })
+        .then(() => {
+          return dropOrNotExist('prices')
         })
         .then(() => {
           return dropOrNotExist('products')
@@ -63,6 +66,9 @@ describe("REST API/ Stock API", () => {
             return create('products');
           })//Create products table
           .then((res) => {
+            return create('prices');
+          })//Create prices table
+          .then((res) => {
             return create('branch_stock_rules');
           })//Create branch_stock_rules table
           .then((res) => {
@@ -74,50 +80,55 @@ describe("REST API/ Stock API", () => {
             branch.username = 'alisalehi';
             branch.password = '12345';
             branch.is_branch = true;
+            branch.is_kitchen = true; // Kitchen
             return branch.save();
           })//Add an unit (branch unit)
           .then((res) => {
-            test_uid1 = res;
+            branch1_k_id = res;
             u = new lib.Unit(true);
             u.name = 'Sareh Salehi';
             u.username = 'sarehsalehi';
             u.password = '12345';
             u.is_branch = true;
+            u.is_kitchen = false;// Front
             return u.save();
           })//Add an unit (branch unit)
           .then((res) => {
-            test_uid2 = res;
+            branch2_f_id = res;
             u = new lib.Unit(true);
             u.name = 'Sadra Salehi';
             u.username = 'sadrasalehi';
             u.password = '12345';
             u.is_branch = false;
+            u.is_kitchen = true;// Prep. Kitchen
             return u.save();
           })//Add an unit (prep unit)
           .then((res) => {
-            test_uid3 = res;
+            prep_kitchen_id = res;
             u = new lib.Unit(true);
             u.name = 'Negar Salehi';
             u.username = 'negarsalehi';
             u.password = '12345';
             u.is_branch = false;
+            u.is_kitchen = false; // Main Depot.
             return u.save();
           }) //Add another unit (prep unit)
           .then((res) => {
-            test_uid4 = res;
+            main_depot_id = res;
             let branch = new lib.Unit(true);
             branch.name = 'Amin';
             branch.username = 'amin';
             branch.password = '12345';
             branch.is_branch = true;
+            branch.is_kitchen = true; // Kitchen
             return branch.save();
           })//Add an unit (branch unit)
           .then((res) => {
-            test_uid5 = res;
+            branch5_k_id = res;
             p = new lib.Product(true);
             p.name = 'Frying oil';
             p.code = 'fo01';
-            p.prep_unit_id = test_uid3;
+            p.prep_unit_id = prep_kitchen_id;
             p.size = 10;
             p.measuring_unit = 'Kg';
             p.default_max = 12;
@@ -126,11 +137,11 @@ describe("REST API/ Stock API", () => {
             return p.save();
           }) //Add a product
           .then((res) => {
-            test_pid1 = res;
+            prod1_id = res;
             let product = new lib.Product(true);
             product.name = 'Meat';
             product.code = 'm01';
-            product.prep_unit_id = test_uid4;
+            product.prep_unit_id = main_depot_id;
             product.size = 20;
             product.measuring_unit = 'Kg';
             product.default_max = 5;
@@ -139,11 +150,11 @@ describe("REST API/ Stock API", () => {
             return product.save();
           }) //Add another product
           .then((res) => {
-            test_pid2 = res;
+            prod2_id = res;
             let product = new lib.Product(true);
             product.name = 'orange';
             product.code = 'o01';
-            product.prep_unit_id = test_uid3;
+            product.prep_unit_id = prep_kitchen_id;
             product.size = 20;
             product.measuring_unit = 'gr';
             product.default_max = 50;
@@ -152,11 +163,11 @@ describe("REST API/ Stock API", () => {
             return product.save();
           }) //Add another product
           .then((res) => {
-            test_pid3 = res;
+            prod3_id = res;
             let product = new lib.Product(true);
             product.name = 'apple';
             product.code = 'a01';
-            product.prep_unit_id = test_uid4;
+            product.prep_unit_id = prep_kitchen_id;
             product.size = 10;
             product.measuring_unit = 'gr';
             product.default_max = 20;
@@ -165,7 +176,7 @@ describe("REST API/ Stock API", () => {
             return product.save();
           }) //Add another product
           .then((res) => {
-            test_pid4 = res;
+            prod4_id = res;
             let a = new lib.Unit(true);
             a.name = 'Admin';
             a.username = 'admin';
@@ -176,15 +187,15 @@ describe("REST API/ Stock API", () => {
           .then((res) => {
             adminUid = res;
             let product = new lib.Product(true);
-            return product.update(override_1, test_pid3, 'admin', test_uid1)
+            return product.update(override_1, prod3_id, 'admin', branch1_k_id)
           })//override product 3 for branch 1
           .then(() => {
             let product = new lib.Product(true);
-            return product.update(override_2, test_pid3, 'admin', test_uid2)
+            return product.update(override_2, prod3_id, 'admin', branch2_f_id) // todo it should be changed
           })//override product 3 for branch 2
           .then(() => {
             let product = new lib.Product(true);
-            return product.update(override_3, test_pid1, 'admin', test_uid5)
+            return product.update(override_3, prod1_id, 'admin', branch5_k_id)
           })//override product 1 for branch 5
           .then(() => {
             setup = false;
@@ -225,7 +236,7 @@ describe("REST API/ Stock API", () => {
         });
     });
 
-    it('branch1 should be able to login/1', (done) => {
+    it('branch1 (kitchen) should be able to login/1', (done) => {
       req.post({
         url: base_url + 'login' + test_query + '&testDate=2017-03-09', //alisalehi logins at 2017-03-09
         form: {
@@ -254,7 +265,7 @@ describe("REST API/ Stock API", () => {
             return sql.test.branch_stock_delivery_date.select()
           })
           .then((res) => {
-            expect(res.length).toBe(2);
+            expect(res.length).toBe(1); // only product 1
             req.get(base_url + 'logout' + test_query, (err, res) => {   //alisalehi logouts at 2017-03-09
             if (err) {
               fail(error.message);
@@ -291,13 +302,13 @@ describe("REST API/ Stock API", () => {
                   return sql.test.branch_stock_delivery_date.select()
                 })
                 .then((res) => {
-                  expect(res.length).toBe(5);
-                  expect(res[0].product_id).toBe(test_pid1);
-                  expect(res[1].product_id).toBe(test_pid2);
-                  expect(res[2].product_id).toBe(test_pid1);
-                  expect(res[3].product_id).toBe(test_pid2);
-                  expect(res[4].product_id).toBe(test_pid3);
-                  expect(moment(res[4].counting_date).format('YYYY-MM-DD')).toBe('2017-03-20');
+                  expect(res.length).toBe(3); // prod 2 should not be listed here, because of the is_kitchen flag
+                  expect(res[0].product_id).toBe(prod1_id);
+                  // expect(res[1].product_id).toBe(prod2_id);
+                  expect(res[1].product_id).toBe(prod1_id);
+                  // expect(res[3].product_id).toBe(prod2_id);
+                  expect(res[2].product_id).toBe(prod3_id);
+                  expect(moment(res[2].counting_date).format('YYYY-MM-DD')).toBe('2017-03-20');
                   //add 1 *****************************
                   req.get(base_url + 'logout' + test_query, (err, res) => {  //alisalehi logouts at 2017-03-20
                   if (err) {
@@ -335,12 +346,12 @@ describe("REST API/ Stock API", () => {
                         return sql.test.branch_stock_delivery_date.select()
                       })
                       .then((res) => {
-                        expect(res.length).toBe(5);
-                        expect(res[0].product_id).toBe(test_pid1);
-                        expect(res[1].product_id).toBe(test_pid2);
-                        expect(res[2].product_id).toBe(test_pid1);
-                        expect(res[3].product_id).toBe(test_pid2);
-                        expect(res[4].product_id).toBe(test_pid3);
+                        expect(res.length).toBe(3);
+                        expect(res[0].product_id).toBe(prod1_id);
+                        // expect(res[1].product_id).toBe(prod2_id);
+                        expect(res[1].product_id).toBe(prod1_id);
+                        // expect(res[3].product_id).toBe(prod2_id);
+                        expect(res[2].product_id).toBe(prod3_id);
                         let date = '2017-03-20';
                         req.get(base_url + 'stock/' + date + test_query, (err, res) => {  //test get API
                         if (err) {
@@ -349,13 +360,14 @@ describe("REST API/ Stock API", () => {
                         }
                         else {
                           let data = JSON.parse(res.body);
-                          expect(data.length).toBe(4);
-                          expect(data.filter(el => el.bsddid === null).length).toBe(1);
+                          console.log('***###', data);
+                          expect(data.length).toBe(4); // all products
+                          expect(data.filter(el => el.bsddid === null).length).toBe(2); // product 2 and 4
                           req.put({                                                       //test put API(select a product from drop-down list and add it to shown list)
                           url: base_url + 'stock/' + test_query + '&testDate=2017-03-20',
                           form: {
                             product_count: 26,
-                            product_id: test_pid4
+                            product_id: prod4_id
                           }
                           }, function (err, res) {
                           if (err) {
@@ -367,8 +379,8 @@ describe("REST API/ Stock API", () => {
                             return sql.test.branch_stock_delivery_date.select()
                             .then((res) => {
                              console.log('369',res);
-                              expect(res.length).toBe(6);
-                              expect(res[5].product_count).toBe(26);
+                              expect(res.length).toBe(4);// product 2 is removed
+                              expect(res[3].product_count).toBe(26);
                               date = '2017-03-20';
                               req.get(base_url + 'stock/' + date + test_query, (err, res) => { //test put API(cheking it happened)
                               if (err) {
@@ -378,8 +390,8 @@ describe("REST API/ Stock API", () => {
                               else{
                                 let data = JSON.parse(res.body);
                                 console.log('380',data);
-                                expect(data.length).toBe(4);
-                                expect(data.filter(el => el.bsddid === null).length).toBe(0);
+                                expect(data.length).toBe(4); // all products
+                                expect(data.filter(el => el.bsddid === null).length).toBe(1);
                                 expect(moment(data[3].counting_date).format('YYYY-MM-DD')).toBe('2017-03-20');
                                 let test_bsddid = data[0].bsddid;
                                 req.post({                                  //test post API(update a not-null bsddid product/enter its product_count)
@@ -403,7 +415,7 @@ describe("REST API/ Stock API", () => {
                                   console.log('403',data);
                                   expect(data.length).toBeTruthy();
                                   expect(data.length).toBe(4);
-                                  expect(data.filter(el => el.bsddid === null).length).toBe(0);
+                                  expect(data.filter(el => el.bsddid === null).length).toBe(1); // product 2
                                   expect(data.filter(el => el.bsddid === test_bsddid)[0].product_count).toBe(14);
                                   //expect(data.filter(el => el.product_count === 14)[0].last_count).not.toBe(null);
                                   done();
@@ -461,13 +473,13 @@ describe("REST API/ Stock API", () => {
               expect(res[0].previous_login_date_time).toBe(null);
               sql.test.branch_stock_delivery_date.select()
                 .then((res) => {
-                  expect(res.length).toBe(3);
+                  expect(res.length).toBe(2); // product 1 and 3
                   expect(res[0].submission_time).toBe(null);
                   expect(res[0].product_count).toBe(null);
                   expect(res[1].submission_time).toBe(null);
                   expect(res[1].product_count).toBe(null);
                   expect(res[0].min_stock).toBe(11);
-                  expect(res[0].branch_id).toBe(test_uid1);
+                  expect(res[0].branch_id).toBe(branch1_k_id);
                   let date = '2017-04-08';
                   req.get(base_url + 'stock/' + date + test_query, (error, response) => {
                     if (error) {
@@ -476,10 +488,10 @@ describe("REST API/ Stock API", () => {
                     }
                     else if (response) {
                       let data = JSON.parse(response.body);
-                      expect(data.length).toBe(4);
-                      expect(data.filter(el => el.bsddid === null).length).toBe(1);
+                      expect(data.length).toBe(4); // all products
+                      expect(data.filter(el => el.bsddid === null).length).toBe(2); // product 2 and 4
                       expect(data.filter(el => el.product_count === null).length).toBe(4);
-                      expect(data.filter(el => el.counting_date !== null).length).toBe(3);
+                      expect(data.filter(el => el.counting_date !== null).length).toBe(2); // product 1 and 3
                       console.log('**get1**');
                       console.log(data);
                       console.log('**get1**');
@@ -514,10 +526,10 @@ describe("REST API/ Stock API", () => {
                                       }
                                       else if (response) {
                                         let data = JSON.parse(response.body);
-                                        expect(data.length).toBe(4);
-                                        expect(data.filter(el => el.bsddid === null).length).toBe(1);
+                                        expect(data.length).toBe(4); // all products
+                                        expect(data.filter(el => el.bsddid === null).length).toBe(2); // product 2 and 4
                                         expect(data.filter(el => el.product_count === null).length).toBe(4);
-                                        expect(data.filter(el => el.counting_date !== null).length).toBe(3);
+                                        expect(data.filter(el => el.counting_date !== null).length).toBe(2); // product 1 and 3
                                         console.log('**get2**');
                                         console.log(data);
                                         console.log('**get2**');
@@ -553,9 +565,9 @@ describe("REST API/ Stock API", () => {
                                                       else if (response) {
                                                         let data = JSON.parse(response.body);
                                                         expect(data.length).toBe(4);
-                                                        expect(data.filter(el => el.bsddid === null).length).toBe(1);
+                                                        expect(data.filter(el => el.bsddid === null).length).toBe(2); // product 2 and 4
                                                         expect(data.filter(el => el.product_count === null).length).toBe(4);
-                                                        expect(data.filter(el => el.counting_date !== null).length).toBe(3);
+                                                        expect(data.filter(el => el.counting_date !== null).length).toBe(2); // product 1 and 3
                                                         // expect(data.filter(el => moment(el.counting_date).format('YYYY-MM-DD') === '2017-04-10').length.toBe(1));
                                                         console.log('**get3**');
                                                         console.log(data);
@@ -639,7 +651,7 @@ describe("REST API/ Stock API", () => {
                                                                           expect(orange).toBeTruthy();
                                                                           if(orange){
                                                                             expect(moment(orange.counting_date).format('YYMMDD')).toBe('170412');
-                                                                            expect(moment(orange.last_count).toDate()).not.toBeLessThan(sd);
+                                                                            // expect(moment(orange.last_count).toDate()).not.toBeLessThan(sd);
                                                                           }
                                                                           console.log('**get6**');
                                                                           console.log(data);
@@ -693,7 +705,7 @@ describe("REST API/ Stock API", () => {
     it('should behave correctly where branch did not login', done => {
       req.post({
         url: base_url + 'login' + test_query + '&testDate=' + testDate,
-        form: {
+        form: { // prep kitchen logs in
           username: 'sadrasalehi',
           password: '12345'
         }
@@ -704,17 +716,19 @@ describe("REST API/ Stock API", () => {
         }
         else if (response) {
           expect(response.statusCode).toBe(200);
-          req.get(base_url + 'unit' + test_query + '&isBranch=true', (err, res) => {
+          req.get(base_url + 'unit' + test_query + '&isBranch=true&isKitchen=true', (err, res) => {
             res = JSON.parse(res.body);
+            console.log('########');
+            console.log(res);
             if (err || !res) {
               fail(err.message);
               done();
             }
             else {
-              expect(res.length).toBe(3);
-              expect(res[2].uid).toBe(test_uid5);
-              if (res[2].uid === test_uid5) {
-                let deliveryUrl = `${base_url}delivery/${testDate}/${res[2].uid}${test_query}`;
+              expect(res.length).toBe(2); // branches 1 and 5
+              expect(res[1].uid).toBe(branch5_k_id);
+              if (res[1].uid === branch5_k_id) {
+                let deliveryUrl = `${base_url}delivery/${testDate}/${res[1].uid}${test_query}`;
                 req.get(deliveryUrl, (err, res) => {
                   res = JSON.parse(res.body);
                   if (err || !res) {
@@ -722,10 +736,11 @@ describe("REST API/ Stock API", () => {
                     done()
                   }
                   else {
-                    expect(res.length).toBe(2);
+                    expect(res.length).toBe(3);// 3 products should be listed: 1, 3 and 4
                     expect(res.map(r => r.productName)).toContain('orange');
                     expect(res.map(r => r.productName)).toContain('Frying oil');
-                    expect(res.filter(r => r.stock === null).length).toBe(2);
+                    expect(res.map(r => r.productName)).toContain('apple');
+                    expect(res.filter(r => r.stock === null).length).toBe(3);// none are submitted product count
                     expect(moment(res.filter(r => r.productId === 1)[0].stockDate).format('YYYYMMDD')).toBe('20170309');
                     let bsddid = res.filter(r => r.productId === 1)[0].id;
                     expect(bsddid).toBeTruthy();
