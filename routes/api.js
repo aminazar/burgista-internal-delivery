@@ -85,7 +85,7 @@ router.get('/override', apiResponse('Product', 'select', false, ['user.username'
 router.post('/override/:pid', apiResponse('Product', 'update', false, ['body', 'params.pid', 'user.username', 'query.uid', 'user.uid']));
 router.delete('/override/:pid', apiResponse('Product', 'delete', false, ['params.pid', 'user.username', 'query.uid', 'user.uid']));
 //Stock API
-router.get('/stock/:date', apiResponse('Stock', 'select', false, ['user.uid','params.date']));
+router.get('/stock/:date', apiResponse('Stock', 'select', false, ['user.uid','params.date', 'query.uid']));
 router.put('/stock', apiResponse('Stock', 'saveData', false, ['body', 'user.uid']));
 router.post('/stock/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'user.uid', 'params.bsddid']));
 router.put('/stock/batch', apiResponse('Stock', 'batchCU', false, ['body', 'user.uid']));
@@ -94,4 +94,8 @@ router.get('/delivery/:date/:branchId', apiResponse('Stock', 'deliverySelect', f
 router.put('/delivery/:uid', apiResponse('Stock', 'saveData', false, ['body', 'params.uid']));
 router.post('/delivery/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'notUsed', 'params.bsddid']));
 
+router.get('/reports/delivery/:start_date/:end_date', apiResponse('Stock', 'deliveryReport', true,
+    ['params.start_date', 'params.end_date']));
+router.get('/reports/branch_delivery/:branchId/:start_date/:end_date', apiResponse('Stock', 'deliveryReport', true,
+    ['params.start_date', 'params.end_date', 'params.branchId']));
 module.exports = router;

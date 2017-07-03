@@ -65,6 +65,8 @@ module.exports = {
     selectMaxDate: sql('branch_stock_delivery_date/selectMaxDate.sql'),
     getProductWithOverride: sql('branch_stock_delivery_date/getProductWithOverride.sql'),
     getBranchDelivery: sql('branch_stock_delivery_date/getBranchDelivery.sql'),
+    deliveryReport: sql('branch_stock_delivery_date/deliveryReport.sql'),
+    deliveryReportByBranch: sql('branch_stock_delivery_date/deliveryReportByBranch.sql'),
   },
   prices: {
       create: sql('prices/create.sql'),
