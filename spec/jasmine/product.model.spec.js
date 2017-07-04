@@ -7,6 +7,7 @@ const sql = require('../../sql');
 
 describe('Product model', () => {
   let unit_id;
+  let prep_unit_id;
   let product_id;
   let product = new Product(true);
 
@@ -26,13 +27,24 @@ describe('Product model', () => {
           name: 'Baker Street',
           username: 'JohnSmith',
           secret: '123',
-          is_branch: true
+          is_branch: true,
+          is_kitchen: true
         })
       })                       //Add a unit to units table
+        .then(res => {
+          unit_id = res.uid;
+          return sql.test.units.add({
+              name: 'Prep Kitchen',
+              username: 'prep1',
+              secret: '123',
+              is_branch: false,
+              is_kitchen: true
+          });
+        })
       .then((res) => {
-        unit_id = res.uid;
+          prep_unit_id = res.uid;
         return sql.test.products.add({
-          prep_unit_id: unit_id,
+          prep_unit_id: prep_unit_id,
           code: 'FO01',
           name: 'Frying Oil',
           size: 17,
@@ -55,7 +67,7 @@ describe('Product model', () => {
 
   it('should add a new product', (done) => {
     const data = {
-      prep_unit_id: unit_id,
+      prep_unit_id: prep_unit_id,
       code: 'KS01',
       name: 'Ketchup Sauce',
       size: 10,
@@ -112,8 +124,11 @@ describe('Product model', () => {
 
   it('should select all products (with overridden values)', (done) => {
     Product.test = true;
+    Product.select('admin')
+        .then(result => {console.log(result); console.log('#####')});
     Product.select('JohnSmith', unit_id)
       .then((res) => {
+        console.log(res);
         let prod1 = res[0].pid === product_id ? res[0] : res[1];
         expect(prod1.isOverridden).toBe(true);
         expect(prod1.default_max).toBe(5);
