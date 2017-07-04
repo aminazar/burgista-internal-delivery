@@ -61,7 +61,7 @@ router.get('/logout', (req, res) => {
   req.logout();
   res.sendStatus(200)
 });
-router.get('/validUser', apiResponse('Unit', 'afterLogin', false, ['user.name', 'user.username', 'user.is_branch', 'user.is_kitchen']));
+router.get('/validUser', apiResponse('Unit', 'afterLogin', false, ['user.name', 'user.username', 'user.is_branch', 'user.uid','user.is_kitchen']));
 
 //checks to be sure users are authenticated
 router.all("*", function(req, res, next){
