@@ -98,4 +98,7 @@ router.get('/reports/delivery/:start_date/:end_date', apiResponse('Stock', 'deli
     ['params.start_date', 'params.end_date']));
 router.get('/reports/branch_delivery/:branchId/:start_date/:end_date', apiResponse('Stock', 'deliveryReport', true,
     ['params.start_date', 'params.end_date', 'params.branchId']));
+router.get('/reports/inventory_counting/:branchId', apiResponse('Stock', 'inventoryReport', true, ['params.branchId']));
+router.get('/reports/products/:branchId', apiResponse('Product', 'getForProductsReport', true, ['params.branchId']));
+router.get('/reports/all_products/', apiResponse('Product', 'getForProductsReport', true));
 module.exports = router;
