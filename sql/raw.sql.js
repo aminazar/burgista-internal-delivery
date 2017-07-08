@@ -36,6 +36,7 @@ module.exports = {
     drop:        sql('products/drop.sql'),
     select:      sql('products/select.sql'),
     getByUnitId: sql('products/getByUnitId.sql'),
+    getByBranchId: sql('products/getByBranchId.sql'),
     getByName:   sql('products/getByName.sql'),
     getById:     sql('products/getById.sql'),
     getWithPrepUnitData:  sql('products/getWithPrepUnitData.sql')
@@ -65,6 +66,9 @@ module.exports = {
     selectMaxDate: sql('branch_stock_delivery_date/selectMaxDate.sql'),
     getProductWithOverride: sql('branch_stock_delivery_date/getProductWithOverride.sql'),
     getBranchDelivery: sql('branch_stock_delivery_date/getBranchDelivery.sql'),
+    deliveryReport: sql('branch_stock_delivery_date/deliveryReport.sql'),
+    deliveryReportByBranch: sql('branch_stock_delivery_date/deliveryReportByBranch.sql'),
+    inventoryCountingReport: sql('branch_stock_delivery_date/inventoryCountingReport.sql')
   },
   prices: {
       create: sql('prices/create.sql'),

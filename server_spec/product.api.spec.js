@@ -32,7 +32,8 @@ describe("REST API", ()=> {
     let main_depot_id;
     let product_1_id;
     let product_2_id;
-    let branch_id;
+    let branch_1_id;
+    let branch_2_id;
     let prep_kitchen_id;
     let admin_id;
     let u;
@@ -61,15 +62,26 @@ describe("REST API", ()=> {
           .then((res) => {
             let branch = new lib.Unit(true);
 
-            branch.name = 'Baker Street';
+            branch.name = 'Baker Street Kitchen';
             branch.username = 'bk';
             branch.password = '123';
             branch.is_branch = true;
             branch.is_kitchen = true;
             return branch.save();
           })                        //Add an unit (branch unit)
+            .then(res => {
+              branch_1_id = res;
+
+              u = new lib.Unit(true);
+              u.name = 'Baker Street Front';
+              u.username = 'bsf';
+              u.password = '123';
+              u.is_branch = true;
+              u.is_kitchen = false;
+              return u.save();
+            })
             .then((res) => {
-              branch_id = res;
+              branch_2_id = res;
 
               u = new lib.Unit(true);
               u.name = 'Prep Kitchen';
@@ -96,7 +108,7 @@ describe("REST API", ()=> {
 
             p.name = 'Frying oil';
             p.code = 'fo01';
-            p.prep_unit_id = main_depot_id;
+            p.prep_unit_id = prep_kitchen_id;
             p.size = 10;
             p.measuring_unit = 'Kg';
             p.default_max = 12;
@@ -330,7 +342,7 @@ describe("REST API", ()=> {
 
     it("should add a new override on a specific product", (done) => {
       req.post({
-        url: base_url + 'override/' + product_1_id + test_query + '&uid=' + branch_id ,
+        url: base_url + 'override/' + product_1_id + test_query + '&uid=' + branch_1_id ,
         form: {
           max: 20,
           mon_multiple: 2
@@ -347,15 +359,15 @@ describe("REST API", ()=> {
     });
 
     it("should get all products (with overridden values)", (done) => {
-      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_id}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_1_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
         }
 
         let data = JSON.parse(response.body);
-        expect(data.length).toBe(2);
-        let prod1 = data[0].pid === 1 ?  data[0] : data[1];
+        expect(data.length).toBe(1); // it can see only 1 product
+        let prod1 = data[0];
         expect(prod1.isOverridden).toBe(true);
         expect(prod1.default_max).toBe(20);
         expect(parseInt(prod1.default_mon_multiple, 10)).toBe(2);
@@ -366,7 +378,7 @@ describe("REST API", ()=> {
 
     it("should update a product overridden values", (done) => {
       req.post({
-        url: base_url + 'override/' + product_1_id + test_query + '&uid=' + branch_id,
+        url: base_url + 'override/' + product_1_id + test_query + '&uid=' + branch_1_id,
         form: {
           max: 30,
           sun_multiple: 10
@@ -383,15 +395,15 @@ describe("REST API", ()=> {
     });
 
     it("should get all products with overridden values", (done) => {
-      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_id}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_1_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
         }
 
         let data = JSON.parse(response.body);
-        expect(data.length).toBe(2);
-        let prod1 = data[0].pid === 1 ? data[0] : data[1];
+        expect(data.length).toBe(1);
+        let prod1 = data[0];
         expect(prod1.isOverridden).toBe(true);
         expect(prod1.name).toBe('Frying oil');
         expect(prod1.default_max).toBe(30);
@@ -450,7 +462,7 @@ describe("REST API", ()=> {
       req.post({
         url: base_url + 'login' + test_query,
         form: {
-          username: 'bk',
+          username: 'bsf',
           password: '123'
         }
       }, (error, response) => {
@@ -466,7 +478,7 @@ describe("REST API", ()=> {
 
     it("should add a new override on a specific product", (done) => {
       req.post({
-        url: base_url + 'override/' + product_2_id + test_query + '&uid=' + branch_id ,
+        url: base_url + 'override/' + product_2_id + test_query + '&uid=' + branch_2_id ,
         form: {
           max: 20,
           mon_multiple: 2
@@ -483,7 +495,7 @@ describe("REST API", ()=> {
     });
 
     it("should get all products with overridden values", (done) => {
-      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_id}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_2_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -501,7 +513,7 @@ describe("REST API", ()=> {
     });
 
     it("should delete a product overridden from branch_stock_rules table", (done) => {
-      req.delete({url: base_url + 'override/' + product_2_id + test_query + '&uid=' + branch_id}, (error, response) => {
+      req.delete({url: base_url + 'override/' + product_2_id + test_query + '&uid=' + branch_2_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
@@ -516,7 +528,7 @@ describe("REST API", ()=> {
     });
 
     it("should get all products with overridden values (but there is no overridden values)", (done) => {
-      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_id}, (error, response) => {
+      req.get({url: base_url + 'override' + test_query + '&uid=' + branch_2_id}, (error, response) => {
         if(error){
           fail(error.message);
           done();
