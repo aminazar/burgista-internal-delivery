@@ -8,7 +8,8 @@ select
     s.product_count,
     s.real_delivery,
     products.default_date_rule as rrule,
-    branch_stock_rules.date_rule as overridden_rrule
+    branch_stock_rules.date_rule as overridden_rrule,
+    products.pid as product_id
 from
 (
     select
@@ -17,6 +18,9 @@ from
         max(counting_date) as counting_date
      from
         branch_stock_delivery_date
+    where
+        product_count is not null
+        and real_delivery is not null
     group by
         branch_id,product_id
     union(
@@ -34,6 +38,9 @@ from
                 max(counting_date)
             from
                 branch_stock_delivery_date
+            where
+                product_count is not null
+                and real_delivery is not null
             group by
                 branch_id,
                 product_id
@@ -42,6 +49,8 @@ from
             o.counting_date<i.max
             and o.branch_id=i.branch_id
             and o.product_id=i.product_id
+        where
+            o.product_count is not null
         group by
             o.branch_id,
             o.product_id
