@@ -48,7 +48,7 @@ function adminRowCreate() {
     var data = {
       name: 'admin',
       username: 'admin',
-      password: 'admin',
+      password: 'Admin110ida',
       is_branch: false
     };
 
