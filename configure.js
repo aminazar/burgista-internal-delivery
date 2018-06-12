@@ -93,4 +93,6 @@ if (env.isDev) {
       // if (env.isDev)
       //   dbTestCreate();
     });
+} else {
+  setupMainDatabase('prod db')
 }
