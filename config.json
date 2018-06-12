@@ -7,6 +7,6 @@
   "production": {
     "initDb":   "",
     "database": "",
-    "pgConnection": "postgres://kyoteulzayxgjm:413e6f4902075ae09f1e0343376164e178ee47b4829d9b1e582938617930a46e@ec2-54-217-212-8.eu-west-1.compute.amazonaws.com:5432/d8atluu6rcuita"
+    "pgConnection": ""
   }
 }

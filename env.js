@@ -11,7 +11,7 @@ if(env==='test')
 const isProd = env==='production';
 const isDev  = env==='development';
 const config = require('./config.json')[env];
-const connectionString = config.pgConnection + config.database;
+const connectionString = isDev ? config.pgConnection + config.database : process.env.DATABASE_URL;
 const test_db_name = config.database + '_test';
 const testConnectionString = config.pgConnection + test_db_name;
 const initDb =  pgp(config.pgConnection + config.initDb);
