@@ -30,6 +30,7 @@ function prodTablesCreate() {
   return new Promise((resolve, reject) => {
     createOrExist('units')
       .then(createOrExist('products'))
+      .then(createOrExist('prices'))
       .then(createOrExist('branch_stock_rules'))
       .then(createOrExist('last_login'))
       .then(createOrExist('branch_stock_delivery_date'))
@@ -47,7 +48,7 @@ function adminRowCreate() {
     var data = {
       name: 'admin',
       username: 'admin',
-      password: 'admin',
+      password: 'Admin110ida',
       is_branch: false
     };
 
@@ -92,4 +93,6 @@ if (env.isDev) {
       // if (env.isDev)
       //   dbTestCreate();
     });
+} else {
+  setupMainDatabase('prod db')
 }

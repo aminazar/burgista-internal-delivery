@@ -54,6 +54,9 @@ describe("REST API/ Stock API", ()=> {
           return create('products');
         })//Create products table
         .then((res) => {
+          return create('prices');
+        })//Create prices table
+        .then((res) => {
           return create('branch_stock_rules');
         })//Create branch_stock_rules table
         .then((res) => {
@@ -437,6 +440,9 @@ describe("REST API/ Stock API", ()=> {
         })
         .then(()=> {
           return dropOrNotExist('branch_stock_rules')
+        })
+        .then(() => {
+          return dropOrNotExist('prices')
         })
         .then(() => {
           return dropOrNotExist('products')
