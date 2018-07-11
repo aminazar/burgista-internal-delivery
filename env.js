@@ -19,6 +19,7 @@ const initDb =  isDev ? pgp(config.pgConnection + config.initDb) : db;
 const testDb = pgp(testConnectionString);
 const pgm = require('pg-monitor');
 const color = require("cli-color");
+const UPPER_BOUND_HOUR = process.env.UPPER_BOUND_HOUR;
 
 const pgmTheme = {
     time: color.bgBlack.whiteBright,
@@ -47,4 +48,5 @@ module.exports = {
   test_db_name: test_db_name,
   isProd: isProd,
   isDev: isDev,
+  UPPER_BOUND_HOUR: UPPER_BOUND_HOUR,
 };
