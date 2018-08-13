@@ -20,12 +20,13 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
     }
     return obj;
   };
+  let hourAdjustment = process.env[ className + 'HourAdj' ] ? +process.env[ className + 'HourAdj' ] : 0;
+
   return (function (req, res) {
     let user = req.user ? req.user.username : req.user;
     req.test = lib.helpers.isTestReq(req);
     //Get testDate
-
-    req.date = (req.query.testDate ? moment(req.query.testDate) : moment()).format('YYYY-MM-DD');
+    req.date = (req.query.testDate ? moment(req.query.testDate) : moment()).add(-hourAdjustment, 'h').format('YYYY-MM-DD');
     if (adminOnly && !lib.helpers.adminCheck(user)) {
       res.status(403)
         .send('Only admin can do this.');
@@ -101,4 +102,12 @@ router.get('/reports/branch_delivery/:branchId/:start_date/:end_date', apiRespon
 router.get('/reports/inventory_counting/:branchId', apiResponse('Stock', 'inventoryReport', true, ['params.branchId']));
 router.get('/reports/products/:branchId', apiResponse('Product', 'getForProductsReport', true, ['params.branchId']));
 router.get('/reports/all_products/', apiResponse('Product', 'getForProductsReport', true));
+// Date
+router.get('/date', (req, res) => {
+  let className = 'Stock';
+  let hourAdjustment = process.env[className + 'HourAdj'] ? +process.env[className + 'HourAdj'] : 0;
+  let date = (req.query.testDate ? moment(req.query.testDate) : moment()).add(-hourAdjustment, 'h').toDate();
+  res.status(200)
+    .json(date);
+});
 module.exports = router;
