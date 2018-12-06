@@ -1,10 +1,11 @@
 "use strict";
-var testing_1 = require('@angular/core/testing');
-var platform_browser_1 = require('@angular/platform-browser');
+Object.defineProperty(exports, "__esModule", { value: true });
+var testing_1 = require("@angular/core/testing");
+var platform_browser_1 = require("@angular/platform-browser");
 var forms_1 = require("@angular/forms");
 var material_1 = require("@angular/material");
 var PromiseObservable_1 = require("rxjs/observable/PromiseObservable");
-var unit_form_component_1 = require('./unit-form.component');
+var unit_form_component_1 = require("./unit-form.component");
 var sub_form_component_1 = require("./sub-form.component");
 var rest_service_1 = require("../rest.service");
 var unit_1 = require("./unit");
