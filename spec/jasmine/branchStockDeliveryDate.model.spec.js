@@ -461,13 +461,13 @@ describe("Branch Stock Delivery Date Model", () => {
           expect(res[0].real_delivery).toBe(null);
           expect(res[0].default_max).toBe(product_data_1.default_max);
           expect(res[0].max).toBe(override_1.max);
-          expect(Stock.calcMax(res[0])).toBe(override_1.max);
+          expect(Stock.calcMax(res[0], new Date('7Mar17') )).toBe(override_1.max * product_data_1.default_usage * override_1.tue_multiple);
           expect(Stock.calcMin(res[0], new Date('7Mar17'))).toBe(60);
         }
         done();
       })
       .catch(err => {
-        fail(err.message);
+        fail(err);
         console.log(err);
         done();
       });
@@ -482,7 +482,7 @@ describe("Branch Stock Delivery Date Model", () => {
         if (res.length === 1) {
           expect(res[0].stock).toBe(3);
           expect(res[0].isPrinted).toBe(false);
-          expect(res[0].max).toBe(override_1.max);
+          expect(res[0].max).toBe(override_1.max * product_data_1.default_usage * override_1.tue_multiple);
           expect(res[0].min).toBe(60);
           expect(res[0].productCode).toBe(product_data_1.code);
           expect(res[0].realDelivery).toBe(null);
@@ -493,7 +493,7 @@ describe("Branch Stock Delivery Date Model", () => {
         done();
       })
       .catch(err => {
-        fail(err.message);
+        fail(err);
         console.log(err);
         done();
       });
@@ -521,7 +521,7 @@ describe("Branch Stock Delivery Date Model", () => {
           })
       })
       .catch(err => {
-        fail(err.message);
+        fail(err);
         console.log(err);
         done();
       });
@@ -563,7 +563,7 @@ describe("Branch Stock Delivery Date Model", () => {
         if (res.length === 1) {
           expect(res[0].stock).toBe(null);
           expect(res[0].isPrinted).toBe(false);
-          expect(res[0].max).toBe(override_1.max);
+          expect(res[0].max).toBe(override_1.max * product_data_1.default_usage * override_1.tue_multiple);
           expect(res[0].min).toBe(60);
           expect(res[0].productCode).toBe(product_data_1.code);
           expect(res[0].realDelivery).toBe(null);
@@ -574,7 +574,7 @@ describe("Branch Stock Delivery Date Model", () => {
         done();
       })
       .catch(err => {
-        fail(err.message);
+        fail(err);
         console.log(err);
         done();
       });
@@ -604,7 +604,7 @@ describe("Branch Stock Delivery Date Model", () => {
           })
       })
       .catch(err => {
-        fail(err.message);
+        fail(err);
         console.log(err);
         done();
       });
