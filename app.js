@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //session:
 let sess = {
   secret: 'HosKhedIDA',
-  cookie: {maxAge: 365 * 24 * 60 * 60 * 1000},
+  cookie: {maxAge: 6 * 60 * 60 * 1000},
   resave: true,
   rolling: true,
   saveUninitialized: true,
