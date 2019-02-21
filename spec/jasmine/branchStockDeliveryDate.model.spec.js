@@ -24,8 +24,8 @@ describe("Branch Stock Delivery Date Model", () => {
     default_tue_multiple: 1,
     default_wed_multiple: 1,
     default_thu_multiple: 1,
-    default_fri_multiple: 2,
-    default_sat_multiple: 2,
+    default_fri_multiple: "2",
+    default_sat_multiple: "2",
     default_sun_multiple: 2,
     default_usage: 3
   };
