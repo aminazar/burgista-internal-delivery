@@ -2,7 +2,7 @@
   "development": {
     "initDb":   "postgres",
     "database": "burgista_ida",
-    "pgConnection": "postgres://amin@localhost:5432/"
+    "pgConnection": "postgres://postgres@localhost:5432/"
   },
   "production": {
     "initDb":   "",
