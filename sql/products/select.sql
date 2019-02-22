@@ -4,7 +4,7 @@ join
     units
 on
     units.uid = products.prep_unit_id
-left outer join
+left join
     prices
 on
-    products.pid = prices.product_id and prices.valid_to IS NULL;
+    products.pid = prices.product_id where prices.valid_to IS NULL;
