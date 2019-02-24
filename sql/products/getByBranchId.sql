@@ -6,9 +6,9 @@ join
     and is_branch = false ) u
 on
     products.prep_unit_id = u.uid
-left join
+left outer join
     prices
 on
     products.pid = prices.product_id
-where
+    and
     prices.valid_to IS NULL

@@ -39,7 +39,8 @@ module.exports = {
     getByBranchId: sql('products/getByBranchId.sql'),
     getByName:   sql('products/getByName.sql'),
     getById:     sql('products/getById.sql'),
-    getWithPrepUnitData:  sql('products/getWithPrepUnitData.sql')
+    getWithPrepUnitData:  sql('products/getWithPrepUnitData.sql'),
+    getWithOverrides: sql('products/selectWithOverrides.sql'),
   },
   branch_stock_rules: {
     create:             sql('branch_stock_rules/create.sql'),
