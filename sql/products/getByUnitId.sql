@@ -1,3 +1,2 @@
 select products.*,prices.price as price from products
-left outer join prices on products.pid = prices.product_id and prices.valid_to IS NULL
-where products.prep_unit_id = ${prep_unit_id}
+left join prices on products.pid = prices.product_id where prices.valid_to IS NULL and products.prep_unit_id = ${prep_unit_id}
