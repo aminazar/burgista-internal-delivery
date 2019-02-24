@@ -14,7 +14,7 @@ left outer join (
         s.counting_date
     from
         branch_stock_delivery_date s
-    join
+    left outer join
     (
         select s2.* from
         (select

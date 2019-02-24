@@ -4,6 +4,7 @@ CREATE TABLE branch_stock_delivery_date(
     branch_id integer not null references units(uid) on delete cascade,
     counting_date date not null,
     submission_time timestamp with time zone,
+    delivery_submission_time with time zone,
     min_stock integer not null,
     product_count integer,
     real_delivery integer,

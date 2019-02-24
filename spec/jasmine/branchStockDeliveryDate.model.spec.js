@@ -233,7 +233,7 @@ describe("Branch Stock Delivery Date Model", () => {
 
   it('should calculate minimum required of the product in a date', () => {
     expect(Stock.calcMin(product_data_1, moment('2017-03-09'))).toBe(9);
-    expect(Stock.calcMin(product_data_1, moment('2017-03-10'))).toBe(18);
+    expect(Stock.calcMin(product_data_1, moment('2017-03-10').tz('Europe/London'))).toBe(18);
     expect(Stock.calcMin(product_data_3, moment('2017-03-10'))).toBe(24);
   });
 
