@@ -238,7 +238,7 @@ describe("Branch Stock Delivery Date Model", () => {
   });
 
   it('should check if a date is included in the recursion rule of product', () => {
-    let func = Stock.rRuleCheckFunctionFactory(product_data_1.default_date_rule, moment('2017-03-01'), moment('2017-03-31'));
+    let func = Stock.rRuleCheck(product_data_1.default_date_rule, moment('2017-03-01'), moment('2017-03-31'));
     expect(func('2017-03-07')).toBe(true);
     expect(func('2017-03-08')).toBe(false);
     expect(func(new Date('2017-03-07'))).toBe(true);
