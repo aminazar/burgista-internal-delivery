@@ -69,7 +69,11 @@ genericDelete = (tableName,idColumn,isTest)=>{
   return (id)=> {
     return db.query(`delete from ${tableName} where ${idColumn}=` + id)
   }
-}
+};
+
+genericRun = (isTest) => {
+  return q => db.query(q);
+};
 
 let tablesWithSqlCreatedByHelpers = [
   {
@@ -148,6 +152,11 @@ tablesWithSqlCreatedByHelpers.forEach((table)=> {
   if(table.delete){
     wrappedSQL[table.name].delete       = genericDelete(table.name, table.idColumn, false);
     wrappedSQL.test[table.name].delete  = genericDelete(table.name, table.idColumn, true);
+  }
+
+  if(table.name==='db') {
+    wrappedSQL[table.name].run = genericRun(false);
+    wrappedSQL.test[table.name].run = genericRun(true);
   }
 });
 
