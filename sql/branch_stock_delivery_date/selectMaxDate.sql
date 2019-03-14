@@ -1,7 +1,7 @@
 select
 	bsddid,
 	pid,
-	name as product_name,
+	products.name as product_name,
 	code as product_code,
 	counting_date,
 	last_count,
@@ -10,7 +10,12 @@ select
 	date_rule
 from
 	products
-join (
+join
+    units u
+on
+    products.prep_unit_id = u.uid
+    and u.is_kitchen = (select is_kitchen from units where uid = ${uid})
+left outer join (
 	select
        s.counting_date,
        s.bsddid,
