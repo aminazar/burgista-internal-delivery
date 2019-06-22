@@ -7,7 +7,8 @@
     "debug": "node --debug ./bin/www",
     "test": "jasmine & jasmine-node --verbose server_spec --forceexit --captureExceptions",
     "model_test": "jasmine",
-    "postinstall": "node configure.js"
+    "postinstall": "node configure.js",
+    "inspect": "node --inspect ./bin/www"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
