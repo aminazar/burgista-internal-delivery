@@ -2,7 +2,7 @@ const lib = require('../lib');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 /* GET api listing. */
 function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) {
@@ -26,7 +26,7 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
     let user = req.user ? req.user.username : req.user;
     req.test = lib.helpers.isTestReq(req);
     //Get testDate
-    req.date = (req.query.testDate ? moment(req.query.testDate) : moment()).add(-hourAdjustment, 'h').format('YYYY-MM-DD');
+    req.date = (req.query.testDate ? moment(req.query.testDate) : moment()).tz('Europe/London').add(-hourAdjustment, 'h').format('YYYY-MM-DD');
     if (adminOnly && !lib.helpers.adminCheck(user)) {
       res.status(403)
         .send('Only admin can do this.');
@@ -106,7 +106,7 @@ router.get('/reports/all_products/', apiResponse('Product', 'getForProductsRepor
 router.get('/date', (req, res) => {
   let className = 'Stock';
   let hourAdjustment = process.env[className + 'HourAdj'] ? +process.env[className + 'HourAdj'] : 0;
-  let date = (req.query.testDate ? moment(req.query.testDate) : moment()).add(-hourAdjustment, 'h').toDate();
+  let date = (req.query.testDate ? moment(req.query.testDate) : moment()).tz('Europe/London').add(-hourAdjustment, 'h').toDate();
   res.status(200)
     .json(date);
 });
