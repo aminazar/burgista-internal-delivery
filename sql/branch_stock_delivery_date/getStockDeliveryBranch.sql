@@ -8,7 +8,7 @@ SELECT
 FROM
 	branch_stock_delivery_date bsdd
 	INNER JOIN products pro ON pro.pid = bsdd.product_id 
-	INNER JOIN branch_stock_rules bsr on bsr.pid = bsdd.product_id
+	LEFT OUTER JOIN branch_stock_rules bsr on bsr.pid = bsdd.product_id
 WHERE
 	bsdd.branch_id = ${uid} 
 	AND ( counting_date + 3 > ${date} OR bsdd.insert_time >= ${date} )
