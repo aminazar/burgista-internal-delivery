@@ -27,9 +27,10 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
     req.test = lib.helpers.isTestReq(req);
     //Get testDate
     req.date = (req.query.testDate ? moment(req.query.testDate) : moment()).tz('Europe/London').add(-hourAdjustment, 'h').format('YYYY-MM-DD');
+    //Get testTime
+    req.time = (req.query.testTime ? moment(req.query.testTime) : moment()).tz('Europe/London').add(-hourAdjustment, 'h').format('HH:mm:ss');
     if (adminOnly && !lib.helpers.adminCheck(user)) {
-      res.status(403)
-        .send('Only admin can do this.');
+      res.status(403).send('Only admin can do this.');
     }
     else {
       let dynamicArgs = [];
@@ -39,12 +40,12 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
       let allArgs = dynamicArgs.concat(args);
       lib[className].test = req.test;
       lib[className].date = req.date;
+      lib[className].time = req.time;
       let isStaticFunction = typeof lib[className][functionName] === 'function';
       let model = isStaticFunction ? lib[className] : new lib[className](req.test, req.date);
       model[functionName].apply(isStaticFunction ? null : model, allArgs)
         .then(data => {
-          res.status(200)
-            .json(data);
+            res.status(200).json(data);
         })
         .catch(err => {
           console.log(`${className}/${functionName}: `, err);
