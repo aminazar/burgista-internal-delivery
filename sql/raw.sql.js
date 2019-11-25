@@ -70,7 +70,10 @@ module.exports = {
     deliveryReport: sql('branch_stock_delivery_date/deliveryReport.sql'),
     deliveryReportByBranch: sql('branch_stock_delivery_date/deliveryReportByBranch.sql'),
     inventoryCountingReport: sql('branch_stock_delivery_date/inventoryCountingReport.sql'),
+    getStockDeliveryBranch: sql('branch_stock_delivery_date/getStockDeliveryBranch.sql'),
+    getMaxCountingDate: sql('branch_stock_delivery_date/getMaxCountingDate.sql'),
     getMaxCountProductInBranch: sql('branch_stock_delivery_date/getMaxCountProductInBranch.sql'),
+
   },
   prices: {
       create: sql('prices/create.sql'),
