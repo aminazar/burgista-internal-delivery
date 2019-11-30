@@ -7,7 +7,10 @@ select
 	last_count,
 	product_count,
 	default_date_rule,
-	date_rule
+	date_rule,
+	submission_time,
+	is_delivery_finalised,
+	delivery_submission_time
 from
 	products
 join
@@ -22,7 +25,10 @@ left outer join (
        s.product_id,
        s.product_count,
        last_count.counting_date as last_count,
-       date_rule
+       date_rule,
+	   submission_time,
+	   is_delivery_finalised,
+	   delivery_submission_time
 	from
 		branch_stock_delivery_date s
 	left outer join (
