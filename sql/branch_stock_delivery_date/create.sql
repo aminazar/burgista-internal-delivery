@@ -8,7 +8,10 @@ CREATE TABLE branch_stock_delivery_date(
     min_stock integer not null,
     product_count integer,
     real_delivery integer,
+    insert_time timestamp with time zone,
     is_delivery_finalised boolean not null default false,
-    unique(branch_id,product_id,counting_date)
+    ref_type_id integer default null,
+    ref_id integer default null,
+    unique(branch_id,product_id,counting_date),
+    foreign key (ref_id) references branch_stock_delivery_date(bsddid)
 )
-
