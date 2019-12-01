@@ -44,7 +44,6 @@ left outer join (
 		or s.submission_time = ${date}
 		or (s.real_delivery + s.product_count < s.min_stock
 		and s.counting_date + 3 > ${date}
-		and s.counting_date < ${date}
 		and s.counting_date <= ${date})
 		or (s.real_delivery is null
 		and s.counting_date + 3 > ${date}
