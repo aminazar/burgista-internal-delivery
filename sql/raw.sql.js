@@ -73,11 +73,11 @@ module.exports = {
     getMaxCountProductInBranch: sql('branch_stock_delivery_date/getMaxCountProductInBranch.sql'),
 
     getMaxCountingDate: sql('branch_stock_delivery_date/getMaxCountingDate.sql'),
-    countedButNotDelivered: sql('branch_stock_delivery_date/inventory_taking_types/countedButNotDelivered.sql'),
-    countingToday: sql('branch_stock_delivery_date/inventory_taking_types/countingToday.sql'),
-    deliveredLessThanMinStock: sql('branch_stock_delivery_date/inventory_taking_types/deliveredLessThanMinStock.sql'),
-    notCountedAndNotDelivered: sql('branch_stock_delivery_date/inventory_taking_types/notCountedAndNotDelivered.sql'),
-    notCountedButDeliveredAndFinalized: sql('branch_stock_delivery_date/inventory_taking_types/notCountedButDeliveredAndFinalized.sql'),
+    countedButNotDelivered: sql('branch_stock_delivery_date/delivery_types/countedButNotDelivered.sql'),
+    countingToday: sql('branch_stock_delivery_date/delivery_types/countingToday.sql'),
+    deliveredLessThanMinStock: sql('branch_stock_delivery_date/delivery_types/deliveredLessThanMinStock.sql'),
+    notCountedAndNotDelivered: sql('branch_stock_delivery_date/delivery_types/notCountedAndNotDelivered.sql'),
+    notCountedButDeliveredAndFinalized: sql('branch_stock_delivery_date/delivery_types/notCountedButDeliveredAndFinalized.sql'),
 
   },
   prices: {
