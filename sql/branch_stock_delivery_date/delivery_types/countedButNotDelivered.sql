@@ -18,6 +18,11 @@ FROM
 		ORDER BY pro.pid 
 	) t1 on t1.product_id = bsdd.product_id
 WHERE
-	bsdd.branch_id = ${uid}
+	bsdd.branch_id = ${uid} 
 	AND (bsdd.ref_type_id < 900 OR bsdd.ref_type_id is null)
-	AND counting_date = ${date}	
+    AND ( counting_date + 3 > ${date} AND counting_date < ${date} ) 
+    AND (
+		bsdd.product_count IS NOT NULL 
+		AND bsdd.is_delivery_finalised is false 
+		AND bsdd.delivery_submission_time is null
+		) 
