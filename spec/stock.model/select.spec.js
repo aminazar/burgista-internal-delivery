@@ -184,49 +184,75 @@ describe("select", () => {
             const product_100 = products.find(el => el['pid'] === 100);
             const branch_rule_100 = branch_stock_rules.find(el => el['pid'] === 100)
             const result_product_100 = result.find(el => el['pid'] === 100);
-            expect(moment(result_product_100.counting_date).format('YYYY-MM-DD')).toBe(moment().format('YYYY-MM-DD'));
-            // min and max not override on branch
+            // min and max not override on branch but Coefficient is override (mon_multiple)
             expect(result_product_100.stockMax).toBe(product_100.default_max * branch_rule_100.mon_multiple * product_100.default_usage);
             expect(result_product_100.max_calculated).toBe(product_100.default_max * branch_rule_100.mon_multiple * product_100.default_usage);
             expect(result_product_100.min_calculated).toBe(product_100.default_min * branch_rule_100.mon_multiple * product_100.default_usage);
-            expect(result_product_100.product_code).toEqual(product_100.code.toString());
-            expect(result_product_100.product_name).toEqual(product_100.name);
-            expect(result_product_100.pid).toBe(product_100.pid);
-            expect(result_product_100.date_rule).toEqual(product_100.default_date_rule);
-            expect(result_product_100.product_count).toBe(null);
-            expect(result_product_100.last_count).toBe(null);
-            expect(result_product_100.is_delivery_finalised).toBe(false);
-            expect(result_product_100.ref_id).toBe(null);
-            expect(result_product_100.ref_type_id).toBe(null);
-            expect(result_product_100.real_delivery).toBe(null);
-            expect(result_product_100.submission_time).toBe(null);
-            expect(result_product_100.delivery_submission_time).toBe(null);
-            expect(result_product_100.last_product_count).toBe(null);
             expect(result_product_100.untilNextCountingDay).toBe(1);
+            expect(result_product_100.date_rule).toEqual(product_100.default_date_rule);
+            
 
             const product_110 = products.find(el => el['pid'] === 110);
             const result_product_110 = result.find(el => el['pid'] === 110);
             const branch_rule_110 = branch_stock_rules.find(el => el['pid'] === 110)
-            expect(moment(result_product_110.counting_date).format('YYYY-MM-DD')).toBe(moment().format('YYYY-MM-DD'));
             // min and max override on branch
             expect(result_product_110.stockMax).toBe(branch_rule_110.max * branch_rule_110.mon_multiple * branch_rule_110.usage);
             expect(result_product_110.max_calculated).toBe(branch_rule_110.max * branch_rule_110.mon_multiple * branch_rule_110.usage);
             expect(result_product_110.min_calculated).toBe(branch_rule_110.min * branch_rule_110.mon_multiple * branch_rule_110.usage);
-            expect(result_product_110.product_code).toEqual(product_110.code.toString());
-            expect(result_product_110.product_name).toEqual(product_110.name);
-            expect(result_product_110.pid).toBe(product_110.pid);
             expect(result_product_110.date_rule).toEqual(branch_rule_110.date_rule);
-            expect(result_product_110.product_count).toBe(null);
-            expect(result_product_110.last_count).toBe(null);
-            expect(result_product_110.is_delivery_finalised).toBe(false);
-            expect(result_product_110.ref_id).toBe(null);
-            expect(result_product_110.ref_type_id).toBe(null);
-            expect(result_product_110.real_delivery).toBe(null);
-            expect(result_product_110.submission_time).toBe(null);
-            expect(result_product_110.delivery_submission_time).toBe(null);
-            expect(result_product_110.last_product_count).toBe(null);
+            expect(result_product_110.pid).toBe(product_110.pid);
             expect(result_product_110.untilNextCountingDay).toBe(1);
 
+            done();
+        } catch (err) {
+            console.error(err);
+            done();
+        }
+
+    });
+
+    it('The parameters returned are as follows', async function (done) {
+        try {
+            UnitModel.test = true;
+            // branch login 3 days ago
+            await sql.test.last_login.add({
+                lid: 1,
+                login_uid: 22,
+                login_date: moment().subtract(3, 'day').format('YYYY-MM-DD'),
+                previous_login_date_time: moment().subtract(3, 'day').format('YYYY-MM-DD'),
+            });
+            const [prep, fin_prep] = units;
+            await UnitModel.saveDateAfterLogin(
+                fin_prep.name,
+                fin_prep.username,
+                fin_prep.is_branch,
+                fin_prep.uid,
+                fin_prep.is_kitchen,
+                moment(`${moment().format('YYYY-MM-DD')} 22:00:00`).format('YYYY-MM-DD HH:mm:ss')
+            );
+
+            let result = await StockModel.select(fin_prep.uid, moment().format('YYYY-MM-DD'))
+            expect(result['length']).toBe(2);
+
+            // min and max override on branch
+            result.forEach(el => {
+                expect(el.stockMax).toBeDefined();
+                expect(el.min_calculated).toBeDefined();
+                expect(el.max_calculated).toBeDefined();
+                expect(el.product_code).toBeDefined();
+                expect(el.product_name).toBeDefined();
+                expect(el.date_rule).toBeDefined();
+                expect(el.pid).toBeDefined();
+                expect(el.product_count).toBeDefined();
+                expect(el.last_count).toBeDefined();
+                expect(el.is_delivery_finalised).toBeDefined();
+                expect(el.ref_id).toBeDefined();
+                expect(el.ref_type_id).toBeDefined();
+                expect(el.submission_time).toBeDefined();
+                expect(el.delivery_submission_time).toBeDefined();
+                expect(el.last_product_count).toBeDefined();
+                expect(el.untilNextCountingDay).toBeDefined();
+            });
 
             done();
         } catch (err) {
