@@ -21,6 +21,7 @@ module.exports = {
     create:   sql('db/create.sql'),
     drop:     sql('db/drop.sql'),
     test:     sql('db/test.sql'),
+    dropSchema:     sql('db/dropSchema.sql')
   },
   units: {
     create:   sql('units/create.sql'),
