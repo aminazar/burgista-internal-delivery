@@ -144,6 +144,42 @@ describe("select", () => {
 
             let result = await StockModel.select(fin_prep.uid, moment().format('YYYY-MM-DD'))
             expect(result['length']).toBe(2);
+            const result_product_100 = result.find(el => el['pid'] === 100);
+            const result_product_110 = result.find(el => el['pid'] === 110);
+
+            expect(moment(result_product_100.counting_date).format('YYYY-MM-DD')).toBe(moment().format('YYYY-MM-DD'));
+            expect(moment(result_product_110.counting_date).format('YYYY-MM-DD')).toBe(moment().format('YYYY-MM-DD'));
+
+            done();
+        } catch (err) {
+            console.error(err);
+            done();
+        }
+
+    });
+
+    it('If it is changed to min and max Branch it should be calculated accordingly', async function (done) {
+        try {
+            UnitModel.test = true;
+            // branch login 3 days ago
+            await sql.test.last_login.add({
+                lid: 1,
+                login_uid: 22,
+                login_date: moment().subtract(3, 'day').format('YYYY-MM-DD'),
+                previous_login_date_time: moment().subtract(3, 'day').format('YYYY-MM-DD'),
+            });
+            const [prep, fin_prep] = units;
+            await UnitModel.saveDateAfterLogin(
+                fin_prep.name,
+                fin_prep.username,
+                fin_prep.is_branch,
+                fin_prep.uid,
+                fin_prep.is_kitchen,
+                moment(`${moment().format('YYYY-MM-DD')} 22:00:00`).format('YYYY-MM-DD HH:mm:ss')
+            );
+
+            let result = await StockModel.select(fin_prep.uid, moment().format('YYYY-MM-DD'))
+            expect(result['length']).toBe(2);
 
             const product_100 = products.find(el => el['pid'] === 100);
             const branch_rule_100 = branch_stock_rules.find(el => el['pid'] === 100)
@@ -171,7 +207,7 @@ describe("select", () => {
             const product_110 = products.find(el => el['pid'] === 110);
             const result_product_110 = result.find(el => el['pid'] === 110);
             const branch_rule_110 = branch_stock_rules.find(el => el['pid'] === 110)
-            expect(moment(result_product_100.counting_date).format('YYYY-MM-DD')).toBe(moment().format('YYYY-MM-DD'));
+            expect(moment(result_product_110.counting_date).format('YYYY-MM-DD')).toBe(moment().format('YYYY-MM-DD'));
             // min and max override on branch
             expect(result_product_110.stockMax).toBe(branch_rule_110.max * branch_rule_110.mon_multiple * branch_rule_110.usage);
             expect(result_product_110.max_calculated).toBe(branch_rule_110.max * branch_rule_110.mon_multiple * branch_rule_110.usage);
@@ -179,7 +215,7 @@ describe("select", () => {
             expect(result_product_110.product_code).toEqual(product_110.code.toString());
             expect(result_product_110.product_name).toEqual(product_110.name);
             expect(result_product_110.pid).toBe(product_110.pid);
-            // expect(result_product_110.date_rule).toEqual(branch_rule_110.date_rule);
+            expect(result_product_110.date_rule).toEqual(branch_rule_110.date_rule);
             expect(result_product_110.product_count).toBe(null);
             expect(result_product_110.last_count).toBe(null);
             expect(result_product_110.is_delivery_finalised).toBe(false);

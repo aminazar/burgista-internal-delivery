@@ -7,11 +7,9 @@ FROM
 		DISTINCT on (pro.pid) *,
 		pro.pid as product_id,
 	CASE
-			WHEN pro.default_date_rule = NULL THEN
-			bsr.date_rule 
-			WHEN pro.default_date_rule = '' THEN
-			bsr.date_rule ELSE pro.default_date_rule 
-		END AS "product_date_rule" 
+		WHEN bsr.date_rule IS NOT NULL AND bsr.date_rule  <> '' THEN bsr.date_rule 
+		ELSE pro.default_date_rule 
+	END AS "product_date_rule" 
 	FROM
 		products pro
 		LEFT OUTER JOIN branch_stock_rules bsr ON bsr.pid = pro.pid
