@@ -1,19 +1,12 @@
-select
-    branch_stock_rules.*,products.*,products.pid as pid
-from
-    products
-join
-    units up
-on
-    up.uid = products.prep_unit_id
-join
-    units ur
-on
-    ur.uid = ${uid}
-left outer join
-    branch_stock_rules
-on
-    branch_stock_rules.uid=${uid}
-    and branch_stock_rules.pid = products.pid
-where
-    ur.is_kitchen = up.is_kitchen
+SELECT
+	branch_stock_rules.*,
+	products.*,
+	products.pid AS pid 
+FROM
+	products
+	JOIN units up ON up.uid = products.prep_unit_id
+	JOIN units ur ON ur.uid = ${uid}
+	LEFT OUTER JOIN branch_stock_rules ON branch_stock_rules.uid =${uid} 
+	AND branch_stock_rules.pid = products.pid 
+WHERE
+	ur.is_kitchen = up.is_kitchen

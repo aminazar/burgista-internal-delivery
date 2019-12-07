@@ -11,7 +11,7 @@ FROM
             MAX ( counting_date ) AS counting_date
         FROM 
             branch_stock_delivery_date 
-        WHERE branch_id = ${uid} AND counting_date < ${date} AND submission_time is not null
+        WHERE branch_id = ${uid} AND counting_date < ${date} AND submission_time is not null AND (ref_type_id < 900 OR ref_type_id is null)
         GROUP BY product_id, branch_id ) t1 
     ON t1.product_id = bsdd.product_id 
 	AND t1.branch_id = bsdd.branch_id 
