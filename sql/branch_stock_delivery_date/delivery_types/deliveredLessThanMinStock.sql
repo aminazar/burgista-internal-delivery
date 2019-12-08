@@ -18,7 +18,7 @@ FROM
 WHERE
 	bsdd.branch_id = ${uid}
 	AND (bsdd.ref_type_id < 900 OR bsdd.ref_type_id is null)
-    AND ( counting_date + 3 > ${date} AND counting_date < ${date} ) -- in earlier days
+    AND ( counting_date + 4 > ${date} AND counting_date < ${date} ) -- in earlier days
     AND bsdd.product_count is not null -- have product count
     AND (
         bsdd.product_count + bsdd.real_delivery < bsdd.min_stock  -- check expected count
