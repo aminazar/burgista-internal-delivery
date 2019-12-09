@@ -14,34 +14,6 @@ module.exports = __webpack_require__(477);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Product = (function () {
-    function Product() {
-        this.countingRecursion = '';
-        this.coefficients = {
-            Monday: 1,
-            Tuesday: 1,
-            Wednesday: 1,
-            Thursday: 1,
-            Friday: 1,
-            Saturday: 1,
-            Sunday: 1,
-            Usage: 1
-        };
-        this.isOverridden = false;
-    }
-    return Product;
-}());
-exports.Product = Product;
-//# sourceMappingURL=C:/Users/305-2/Desktop/burgista/burgista-delivery-client/src/product.js.map
-
-/***/ }),
-
-/***/ 115:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
 var Unit = (function () {
     function Unit() {
     }
@@ -52,7 +24,7 @@ exports.Unit = Unit;
 
 /***/ }),
 
-/***/ 162:
+/***/ 161:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68,7 +40,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var WindowRef_1 = __webpack_require__(272);
+var WindowRef_1 = __webpack_require__(271);
 var message_service_1 = __webpack_require__(35);
 var moment = __webpack_require__(2);
 var PrintService = (function () {
@@ -223,13 +195,13 @@ var _a, _b;
 
 /***/ }),
 
-/***/ 163:
+/***/ 162:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var product_1 = __webpack_require__(114);
+var product_1 = __webpack_require__(278);
 var rxjs_1 = __webpack_require__(60);
 var rrule_1 = __webpack_require__(95);
 var rrulePureString = function (str) {
@@ -519,7 +491,7 @@ exports.ProductModel = ProductModel;
 
 /***/ }),
 
-/***/ 198:
+/***/ 197:
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -528,12 +500,12 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 198;
+webpackEmptyContext.id = 197;
 
 
 /***/ }),
 
-/***/ 272:
+/***/ 271:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -569,7 +541,7 @@ exports.WindowRef = WindowRef;
 
 /***/ }),
 
-/***/ 273:
+/***/ 272:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -585,7 +557,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var logged_in_guard_1 = __webpack_require__(277);
+var logged_in_guard_1 = __webpack_require__(276);
 var message_service_1 = __webpack_require__(35);
 var material_1 = __webpack_require__(79);
 var AppComponent = (function () {
@@ -632,7 +604,7 @@ var _a, _b, _c;
 
 /***/ }),
 
-/***/ 274:
+/***/ 273:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -654,7 +626,7 @@ exports.Delivery = Delivery;
 
 /***/ }),
 
-/***/ 275:
+/***/ 274:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -693,7 +665,7 @@ var _a;
 
 /***/ }),
 
-/***/ 276:
+/***/ 275:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -712,7 +684,7 @@ exports.Inventory = Inventory;
 
 /***/ }),
 
-/***/ 277:
+/***/ 276:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -759,7 +731,7 @@ var _a, _b;
 
 /***/ }),
 
-/***/ 278:
+/***/ 277:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -777,7 +749,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var material_1 = __webpack_require__(79);
 var moment = __webpack_require__(2);
-var print_service_1 = __webpack_require__(162);
+var print_service_1 = __webpack_require__(161);
 var PrintViewerComponent = (function () {
     function PrintViewerComponent(dialogRef, printService) {
         this.dialogRef = dialogRef;
@@ -815,13 +787,41 @@ var _a, _b;
 
 /***/ }),
 
+/***/ 278:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Product = (function () {
+    function Product() {
+        this.countingRecursion = '';
+        this.coefficients = {
+            Monday: 1,
+            Tuesday: 1,
+            Wednesday: 1,
+            Thursday: 1,
+            Friday: 1,
+            Saturday: 1,
+            Sunday: 1,
+            Usage: 1
+        };
+        this.isOverridden = false;
+    }
+    return Product;
+}());
+exports.Product = Product;
+//# sourceMappingURL=C:/Users/305-2/Desktop/burgista/burgista-delivery-client/src/product.js.map
+
+/***/ }),
+
 /***/ 279:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var unit_1 = __webpack_require__(115);
+var unit_1 = __webpack_require__(114);
 var UnitModel = (function () {
     function UnitModel(unit) {
         this.waiting = {
@@ -994,7 +994,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var http_1 = __webpack_require__(85);
 __webpack_require__(37);
-__webpack_require__(188);
+__webpack_require__(187);
 var rxjs_1 = __webpack_require__(60);
 var message_service_1 = __webpack_require__(35);
 var RestService = (function () {
@@ -1133,13 +1133,13 @@ var platform_browser_1 = __webpack_require__(30);
 var core_1 = __webpack_require__(0);
 var forms_1 = __webpack_require__(10);
 var http_1 = __webpack_require__(85);
-var app_component_1 = __webpack_require__(273);
+var app_component_1 = __webpack_require__(272);
 var login_component_1 = __webpack_require__(550);
 var navbar_component_1 = __webpack_require__(551);
 var home_component_1 = __webpack_require__(546);
 var auth_service_1 = __webpack_require__(66);
 var rest_service_1 = __webpack_require__(45);
-var logged_in_guard_1 = __webpack_require__(277);
+var logged_in_guard_1 = __webpack_require__(276);
 var router_1 = __webpack_require__(23);
 var material_1 = __webpack_require__(79);
 var angular2_material_datepicker_1 = __webpack_require__(538);
@@ -1157,13 +1157,13 @@ var focus_directive_1 = __webpack_require__(545);
 var override_form_component_1 = __webpack_require__(552);
 var inventory_form_component_1 = __webpack_require__(548);
 var delivery_form_component_1 = __webpack_require__(543);
-var print_viewer_component_1 = __webpack_require__(278);
-var print_service_1 = __webpack_require__(162);
-var WindowRef_1 = __webpack_require__(272);
+var print_viewer_component_1 = __webpack_require__(277);
+var print_service_1 = __webpack_require__(161);
+var WindowRef_1 = __webpack_require__(271);
 var reports_component_1 = __webpack_require__(555);
 var primeng_1 = __webpack_require__(800);
 var animations_1 = __webpack_require__(537);
-var warning_viewer_component_1 = __webpack_require__(275);
+var warning_viewer_component_1 = __webpack_require__(274);
 var AppModule = (function () {
     function AppModule() {
     }
@@ -1396,20 +1396,62 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var auth_service_1 = __webpack_require__(66);
 var rest_service_1 = __webpack_require__(45);
 var delivery_model_1 = __webpack_require__(544);
-var delivery_1 = __webpack_require__(274);
+var delivery_1 = __webpack_require__(273);
 var forms_1 = __webpack_require__(10);
 var message_service_1 = __webpack_require__(35);
-var product_1 = __webpack_require__(114);
 var material_1 = __webpack_require__(79);
-var print_viewer_component_1 = __webpack_require__(278);
-var print_service_1 = __webpack_require__(162);
+var print_viewer_component_1 = __webpack_require__(277);
+var print_service_1 = __webpack_require__(161);
 var moment = __webpack_require__(2);
 var rxjs_1 = __webpack_require__(60);
+exports.DELIVERY_TYPES = {
+    COUNTING_TODAY: null,
+    COUNTED_BUT_NOT_DELIVERED: 2,
+    NOT_COUNTED_BUT_DELIVERED_AND_FINALIZED: 3,
+    NOT_COUNTED_AND_NOT_DELIVERED: 4,
+    DELIVERED_LESS_THAN_MIN_STOCK: 5,
+    CLOSED: 999
+};
 var DeliveryFormComponent = (function () {
     function DeliveryFormComponent(authService, restService, msgService, dialog, printService) {
         this.authService = authService;
@@ -1417,6 +1459,7 @@ var DeliveryFormComponent = (function () {
         this.msgService = msgService;
         this.dialog = dialog;
         this.printService = printService;
+        this.delivery_types = exports.DELIVERY_TYPES;
         this.showZeroDelivery = false;
         this.filteredDeliveries = [];
         this.filteredBranchDeliveries = {};
@@ -1433,45 +1476,39 @@ var DeliveryFormComponent = (function () {
         this.thereIsProactiveItem = false;
     }
     DeliveryFormComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        if (this.overallDeliveryModel === null || this.overallDeliveryModel === undefined)
-            this.overallDeliveryModel = new delivery_model_1.DeliveryModel('All', null, !this.showZeroDelivery);
-        this.overallDeliveryModel._shouldDisabled = true;
-        this.unitName = this.authService.unitName;
-        this.isKitchen = this.authService.isKitchen;
-        this.currentDate = new Date();
-        this.selectedDate = new Date();
-        this.restService.get('date').subscribe(function (d) {
-            _this.currentDate = new Date(d);
-            _this.selectedDate = new Date(d);
-        }, function (err) {
-            console.error(err);
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        this.initValues();
+                        return [4, this.getDateFromServer()];
+                    case 1:
+                        _a.sent();
+                        this.checkDate();
+                        return [4, this.getReceivers()];
+                    case 2:
+                        _a.sent();
+                        return [4, this.getDeliveryData()];
+                    case 3:
+                        _a.sent();
+                        this.onProductValueChanges$();
+                        return [2];
+                }
+            });
         });
-        this.receiversDeliveryModels = { All: this.overallDeliveryModel };
-        var tempAllDelivery = new delivery_1.Delivery();
-        tempAllDelivery.realDelivery = 0;
-        tempAllDelivery.min = 0;
-        tempAllDelivery.max = 0;
-        tempAllDelivery.minDelivery = 0;
-        tempAllDelivery.maxDelivery = 0;
-        tempAllDelivery.stock = 0;
-        this.receiversSumDeliveries = { All: tempAllDelivery };
-        this.receivers = [];
-        this.restService.get('unit?isBranch=true&isKitchen=' + this.isKitchen).subscribe(function (data) {
-            for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
-                var item = data_1[_i];
-                var obj = {
-                    id: item.uid,
-                    name: item.name,
-                    warn: 'no'
-                };
-                _this.receivers.push(obj);
-                _this.isWaiting[obj.name] = false;
+    };
+    DeliveryFormComponent.prototype.checkDate = function () {
+        var selectedHour = moment(this.selectedDate).hour();
+        var selectedMin = moment(this.selectedDate).minute();
+        var selectedSecond = moment(this.selectedDate).second();
+        if (selectedHour >= 0 && selectedHour <= 8 && selectedMin >= 0 && selectedMin <= 59 && selectedSecond >= 0 && selectedSecond <= 59) {
+            if (moment(this.selectedDate).format('YYYY-MM-DD') === moment(this.currentDate).format('YYYY-MM-DD')) {
+                this.selectedDate = new Date(moment(this.selectedDate).subtract(1, 'day').format('YYYY-MM-DD HH:mm:ss'));
             }
-            _this.getDeliveryData();
-        }, function (err) {
-            console.log(err.message);
-        });
+        }
+    };
+    DeliveryFormComponent.prototype.onProductValueChanges$ = function () {
+        var _this = this;
         this.productNameCodeCtrl = new forms_1.FormControl();
         this.filteredNameCode = this.productNameCodeCtrl.valueChanges
             .map(function (name_code) { return _this.filterProducts(name_code); });
@@ -1494,6 +1531,9 @@ var DeliveryFormComponent = (function () {
                 tempDelivery.stock = 0;
                 tempDelivery.minDelivery = (tempDelivery.min - tempDelivery.stock) < 0 ? 0 : (tempDelivery.min - tempDelivery.stock);
                 tempDelivery.maxDelivery = tempDelivery.max - tempDelivery.stock;
+                tempDelivery.stockDate = moment(tempDelivery.stockDate).format('DD MMM YY');
+                tempDelivery.ref_type_id = tempDelivery['ref_type_id'];
+                tempDelivery.ref_id = tempDelivery['ref_id'];
                 tempDelivery.stockDate = moment(tempDelivery.stockDate).format('DD MMM YY');
                 _this.receiversDeliveryModels[_this.receiverName].add(tempDelivery);
                 _this.thereIsProactiveItem = !!_this.overallDeliveryModel._deliveries.find(function (r) { return r.id === null; });
@@ -1527,17 +1567,113 @@ var DeliveryFormComponent = (function () {
             console.log(err.message);
         });
     };
-    DeliveryFormComponent.prototype.dateChanged = function () {
-        if (this.selectedDate.getFullYear() !== this.currentDate.getFullYear())
-            this.isToday = false;
-        else if (this.selectedDate.getMonth() !== this.currentDate.getMonth())
-            this.isToday = false;
-        else if (this.selectedDate.getDate() !== this.currentDate.getDate())
-            this.isToday = false;
-        else
-            this.isToday = true;
-        this.overallDeliveryModel.clear();
-        this.getDeliveryData();
+    DeliveryFormComponent.prototype.getReceivers = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, _i, data_1, item, obj, err_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4, this.restService.get('unit?isBranch=true&isKitchen=' + this.isKitchen).toPromise()];
+                    case 1:
+                        data = _a.sent();
+                        for (_i = 0, data_1 = data; _i < data_1.length; _i++) {
+                            item = data_1[_i];
+                            obj = {
+                                id: item.uid,
+                                name: item.name,
+                                warn: 'no'
+                            };
+                            this.receivers.push(obj);
+                            this.isWaiting[obj.name] = false;
+                        }
+                        return [3, 3];
+                    case 2:
+                        err_1 = _a.sent();
+                        console.log(err_1.message);
+                        return [3, 3];
+                    case 3: return [2];
+                }
+            });
+        });
+    };
+    DeliveryFormComponent.prototype.getDateFromServer = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var d, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4, this.restService.get('date').toPromise()];
+                    case 1:
+                        d = _a.sent();
+                        this.currentDate = new Date(d);
+                        if (!this.selectedDate) {
+                            this.selectedDate = new Date(d);
+                        }
+                        return [2, Promise.resolve(d)];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.error(error_1);
+                        return [3, 3];
+                    case 3: return [2];
+                }
+            });
+        });
+    };
+    DeliveryFormComponent.prototype.initValues = function () {
+        if (this.overallDeliveryModel === null || this.overallDeliveryModel === undefined) {
+            this.overallDeliveryModel = new delivery_model_1.DeliveryModel('All', null, !this.showZeroDelivery);
+        }
+        this.overallDeliveryModel._shouldDisabled = true;
+        this.unitName = this.authService.unitName;
+        this.isKitchen = this.authService.isKitchen;
+        this.currentDate = new Date();
+        this.selectedDate = new Date();
+        this.receiversDeliveryModels = { All: this.overallDeliveryModel };
+        var tempAllDelivery = new delivery_1.Delivery();
+        tempAllDelivery.realDelivery = 0;
+        tempAllDelivery.min = 0;
+        tempAllDelivery.max = 0;
+        tempAllDelivery.minDelivery = 0;
+        tempAllDelivery.maxDelivery = 0;
+        tempAllDelivery.stock = 0;
+        this.receiversSumDeliveries = { All: tempAllDelivery };
+        this.receivers = [];
+    };
+    DeliveryFormComponent.prototype.dateChanged = function (date) {
+        return __awaiter(this, void 0, void 0, function () {
+            var d, selectedHour, selectedMin, selectedSecond;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, this.getDateFromServer()];
+                    case 1:
+                        d = _a.sent();
+                        this.selectedDate = new Date(moment(moment(date).format('YYYY-MM-DD') + " " + moment(d).format('HH:mm:ss')).format('YYYY-MM-DD HH:mm:ss'));
+                        if (this.selectedDate.getFullYear() !== this.currentDate.getFullYear())
+                            this.isToday = false;
+                        else if (this.selectedDate.getMonth() !== this.currentDate.getMonth())
+                            this.isToday = false;
+                        else if (this.selectedDate.getDate() !== this.currentDate.getDate())
+                            this.isToday = false;
+                        else
+                            this.isToday = true;
+                        selectedHour = moment(this.selectedDate).hour();
+                        selectedMin = moment(this.selectedDate).minute();
+                        selectedSecond = moment(this.selectedDate).second();
+                        if (selectedHour >= 0 && selectedHour <= 8 && selectedMin >= 0 && selectedMin <= 59 && selectedSecond >= 0 && selectedSecond <= 59) {
+                            if (moment(this.selectedDate).format('YYYY-MM-DD') === moment(this.currentDate).subtract(1, 'day').format('YYYY-MM-DD')) {
+                                this.isToday = true;
+                            }
+                        }
+                        this.overallDeliveryModel.clear();
+                        return [4, this.getDeliveryData()];
+                    case 2:
+                        _a.sent();
+                        return [2];
+                }
+            });
+        });
     };
     DeliveryFormComponent.prototype.removeDeliveryItem = function (item) {
         var _this = this;
@@ -1717,49 +1853,105 @@ var DeliveryFormComponent = (function () {
                 this.msgService.warn('You should first submit the list');
         }
     };
+    DeliveryFormComponent.prototype.deliverySubmitted = function (deliveryModel) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            var deliveryItems, insertItems, updateItems, index, insertItem, index, updateItem, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        deliveryModel.afterSubmit();
+                        deliveryItems = deliveryModel._deliveries.filter(function (r) { return (r['realDelivery'] === 0 && r['stock'] >= r['max']) || r['realDelivery'] !== 0; });
+                        insertItems = [];
+                        updateItems = [];
+                        deliveryItems.forEach(function (delivery) {
+                            if (!delivery['id']) {
+                                var branchId = _this.receivers.find(function (el) { return el.name.toLowerCase() === _this.receiverName.toLowerCase(); }).id;
+                                insertItems.push({
+                                    is_delivery_finalised: delivery['isPrinted'] || false,
+                                    ref_type_id: delivery['ref_type_id'],
+                                    ref_id: delivery['ref_id'],
+                                    real_delivery: delivery['realDelivery'],
+                                    uid: branchId,
+                                    product_id: delivery['product_id']
+                                });
+                                updateItems.push({
+                                    id: delivery['ref_id'],
+                                    ref_id: null,
+                                    ref_type_id: 999
+                                });
+                            }
+                            else {
+                                updateItems.push({
+                                    id: delivery['id'],
+                                    real_delivery: delivery['realDelivery'],
+                                    product_id: delivery['product_id'],
+                                    is_delivery_finalised: delivery['isPrinted'] || false,
+                                    branch_id: delivery['uid']
+                                });
+                            }
+                        });
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 10, , 11]);
+                        index = 0;
+                        _a.label = 2;
+                    case 2:
+                        if (!(index < insertItems.length)) return [3, 5];
+                        insertItem = insertItems[index];
+                        return [4, this.restService.insert('delivery/' + insertItem['uid'], insertItem).toPromise()];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4:
+                        index++;
+                        return [3, 2];
+                    case 5:
+                        index = 0;
+                        _a.label = 6;
+                    case 6:
+                        if (!(index < updateItems.length)) return [3, 9];
+                        updateItem = updateItems[index];
+                        return [4, this.restService.update('delivery', updateItem.id, updateItem).toPromise()];
+                    case 7:
+                        _a.sent();
+                        _a.label = 8;
+                    case 8:
+                        index++;
+                        return [3, 6];
+                    case 9: return [3, 11];
+                    case 10:
+                        err_2 = _a.sent();
+                        console.error(err_2);
+                        deliveryModel._isSubmitted = false;
+                        console.log(err_2.message);
+                        this.msgService.error(err_2);
+                        return [3, 11];
+                    case 11:
+                        deliveryModel._isSubmitted = true;
+                        return [2];
+                }
+            });
+        });
+    };
     DeliveryFormComponent.prototype.submitDelivery = function (deliveryModel) {
-        var _this = this;
-        deliveryModel.afterSubmit();
-        var deliveryItems = deliveryModel._deliveries.filter(function (r) { return (r['realDelivery'] === 0 && r['stock'] >= r['max']) || r['realDelivery'] !== 0; });
-        var _loop_1 = function (delItem) {
-            if (delItem.realDelivery === null) {
-                this_1.msgService.warn("Delivery data are submitted, but delivery value of '" + delItem.productName + "' was blank.");
-                return { value: void 0 };
-            }
-            else if (delItem.realDelivery === 0) {
-                this_1.msgService.warn("Delivery data are submitted, but delivery value of '" + delItem.productName + "' was zero");
-            }
-            deliveryModel._isSubmitted = true;
-            if (delItem.id === null) {
-                var branchId = this_1.receivers.find(function (el) { return el.name.toLowerCase() === _this.receiverName.toLowerCase(); }).id;
-                var productId = this_1.productsList[this_1.receiverName].find(function (el) { return el.code.toLowerCase() === delItem.productCode.toLowerCase(); }).id;
-                this_1.restService.insert('delivery/' + branchId, delivery_model_1.DeliveryModel.toAnyObject(delItem, delItem.isPrinted, productId)).subscribe(function (data) {
-                    delItem.state = 'added';
-                    delItem.id = data;
-                    _this.msgService.message('Delivery data are submitted');
-                }, function (err) {
-                    deliveryModel._isSubmitted = false;
-                    console.log(err.message);
-                    _this.msgService.error(err);
-                });
-            }
-            else {
-                this_1.restService.update('delivery', delItem.id, delivery_model_1.DeliveryModel.toAnyObject(delItem, delItem.isPrinted, null)).subscribe(function (data) {
-                    console.log('Update this item successfully');
-                }, function (err) {
-                    deliveryModel._isSubmitted = false;
-                    console.log(err.message);
-                    _this.msgService.error(err);
-                });
-            }
-        };
-        var this_1 = this;
-        for (var _i = 0, deliveryItems_1 = deliveryItems; _i < deliveryItems_1.length; _i++) {
-            var delItem = deliveryItems_1[_i];
-            var state_1 = _loop_1(delItem);
-            if (typeof state_1 === "object")
-                return state_1.value;
-        }
+        return __awaiter(this, void 0, void 0, function () {
+            var d;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, this.getDateFromServer()];
+                    case 1:
+                        d = _a.sent();
+                        if (!moment(d, 'YYYY-MM-DD HH:mm:ss').isBetween(moment(moment(d).format('YYYY-MM-DD') + " 00:00:00", 'YYYY-MM-DD HH:mm:ss'), moment(moment(d).format('YYYY-MM-DD') + " 9:00:00", 'YYYY-MM-DD HH:mm:ss'), null, '[]')) {
+                            return [2, this.msgService.warn('You are not allowed to register your stock between 00:00 am to 9:00 am')];
+                        }
+                        else {
+                            this.deliverySubmitted(deliveryModel);
+                        }
+                        return [2];
+                }
+            });
+        });
     };
     DeliveryFormComponent.prototype.sendForPrint = function (deliveryModel, isAllTab) {
         var _this = this;
@@ -1783,7 +1975,7 @@ var DeliveryFormComponent = (function () {
                     var noFailure_1 = true;
                     var counter_1 = 0;
                     var deliveryItems = deliveryModel._deliveries.filter(function (r) { return (r['realDelivery'] === 0 && r['stock'] >= r['max']) || r['realDelivery'] !== 0; });
-                    var _loop_2 = function (item) {
+                    var _loop_1 = function (item) {
                         item.isPrinted = true;
                         _this.restService.update('delivery', item.id, delivery_model_1.DeliveryModel.toAnyObject(item, item.isPrinted, null)).subscribe(function (data) {
                             deliveryModel._isPrinted = deliveryModel.deliveries.map(function (d) { return d.isPrinted; }).reduce(function (a, b) { return a && b; });
@@ -1799,9 +1991,9 @@ var DeliveryFormComponent = (function () {
                                 doneAllItems_1.next(true);
                         });
                     };
-                    for (var _i = 0, deliveryItems_2 = deliveryItems; _i < deliveryItems_2.length; _i++) {
-                        var item = deliveryItems_2[_i];
-                        _loop_2(item);
+                    for (var _i = 0, deliveryItems_1 = deliveryItems; _i < deliveryItems_1.length; _i++) {
+                        var item = deliveryItems_1[_i];
+                        _loop_1(item);
                     }
                     doneAllItems_1.subscribe(function (data) {
                         if (data && noFailure_1) {
@@ -1826,125 +2018,139 @@ var DeliveryFormComponent = (function () {
         this.overallDeliveryModel._shouldDisabled = !overallCanPrinted;
     };
     DeliveryFormComponent.prototype.getDeliveryData = function () {
-        var _this = this;
-        var dateParam = moment(this.selectedDate).format('YYYYMMDD');
-        var _loop_3 = function (rcv) {
-            rcv.warn = 'no';
-            this_2.isWaiting[rcv.name] = true;
-            this_2.waiting();
-            this_2.restService.get('delivery/' + dateParam + '/' + rcv.id).subscribe(function (data) {
-                _this.isWaiting[rcv.name] = false;
-                _this.waiting();
-                _this.productsList[rcv.name] = [];
-                _this.receiversDeliveryModels[rcv.name] = new delivery_model_1.DeliveryModel(rcv.name, +rcv.id, !_this.showZeroDelivery);
-                _this.filteredBranchDeliveries[rcv.name] = [];
-                _this.receiversSumDeliveries[rcv.name] = new delivery_1.Delivery();
-                _this.receiversSumDeliveries[rcv.name].min = 0;
-                _this.receiversSumDeliveries[rcv.name].max = 0;
-                _this.receiversSumDeliveries[rcv.name].minDelivery = 0;
-                _this.receiversSumDeliveries[rcv.name].maxDelivery = 0;
-                _this.receiversSumDeliveries[rcv.name].realDelivery = 0;
-                _this.receiversSumDeliveries[rcv.name].stock = 0;
-                for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
-                    var item = data_2[_i];
-                    if (item.id === null) {
-                        var tempProduct = new product_1.Product();
-                        tempProduct.id = item.productId;
-                        tempProduct.code = item.productCode;
-                        tempProduct.name = item.productName;
-                        tempProduct.minQty = item.min;
-                        tempProduct.maxQty = item.max;
-                        if (_this.productsList[rcv.name] === undefined)
-                            _this.productsList[rcv.name] = [];
-                        _this.productsList[rcv.name].push(tempProduct);
-                        if (_this.productName_Code[rcv.name] === undefined)
-                            _this.productName_Code[rcv.name] = [];
-                        _this.productName_Code[rcv.name].push(item.productCode + ' - ' + item.productName);
-                    }
-                    else {
-                        if (item.stock === null || (typeof item.stock !== 'number'))
-                            rcv.warn = 'count';
-                        var tempDelivery = new delivery_1.Delivery();
-                        tempDelivery.id = item.id;
-                        tempDelivery.uid = +item.uid;
-                        tempDelivery.productCode = item.productCode;
-                        tempDelivery.productName = item.productName;
-                        if (item.stock === null && item.realDelivery === null)
-                            tempDelivery.realDelivery = null;
-                        else if (item.realDelivery === null)
-                            tempDelivery.realDelivery = (item.max - item.stock) < 0 ? 0 : (item.max - item.stock);
-                        else
-                            tempDelivery.realDelivery = item.realDelivery;
-                        tempDelivery.minDelivery = (item.min - item.stock) < 0 ? 0 : (item.min - item.stock);
-                        tempDelivery.maxDelivery = item.max - item.stock >= 0 ? item.max - item.stock : 0;
-                        tempDelivery.min = item.min;
-                        tempDelivery.max = item.max;
-                        tempDelivery.stock = item.stock;
-                        tempDelivery.isPrinted = item.isPrinted;
-                        if (item.stockDate === null)
-                            tempDelivery.stockDate = null;
-                        else
-                            tempDelivery.stockDate = moment(item.stockDate).format('DD MMM YY');
-                        tempDelivery.oldCount = item.oldCount;
-                        tempDelivery.state = 'exist';
-                        tempDelivery.untilNextCountingDay = item.untilNextCountingDay;
-                        _this.receiversDeliveryModels[rcv.name].add(tempDelivery);
-                        _this.thereIsProactiveItem = !!_this.overallDeliveryModel.deliveries.find(function (r) { return r.id === null; });
-                        _this.calSumRow(rcv.name, tempDelivery, 'add');
-                        _this.calSumRow('All', tempDelivery, 'add');
-                        if (_this.overallDeliveryModel.getByCode(item.productCode) === undefined) {
-                            _this.overallDeliveryModel.add(tempDelivery);
-                            _this.thereIsProactiveItem = !!_this.overallDeliveryModel.deliveries.find(function (r) { return r.id === null; });
-                        }
-                        else {
-                            _this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'min', tempDelivery.min);
-                            _this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'max', tempDelivery.max);
-                            _this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'realDelivery', tempDelivery.realDelivery);
-                            _this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'minDelivery', tempDelivery.minDelivery);
-                            _this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'maxDelivery', tempDelivery.maxDelivery);
-                            _this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'stock', tempDelivery.stock);
-                        }
-                    }
+        return __awaiter(this, void 0, void 0, function () {
+            var dateParam, serverDate, index, receiver, data, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dateParam = moment(moment(this.selectedDate).format('YYYY-MM-DD') + " " + moment(this.currentDate).format('HH:mm:ss')).format('YYYY-MM-DD HH:mm:ss');
+                        return [4, this.getDateFromServer()];
+                    case 1:
+                        serverDate = _a.sent();
+                        if (!(moment(this.selectedDate).format('YYYY-MM-DD') > moment(serverDate).format('YYYY-MM-DD'))) return [3, 2];
+                        return [2, this.msgService.warn('Unable to see the next day')];
+                    case 2:
+                        index = 0;
+                        _a.label = 3;
+                    case 3:
+                        if (!(index < this.receivers.length)) return [3, 8];
+                        receiver = this.receivers[index];
+                        _a.label = 4;
+                    case 4:
+                        _a.trys.push([4, 6, , 7]);
+                        receiver.warn = 'no';
+                        this.isWaiting[receiver.name] = true;
+                        this.waiting();
+                        return [4, this.restService.get('delivery/' + dateParam + '/' + receiver.id).toPromise()];
+                    case 5:
+                        data = _a.sent();
+                        this.setDelivery(data, receiver);
+                        return [3, 7];
+                    case 6:
+                        err_3 = _a.sent();
+                        this.isWaiting[receiver.name] = false;
+                        this.waiting();
+                        console.log(err_3.message);
+                        return [3, 7];
+                    case 7:
+                        index++;
+                        return [3, 3];
+                    case 8: return [2];
                 }
-                if (_this.receiversDeliveryModels[rcv.name].deliveries.length > 0)
-                    _this.receiversDeliveryModels[rcv.name]._isPrinted = _this.receiversDeliveryModels[rcv.name].deliveries.map(function (d) { return d.isPrinted; })
-                        .reduce(function (a, b) { return a && b; });
-                else {
-                    _this.receiversDeliveryModels[rcv.name]._isSubmitted = true;
-                }
-                if (_this.receiversDeliveryModels[rcv.name]._isPrinted)
-                    _this.receiversDeliveryModels[rcv.name]._isSubmitted = true;
-                _this.receiversDeliveryModels[rcv.name].deliveries.sort(function (a, b) {
-                    if (!_this.countToday(a.stockDate) && _this.countToday(b.stockDate))
-                        return -1;
-                    else if (_this.countToday(a.stockDate) && !_this.countToday(b.stockDate))
-                        return 1;
-                    if (a.productName.toLowerCase() > b.productName.toLowerCase())
-                        return 1;
-                    else if (a.productName.toLowerCase() < b.productName.toLowerCase())
-                        return -1;
-                    else {
-                        if (a.productCode.toLowerCase() > b.productCode.toLowerCase())
-                            return 1;
-                        else if (a.productCode.toLowerCase() < a.productCode.toLowerCase())
-                            return -1;
-                        else
-                            return 0;
-                    }
-                });
-                _this.filteredBranchDeliveries[rcv.name] = _this.receiversDeliveryModels[rcv.name].deliveries;
-                _this.filteredDeliveries = _this.overallDeliveryModel.deliveries;
-            }, function (err) {
-                _this.isWaiting[rcv.name] = false;
-                _this.waiting();
-                console.log(err.message);
             });
-        };
-        var this_2 = this;
-        for (var _i = 0, _a = this.receivers; _i < _a.length; _i++) {
-            var rcv = _a[_i];
-            _loop_3(rcv);
+        });
+    };
+    DeliveryFormComponent.prototype.setDelivery = function (data, rcv) {
+        var _this = this;
+        console.log({ data: data });
+        this.isWaiting[rcv.name] = false;
+        this.waiting();
+        this.productsList[rcv.name] = [];
+        this.receiversDeliveryModels[rcv.name] = new delivery_model_1.DeliveryModel(rcv.name, +rcv.id, !this.showZeroDelivery);
+        this.filteredBranchDeliveries[rcv.name] = [];
+        this.receiversSumDeliveries[rcv.name] = new delivery_1.Delivery();
+        this.receiversSumDeliveries[rcv.name].min = 0;
+        this.receiversSumDeliveries[rcv.name].max = 0;
+        this.receiversSumDeliveries[rcv.name].minDelivery = 0;
+        this.receiversSumDeliveries[rcv.name].maxDelivery = 0;
+        this.receiversSumDeliveries[rcv.name].realDelivery = 0;
+        this.receiversSumDeliveries[rcv.name].stock = 0;
+        for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
+            var item = data_2[_i];
+            if (item.stock === null || (typeof item.stock !== 'number'))
+                rcv.warn = 'count';
+            var tempDelivery = new delivery_1.Delivery();
+            tempDelivery.id = item.id;
+            tempDelivery.uid = +item.uid;
+            tempDelivery.productCode = item.productCode;
+            tempDelivery.productName = item.productName;
+            if (item.stock === null && item.realDelivery === null)
+                tempDelivery.realDelivery = null;
+            else if (item.realDelivery === null)
+                tempDelivery.realDelivery = (item.max - item.stock) < 0 ? 0 : (item.max - item.stock);
+            else
+                tempDelivery.realDelivery = item.realDelivery;
+            tempDelivery.minDelivery = (item.min - item.stock) < 0 ? 0 : (item.min - item.stock);
+            tempDelivery.maxDelivery = item.max - item.stock >= 0 ? item.max - item.stock : 0;
+            tempDelivery.min = item.min;
+            tempDelivery.max = item.max;
+            tempDelivery.stock = item.stock;
+            tempDelivery.isPrinted = item.isPrinted;
+            if (item.stockDate === null)
+                tempDelivery.stockDate = null;
+            else
+                tempDelivery.stockDate = moment(item.stockDate).format('DD MMM YY');
+            tempDelivery.oldCount = item.oldCount;
+            tempDelivery.state = 'exist';
+            tempDelivery.untilNextCountingDay = item.untilNextCountingDay;
+            tempDelivery.ref_type_id = item.ref_type_id;
+            tempDelivery.ref_id = item.ref_id;
+            tempDelivery.product_id = item.productId;
+            this.receiversDeliveryModels[rcv.name].add(tempDelivery);
+            this.thereIsProactiveItem = !!this.overallDeliveryModel.deliveries.find(function (r) { return r.id === null; });
+            this.calSumRow(rcv.name, tempDelivery, 'add');
+            this.calSumRow('All', tempDelivery, 'add');
+            if (this.overallDeliveryModel.getByCode(item.productCode) === undefined) {
+                this.overallDeliveryModel.add(tempDelivery);
+                this.thereIsProactiveItem = !!this.overallDeliveryModel.deliveries.find(function (r) { return r.id === null; });
+            }
+            else {
+                this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'min', tempDelivery.min);
+                this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'max', tempDelivery.max);
+                this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'realDelivery', tempDelivery.realDelivery);
+                this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'minDelivery', tempDelivery.minDelivery);
+                this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'maxDelivery', tempDelivery.maxDelivery);
+                this.updateOverallDelivery(item.productCode, tempDelivery, 'add', 'stock', tempDelivery.stock);
+            }
         }
+        if (this.receiversDeliveryModels[rcv.name].deliveries.length > 0)
+            this.receiversDeliveryModels[rcv.name]._isPrinted = this.receiversDeliveryModels[rcv.name].deliveries.map(function (d) { return d.isPrinted; })
+                .reduce(function (a, b) { return a && b; });
+        else {
+            this.receiversDeliveryModels[rcv.name]._isSubmitted = true;
+        }
+        if (this.receiversDeliveryModels[rcv.name]._isPrinted)
+            this.receiversDeliveryModels[rcv.name]._isSubmitted = true;
+        this.receiversDeliveryModels[rcv.name].deliveries.sort(function (a, b) {
+            if (!_this.countToday(a.stockDate) && _this.countToday(b.stockDate))
+                return -1;
+            else if (_this.countToday(a.stockDate) && !_this.countToday(b.stockDate))
+                return 1;
+            if (a.productName.toLowerCase() > b.productName.toLowerCase())
+                return 1;
+            else if (a.productName.toLowerCase() < b.productName.toLowerCase())
+                return -1;
+            else {
+                if (a.productCode.toLowerCase() > b.productCode.toLowerCase())
+                    return 1;
+                else if (a.productCode.toLowerCase() < a.productCode.toLowerCase())
+                    return -1;
+                else
+                    return 0;
+            }
+        });
+        this.filteredBranchDeliveries[rcv.name] = this.receiversDeliveryModels[rcv.name].deliveries;
+        this.filteredDeliveries = this.overallDeliveryModel.deliveries;
     };
     DeliveryFormComponent.prototype.showProductList = function () {
         this.productNameCodeCtrl.setValue('');
@@ -2045,7 +2251,7 @@ var _a, _b, _c, _d, _e;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var delivery_1 = __webpack_require__(274);
+var delivery_1 = __webpack_require__(273);
 var DeliveryModel = (function () {
     function DeliveryModel(unitName, uid, filter) {
         this._deliveries = [];
@@ -2142,7 +2348,10 @@ var DeliveryModel = (function () {
     DeliveryModel.toAnyObject = function (delivery, isPrinted, product_id) {
         var resObj = {};
         resObj['real_delivery'] = delivery.realDelivery;
-        resObj['is_delivery_finalised'] = isPrinted;
+        resObj['is_delivery_finalised'] = delivery['isPrinted'] || false;
+        resObj['ref_id'] = delivery['ref_id'];
+        resObj['branchId'] = delivery['branchId'] || delivery['uid'];
+        resObj['ref_type_id'] = delivery['ref_type_id'];
         if (product_id !== null)
             resObj['product_id'] = product_id;
         return resObj;
@@ -2243,7 +2452,7 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(273));
+__export(__webpack_require__(272));
 __export(__webpack_require__(541));
 //# sourceMappingURL=C:/Users/305-2/Desktop/burgista/burgista-delivery-client/src/index.js.map
 
@@ -2254,6 +2463,14 @@ __export(__webpack_require__(541));
 
 "use strict";
 
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2269,19 +2486,27 @@ var forms_1 = __webpack_require__(10);
 var auth_service_1 = __webpack_require__(66);
 var rest_service_1 = __webpack_require__(45);
 var inventory_model_1 = __webpack_require__(549);
-var inventory_1 = __webpack_require__(276);
+var inventory_1 = __webpack_require__(275);
 var timers_1 = __webpack_require__(1078);
-var product_1 = __webpack_require__(114);
 var moment = __webpack_require__(2);
 var material_1 = __webpack_require__(79);
-var warning_viewer_component_1 = __webpack_require__(275);
+var warning_viewer_component_1 = __webpack_require__(274);
 var message_service_1 = __webpack_require__(35);
+exports.DELIVERY_TYPES = {
+    COUNTING_TODAY: null,
+    COUNTED_BUT_NOT_DELIVERED: 2,
+    NOT_COUNTED_BUT_DELIVERED_AND_FINALIZED: 3,
+    NOT_COUNTED_AND_NOT_DELIVERED: 4,
+    DELIVERED_LESS_THAN_MIN_STOCK: 5,
+    CLOSED: 999
+};
 var InventoryFormComponent = (function () {
     function InventoryFormComponent(authService, restService, dialog, messageService) {
         this.authService = authService;
         this.restService = restService;
         this.dialog = dialog;
         this.messageService = messageService;
+        this.delivery_types = exports.DELIVERY_TYPES;
         this.noButton = true;
         this.unitName = '';
         this.isSameDates = true;
@@ -2394,26 +2619,37 @@ var InventoryFormComponent = (function () {
     InventoryFormComponent.prototype.submitInventories = function () {
         this.checkUnopenedPackGreaterThanMaxStock();
     };
+    InventoryFormComponent.prototype.mapObjectForUpdate = function (inventory) {
+        var temp = __assign({}, inventory);
+        temp['bsddid'] = temp['ref_id'];
+        temp['ref_id'] = null;
+        temp['ref_type_id'] = 999;
+        return temp;
+    };
     InventoryFormComponent.prototype.inventoriesSaved = function () {
         var _this = this;
-        var newItems = [];
-        var oldItems = [];
-        for (var _i = 0, _a = this.inventoryModel._inventories; _i < _a.length; _i++) {
-            var invItem = _a[_i];
-            if (invItem.id === null) {
-                newItems.push(inventory_model_1.InventoryModel.toAnyObject(invItem));
+        var insertItems = [];
+        var updateItems = [];
+        for (var index = 0; index < this.inventoryModel._inventories.length; index++) {
+            var inventory = this.inventoryModel._inventories[index];
+            if (!inventory['id']) {
+                insertItems.push(inventory_model_1.InventoryModel.toAnyObject(inventory));
+                updateItems.push(this.mapObjectForUpdate(inventory));
             }
             else {
-                oldItems.push(inventory_model_1.InventoryModel.toAnyObject(invItem));
+                updateItems.push(inventory_model_1.InventoryModel.toAnyObject(inventory));
             }
         }
         var sendData = {
-            'insert': newItems,
-            'update': oldItems,
+            'insert': insertItems,
+            'update': updateItems,
             'submit_time': moment().format('YYYY-MM-DD HH:mm:ss')
         };
         this.waiting = true;
         this.restService.insert('stock/batch', sendData).subscribe(function (data) {
+            if (insertItems['length']) {
+                _this.getInventoryData();
+            }
             timers_1.setTimeout(function () {
                 _this.waiting = false;
                 _this.isUpdateMode = true;
@@ -2499,42 +2735,35 @@ var InventoryFormComponent = (function () {
             for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
                 var item = data_1[_i];
                 _this.checkDisability(item);
-                if (item.bsddid === null) {
-                    var tempProduct = new product_1.Product();
-                    tempProduct.id = item.pid;
-                    tempProduct.code = item.product_code;
-                    tempProduct.name = item.product_name;
-                    _this.products.push(tempProduct);
+                if (item.counting_date === null) {
+                    console.log('Error in data fetched from server');
                 }
                 else {
-                    if (item.counting_date === null) {
-                        console.log('Error in data fetched from server');
-                    }
+                    var tempInventory = new inventory_1.Inventory();
+                    tempInventory.id = item.bsddid;
+                    tempInventory.productId = item.pid;
+                    tempInventory.productCode = item.product_code;
+                    tempInventory.productName = item.product_name;
+                    tempInventory.unopenedPack = item.product_count;
+                    tempInventory.stockMax = item.stockMax;
+                    tempInventory.is_delivery_finalised = item['is_delivery_finalised'];
+                    tempInventory.submission_time = item['submission_time'];
+                    tempInventory.delivery_submission_time = item['delivery_submission_time'];
+                    tempInventory.ref_id = item['ref_id'];
+                    tempInventory.ref_type_id = item['ref_type_id'];
+                    if (item.last_count === null)
+                        tempInventory.lastCount = null;
                     else {
-                        var tempInventory = new inventory_1.Inventory();
-                        tempInventory.id = item.bsddid;
-                        tempInventory.productId = item.pid;
-                        tempInventory.productCode = item.product_code;
-                        tempInventory.productName = item.product_name;
-                        tempInventory.unopenedPack = item.product_count;
-                        tempInventory.stockMax = item.stockMax;
-                        tempInventory.is_delivery_finalised = item['is_delivery_finalised'];
-                        tempInventory.submission_time = item['submission_time'];
-                        tempInventory.delivery_submission_time = item['delivery_submission_time'];
-                        if (item.last_count === null)
-                            tempInventory.lastCount = null;
-                        else {
-                            var lastCount = moment(item.last_count).format('YYYY-MM-DD');
-                            if (lastCount === 'Invalid date')
-                                tempInventory.lastCount = _this.currentDate;
-                            else
-                                tempInventory.lastCount = new Date(lastCount);
-                        }
-                        tempInventory.shouldCountToday = !_this.isCountingDatePast(item.counting_date);
-                        tempInventory.shouldIncluded = true;
-                        tempInventory.state = 'exist';
-                        _this.inventoryModel.add(tempInventory);
+                        var lastCount = moment(item.last_count).format('YYYY-MM-DD');
+                        if (lastCount === 'Invalid date')
+                            tempInventory.lastCount = _this.currentDate;
+                        else
+                            tempInventory.lastCount = new Date(lastCount);
                     }
+                    tempInventory.shouldCountToday = !_this.isCountingDatePast(item.counting_date);
+                    tempInventory.shouldIncluded = true;
+                    tempInventory.state = 'exist';
+                    _this.inventoryModel.add(tempInventory);
                 }
             }
             _this.inventoryModel._inventories.sort(function (a, b) {
@@ -2568,12 +2797,10 @@ var InventoryFormComponent = (function () {
     InventoryFormComponent.prototype.checkInventoryItemsFinalized = function () {
         var _inventories = this.inventoryModel._inventories;
         this.isFinalized = _inventories.some(function (el) { return el.delivery_submission_time !== null || el.is_delivery_finalised === true; });
-        console.log('isFinalized', this.isFinalized);
     };
     InventoryFormComponent.prototype.checkInventoryItemsAlreadySubmitted = function () {
         var _inventories = this.inventoryModel._inventories;
         this.isUpdateMode = _inventories.every(function (el) { return el.submission_time !== null; });
-        console.log('isUpdateMode', this.isUpdateMode);
         if (this.isUpdateMode) {
             this.inventoryModel.setDisabled();
         }
@@ -2647,7 +2874,7 @@ var _a, _b, _c, _d;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var inventory_1 = __webpack_require__(276);
+var inventory_1 = __webpack_require__(275);
 var InventoryModel = (function () {
     function InventoryModel(unitName) {
         this._inventories = [];
@@ -2684,6 +2911,8 @@ var InventoryModel = (function () {
         resObj['product_code'] = inventory.productCode;
         resObj['product_name'] = inventory.productName;
         resObj['last_count'] = inventory.lastCount;
+        resObj['ref_id'] = inventory.ref_id;
+        resObj['ref_type_id'] = inventory.ref_type_id;
         return resObj;
     };
     InventoryModel.fromAnyObject = function (object) {
@@ -2791,6 +3020,41 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var auth_service_1 = __webpack_require__(66);
@@ -2803,23 +3067,31 @@ var NavbarComponent = (function () {
         this.navLinks = [];
     }
     NavbarComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this.authService.auth$.subscribe(function (auth) {
-            if (auth) {
-                if (_this.int)
-                    clearInterval(_this.int);
-                var endTime_1 = moment().add(1, 'hour');
-                _this.int = setInterval(function () { return _this.remainedTime = moment(new Date(endTime_1.diff(moment()))).utc().format('mm:ss'); }, 900);
-            }
-            _this.auth = auth;
-            _this.user = _this.authService.user;
-            _this.isAdmin = auth && _this.authService.userType === 'admin';
-            _this.isBranch = auth && _this.authService.userType === 'branch';
-            _this.isPrep = auth && _this.authService.userType === 'prep';
-            if (_this.isAdmin) {
-                _this.navLinks.push({ label: 'Units', link: 'units' });
-                _this.navLinks.push({ label: 'Products', link: 'products' });
-            }
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                setInterval(function () {
+                    _this.currentDate = new Date();
+                }, 1000);
+                this.authService.auth$.subscribe(function (auth) {
+                    if (auth) {
+                        if (_this.int)
+                            clearInterval(_this.int);
+                        var endTime_1 = moment().add(1, 'hour');
+                        _this.int = setInterval(function () { return _this.remainedTime = moment(new Date(endTime_1.diff(moment()))).utc().format('mm:ss'); }, 900);
+                    }
+                    _this.auth = auth;
+                    _this.user = _this.authService.user;
+                    _this.isAdmin = auth && _this.authService.userType === 'admin';
+                    _this.isBranch = auth && _this.authService.userType === 'branch';
+                    _this.isPrep = auth && _this.authService.userType === 'prep';
+                    if (_this.isAdmin) {
+                        _this.navLinks.push({ label: 'Units', link: 'units' });
+                        _this.navLinks.push({ label: 'Products', link: 'products' });
+                    }
+                });
+                return [2];
+            });
         });
     };
     NavbarComponent.prototype.ngOnDestroy = function () {
@@ -2864,7 +3136,7 @@ var core_1 = __webpack_require__(0);
 var forms_1 = __webpack_require__(10);
 var rest_service_1 = __webpack_require__(45);
 var auth_service_1 = __webpack_require__(66);
-var product_model_1 = __webpack_require__(163);
+var product_model_1 = __webpack_require__(162);
 var actionEnum_1 = __webpack_require__(87);
 var message_service_1 = __webpack_require__(35);
 var OverrideFormComponent = (function () {
@@ -3217,7 +3489,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var rxjs_1 = __webpack_require__(60);
 var forms_1 = __webpack_require__(10);
-var product_model_1 = __webpack_require__(163);
+var product_model_1 = __webpack_require__(162);
 var actionEnum_1 = __webpack_require__(87);
 var rest_service_1 = __webpack_require__(45);
 var message_service_1 = __webpack_require__(35);
@@ -3596,8 +3868,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var rxjs_1 = __webpack_require__(60);
-var product_1 = __webpack_require__(114);
-var product_model_1 = __webpack_require__(163);
+var product_1 = __webpack_require__(278);
+var product_model_1 = __webpack_require__(162);
 var actionEnum_1 = __webpack_require__(87);
 var rest_service_1 = __webpack_require__(45);
 var message_service_1 = __webpack_require__(35);
@@ -3842,7 +4114,7 @@ var rest_service_1 = __webpack_require__(45);
 var fileSaver = __webpack_require__(731);
 var message_service_1 = __webpack_require__(35);
 var unit_model_1 = __webpack_require__(279);
-var unit_1 = __webpack_require__(115);
+var unit_1 = __webpack_require__(114);
 var moment = __webpack_require__(2);
 var ReportsComponent = (function () {
     function ReportsComponent(restService, messageService) {
@@ -4480,7 +4752,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var rxjs_1 = __webpack_require__(60);
 var actionEnum_1 = __webpack_require__(87);
-var unit_1 = __webpack_require__(115);
+var unit_1 = __webpack_require__(114);
 var SubFormComponent = (function () {
     function SubFormComponent() {
         this.isAdd = true;
@@ -4632,7 +4904,7 @@ var core_1 = __webpack_require__(0);
 var rxjs_1 = __webpack_require__(60);
 var unit_model_1 = __webpack_require__(279);
 var actionEnum_1 = __webpack_require__(87);
-var unit_1 = __webpack_require__(115);
+var unit_1 = __webpack_require__(114);
 var rest_service_1 = __webpack_require__(45);
 var message_service_1 = __webpack_require__(35);
 var UnitFormComponent = (function () {
@@ -4990,7 +5262,7 @@ exports = module.exports = __webpack_require__(17)();
 
 
 // module
-exports.push([module.i, ".notEqualValues{\r\n  background-color: antiquewhite;\r\n}\r\n\r\n.equalValues{\r\n}\r\n\r\n.warnColoring{\r\n  color: darkred;\r\n}\r\n\r\n.zeroColoring {\r\n  color: #ccc !important;\r\n}\r\n.normalColoring{\r\n  color: black;\r\n}\r\n\r\n.waiting{\r\n  margin-top: 60px !important;\r\n  margin-bottom: 60px !important;\r\n  -ms-flex-line-pack: center !important;\r\n      align-content: center !important;\r\n}\r\n\r\n.waitingMessage{\r\n  color: white;\r\n  font-weight: bold;\r\n  text-align: center;\r\n}\r\n.number {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: gray;\r\n  text-align: center;\r\n  background: #f8f8f8 !important;\r\n}\r\n\r\nth {\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: gray;\r\n  text-align: center;\r\n  background: rgba(240,240,240,.6);\r\n}\r\n\r\ntd {\r\n  vertical-align: middle !important;\r\n  padding: 1px !important;\r\n  font-weight: 300;\r\n  font-size: 100%;\r\n  text-align: center;\r\n  background: rgba(250,250,0,.04);\r\n}\r\n\r\ninput {\r\n  text-align: center;\r\n}\r\n.name {\r\n  text-align: left;\r\n}\r\n.sum {\r\n  font-weight: 600;\r\n  text-align: right;\r\n}\r\n", ""]);
+exports.push([module.i, ".notEqualValues{\r\n  background-color: antiquewhite;\r\n}\r\n\r\n.equalValues{\r\n}\r\n\r\n.warnColoring{\r\n  color: darkred;\r\n}\r\n\r\n.zeroColoring {\r\n  color: #ccc !important;\r\n}\r\n.normalColoring{\r\n  color: black;\r\n}\r\n\r\n.waiting{\r\n  margin-top: 60px !important;\r\n  margin-bottom: 60px !important;\r\n  -ms-flex-line-pack: center !important;\r\n      align-content: center !important;\r\n}\r\n\r\n.waitingMessage{\r\n  color: white;\r\n  font-weight: bold;\r\n  text-align: center;\r\n}\r\n.number {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: gray;\r\n  text-align: center;\r\n  background: #f8f8f8 !important;\r\n}\r\n\r\nth {\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: gray;\r\n  text-align: center;\r\n  background: rgba(240,240,240,.6);\r\n}\r\n\r\ntd {\r\n  vertical-align: middle !important;\r\n  padding: 1px !important;\r\n  font-weight: 300;\r\n  font-size: 100%;\r\n  text-align: center;\r\n  background: rgba(250,250,0,.04);\r\n}\r\n\r\ninput {\r\n  text-align: center;\r\n}\r\n.name {\r\n  text-align: left;\r\n}\r\n.sum {\r\n  font-weight: 600;\r\n  text-align: right;\r\n}\r\n\r\n.alert-pink {\r\n  color: #7f20cc;\r\n  background-color: #d87ff3;\r\n  border-color: #d1a5eb;\r\n}\r\n.number-pink {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #7f20cc;\r\n  text-align: center;\r\n  background: #d87ff3 !important;\r\n}\r\n\r\n.number-warning {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #8a6d3b;\r\n  text-align: center;\r\n  background: #fcf8e3 !important;\r\n}\r\n.number-success {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #3c763d;\r\n  text-align: center;\r\n  background: #dff0d8 !important;\r\n}\r\n.number-info {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #31708f;\r\n  text-align: center;\r\n  background: #d9edf7 !important;\r\n}\r\n.number-danger {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #a94442;\r\n  text-align: center;\r\n  background: #f2dede !important;\r\n}\r\n", ""]);
 
 // exports
 
@@ -5044,7 +5316,7 @@ exports = module.exports = __webpack_require__(17)();
 
 
 // module
-exports.push([module.i, ".warnColoring{\r\n  color: red;\r\n}\r\n\r\n.normalColoring{\r\n  color: black;\r\n}\r\n\r\n.counted {\r\n  background: #6d8b5f85;\r\n}\r\n\r\n.packMoreThanMax {\r\n  background: #e5ff0085;\r\n}\r\n\r\n.counted td {\r\n  border-color: #faebd6;\r\n}\r\n.number {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: gray;\r\n  text-align: center;\r\n  background: #f8f8f8 !important;\r\n}\r\n\r\nth {\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: gray;\r\n  text-align: center;\r\n  background: rgba(240,240,240,.6);\r\n}\r\n\r\ntd {\r\n  vertical-align: middle !important;\r\n  padding: 1px !important;\r\n  font-weight: 300;\r\n  font-size: 100%;\r\n  color: black;\r\n  text-align: center;\r\n  background: rgba(240,240,240,.6);\r\n}\r\n.name {\r\n  text-align: left;\r\n}\r\ninput {\r\n  text-align: center;\r\n}\r\n", ""]);
+exports.push([module.i, ".alert-pink {\r\n  color: #7f20cc;\r\n  background-color: #d87ff3;\r\n  border-color: #d1a5eb;\r\n}\r\n\r\n.warnColoring{\r\n  color: red;\r\n}\r\n.alert-custom {\r\n  padding: 0px;\r\n  margin-bottom: 2px;\r\n  border: 1px solid transparent;\r\n  border-radius: 1px;\r\n}\r\n\r\n.normalColoring{\r\n  color: black;\r\n}\r\n\r\n.counted {\r\n  background: #6d8b5f85;\r\n}\r\n\r\n.packMoreThanMax {\r\n  background: #e5ff0085;\r\n}\r\n.counted td {\r\n  border-color: #faebd6;\r\n}\r\n.number-pink {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #7f20cc;\r\n  text-align: center;\r\n  background: #d87ff3 !important;\r\n}\r\n.number-secondary {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: gray;\r\n  text-align: center;\r\n  background: #f8f8f8 !important;\r\n}\r\n.number-warning {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #8a6d3b;\r\n  text-align: center;\r\n  background: #fcf8e3 !important;\r\n}\r\n.number-success {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #3c763d;\r\n  text-align: center;\r\n  background: #dff0d8 !important;\r\n}\r\n.number-info {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #31708f;\r\n  text-align: center;\r\n  background: #d9edf7 !important;\r\n}\r\n.number-danger {\r\n  width:30px;\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: #a94442;\r\n  text-align: center;\r\n  background: #f2dede !important;\r\n}\r\nth {\r\n  vertical-align: middle;\r\n  font-weight: 600;\r\n  color: gray;\r\n  text-align: center;\r\n  background: rgba(240,240,240,.6);\r\n}\r\n\r\ntd {\r\n  vertical-align: middle !important;\r\n  padding: 1px !important;\r\n  font-weight: 300;\r\n  font-size: 100%;\r\n  color: black;\r\n  text-align: center;\r\n  background: rgba(240,240,240,.6);\r\n}\r\n.name {\r\n  text-align: left;\r\n}\r\ninput {\r\n  text-align: center;\r\n}\r\n", ""]);
 
 // exports
 
@@ -5509,7 +5781,7 @@ module.exports = "<span *ngIf=\"!isOverridden\">Inventory Rules By Default:</spa
 /***/ 804:
 /***/ (function(module, exports) {
 
-module.exports = "<md-card class=\"outerCard\">\r\n    <md-card-title class=\"cardTitle\">{{unitName}} Delivery</md-card-title>\r\n\r\n  <div>\r\n    <md-card class=\"mat-card\" style=\"width:320px; margin-bottom:10px;padding:5px; border-radius:25px;\">\r\n      <label for=\"show-zero-delivery\" style=\"padding:0 10px\">Zero deliveries:</label>\r\n      <md-radio-group [(ngModel)]=\"showZeroDelivery\" (change)=\"changeFilter()\" id=\"show-zero-delivery\">\r\n        <md-radio-button style=\"padding: 0 10px;\" [value]=\"false\">Hide</md-radio-button>\r\n        <md-radio-button style=\"padding: 0 10px;\" [value]=\"true\">Show</md-radio-button>\r\n      </md-radio-group>\r\n    </md-card>\r\n  </div>\r\n  <material-datepicker [(date)]=\"selectedDate\" (onSelect)=\"dateChanged()\">\r\n  </material-datepicker>\r\n  <md-tab-group *ngIf=\"dataIsReady\" class=\"materialTab\" [(selectedIndex)]=\"selectedIndex\" (selectChange)=\"tabChanged()\">\r\n    <md-tab label=\"All\" *ngIf=\"overallDeliveryModel._deliveries !== undefined\">\r\n      <md-card class=\"innerCard\">\r\n        <md-card-title>To Do: Delivery</md-card-title>\r\n        <md-card-content>\r\n          <md-card style=\"overflow: auto;\">\r\n            <md-card-content>\r\n              <table class=\"table table-striped\">\r\n                <thead style=\"width: 100%\">\r\n                  <tr>\r\n                    <th [style.width]=\"thereIsProactiveItem ? 'unset' : '30px'\">#</th>\r\n                    <th>Code</th>\r\n                    <th>Product</th>\r\n                    <th>Real Delivery</th>\r\n                    <th>Min Delivery</th>\r\n                    <th>Max Delivery</th>\r\n                    <th>Min Required</th>\r\n                    <th>Max Stock</th>\r\n                    <th>Branches Stock</th>\r\n                  </tr>\r\n                </thead>\r\n                <tbody>\r\n                  <tr *ngFor=\"let delItem of filteredDeliveries;let i = index\">\r\n                    <td *ngIf=\"delItem.id !== null\" [style.width]=\"thereIsProactiveItem ? 'unset' : '30px'\" class=\"number\">{{i + 1}}</td>\r\n                    <td *ngIf=\"delItem.id === null\" style=\"width: unset\">\r\n                      <md-chip-list>\r\n                        <md-chip color=\"primary\" selected=\"true\">Added</md-chip>\r\n                      </md-chip-list>\r\n                    </td>\r\n                    <td>{{delItem.productCode}}</td>\r\n                    <td class=\"name\">{{delItem.productName}}</td>\r\n                    <td>{{delItem.realDelivery}}</td>\r\n                    <td *ngIf=\"delItem.minDelivery !== null\">{{delItem.minDelivery}}</td>\r\n                    <td *ngIf=\"delItem.minDelivery === null\"><i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                    <td *ngIf=\"delItem.maxDelivery !== null\">{{delItem.maxDelivery}}</td>\r\n                    <td *ngIf=\"delItem.maxDelivery === null\"><i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                    <td>{{delItem.min}}</td>\r\n                    <td>{{delItem.max}}</td>\r\n                    <td *ngIf=\"delItem.stock !== null\">{{delItem.stock}}</td>\r\n                    <td *ngIf=\"delItem.stock === null\"><i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                </tr>\r\n                  <tr>\r\n                    <td [style.width]=\"thereIsProactiveItem ? 'unset' : '30px'\" class=\"number\"></td>\r\n                    <td class=\"sum\" colspan=\"2\">Sum</td>\r\n                    <td>{{receiversSumDeliveries['All'].realDelivery}}</td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].minDelivery !== null\">{{receiversSumDeliveries['All'].minDelivery}}</td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].minDelivery === null\"><i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].maxDelivery !== null\">{{receiversSumDeliveries['All'].maxDelivery}}</td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].maxDelivery === null\"><i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                    <td>{{receiversSumDeliveries['All'].min}}</td>\r\n                    <td>{{receiversSumDeliveries['All'].max}}</td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].stock !== null\">{{receiversSumDeliveries['All'].stock}}</td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].stock === null\"><i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                  </tr>\r\n                </tbody>\r\n              </table>\r\n            </md-card-content>\r\n          </md-card>\r\n        </md-card-content>\r\n        <md-card-content>\r\n          <button md-raised-button class=\"ButtonStyle\"\r\n                  *ngIf=\"isToday\"\r\n                  [(disabled)]=\"overallDeliveryModel._shouldDisabled\"\r\n                  (click)=\"printDelivery(overallDeliveryModel)\">Print</button>\r\n        </md-card-content>\r\n      </md-card>\r\n    </md-tab>\r\n    <md-tab *ngFor=\"let rcv of receivers\" class=\"delayedTab\">\r\n      <ng-template md-tab-label>\r\n        <i *ngIf=\"rcv.warn === 'count'\" class=\"fa fa-exclamation warnColoring\" aria-hidden=\"true\"></i>\r\n        {{rcv.name}}\r\n      </ng-template>\r\n      <ng-template md-tab-label *ngIf=\"rcv.warn === 'login'\">\r\n        <i class=\"fa fa-exclamation warnColoring\" aria-hidden=\"true\"></i>\r\n        <i class=\"fa fa-exclamation warnColoring\" aria-hidden=\"true\"></i> {{rcv.name}}\r\n      </ng-template>\r\n      <ng-template md-tab-label *ngIf=\"rcv.warn === 'count'\">\r\n        <i class=\"fa fa-exclamation warnColoring\" aria-hidden=\"true\"></i> {{rcv.name}}\r\n      </ng-template>\r\n      <ng-template md-tab-label *ngIf=\"rcv.warn === 'no'\">\r\n        {{rcv.name}}\r\n      </ng-template>\r\n      <md-card class=\"innerCard\"\r\n               *ngIf=\"!isWaiting[rcv.name] && receiversDeliveryModels[rcv.name] !== undefined && receiversDeliveryModels[rcv.name] !== null\">\r\n        <md-card-title>To Do: Delivery</md-card-title>\r\n        <md-card-content>\r\n          <md-card style=\"min-width: 600px !important; overflow-x: auto;\">\r\n            <md-card-content>\r\n              <table class=\"table table-striped\">\r\n                <thead style=\"width: 100%\">\r\n                <tr>\r\n                  <th style=\"width: 30px\">#</th>\r\n                  <th>Code</th>\r\n                  <th>Product</th>\r\n                  <th>Real Delivery</th>\r\n                  <th>Min Delivery</th>\r\n                  <th>Max Delivery</th>\r\n                  <th>Min Required</th>\r\n                  <th>Max Stock</th>\r\n                  <th>Current Stock</th>\r\n                  <th>Last Count</th>\r\n                  <th>Last Count Date</th>\r\n                  <th>Days to Next Counting</th>\r\n                </tr>\r\n                </thead>\r\n                <tbody>\r\n                <tr *ngFor=\"let delItem of filteredBranchDeliveries[rcv.name];let i = index\" [ngClass]=\"[delItem.realDelivery ? countToday(delItem.stockDate) ? 'normalColoring' : 'warnColoring' : 'zeroColoring']\">\r\n                  <td  style=\"width: 40px\" class=\"buttonItem\" *ngIf=\"delItem.id !== null && delItem.state !== 'added'\" class=\"number\">{{i+1}}</td>\r\n                  <td style=\"width: 40px\" class=\"buttonItem\" *ngIf=\"delItem.id === null\">\r\n                    <button md-mini-fab\r\n                            (click)=\"removeDeliveryItem(delItem)\">\r\n                      <i class=\"fa fa-times\" aria-hidden=\"true\"></i>\r\n                    </button>\r\n                  </td>\r\n                  <td class=\"buttonItem\" *ngIf=\"delItem.id !== null && delItem.state === 'added'\">\r\n                    <md-chip-list>\r\n                      <md-chip color=\"primary\" selected=\"true\">Added</md-chip>\r\n                    </md-chip-list>\r\n                  </td>\r\n                  <td class=\"codeItem\">\r\n                    {{delItem.productCode}}\r\n                  </td>\r\n                  <td class=\"nameItem name\"\r\n                      [ngClass]=\"[(countToday(delItem.stockDate)) ? 'normalColoring' : 'warnColoring']\">\r\n                    {{delItem.productName}}\r\n                  </td>\r\n                  <td class=\"inputItem\">\r\n                    <md-input-container>\r\n                      <input mdInput type=\"number\"\r\n                             min=\"0\"\r\n                             [ngClass]=\"[(rcv.warn ||((delItem.minDelivery > delItem.realDelivery || delItem.maxDelivery < delItem.realDelivery ) && isToday)) ? 'notEqualValues' : 'equalValues']\"\r\n                             [(disabled)]=\"!isToday\"\r\n                             placeholder=\"Real Delivery\"\r\n                             [ngModel]=\"delItem.realDelivery\"\r\n                             (change)=\"checkRealDeliveryValue($event, delItem)\"/>\r\n                    </md-input-container>\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"delItem.stock !== null && delItem.id !== null\">\r\n                    {{delItem.minDelivery}}\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"delItem.stock === null || delItem.id === null\">\r\n                    <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"delItem.stock !== null && delItem.id !== null\">\r\n                    {{delItem.maxDelivery}}\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"delItem.stock === null || delItem.id === null\">\r\n                    <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                  </td>\r\n                  <td class=\"column\">{{delItem.min}}\r\n                  </td>\r\n                  <td class=\"column\">{{delItem.max}}\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"delItem.stock !== null && delItem.id !== null\">\r\n                    {{delItem.stock}}\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"delItem.stock === null || delItem.id === null\">\r\n                    <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                  </td>\r\n                  <td class=\"column\">\r\n                    {{delItem.oldCount}}\r\n                  </td>\r\n                  <td style=\"min-width: 80px !important;\" class=\"column\">\r\n                    {{delItem.stockDate}}\r\n                  </td>\r\n                  <td *ngIf=\"delItem.untilNextCountingDay!==null\" class=\"column\">{{delItem.untilNextCountingDay}}</td>\r\n                  <td *ngIf=\"delItem.untilNextCountingDay===null\" class=\"column\"><i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                </tr>\r\n                <tr>\r\n                  <td [style.width]=\"thereIsProactiveItem ? 'unset' : '30px'\" class=\"number\"></td>\r\n                  <td class=\"sum\" colspan=\"3\">Sum</td>\r\n                  <td class=\"inputItem\">{{receiversSumDeliveries[rcv.name].realDelivery}}</td>\r\n                  <td class=\"column\" *ngIf=\"rcv.warn === 'no'\">\r\n                    {{receiversSumDeliveries[rcv.name].minDelivery}}\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"rcv.warn === 'count' || rcv.warn === 'unknown'\">\r\n                    <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"rcv.warn === 'no'\">\r\n                    {{receiversSumDeliveries[rcv.name].maxDelivery}}\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"rcv.warn === 'count' || rcv.warn === 'unknown'\">\r\n                    <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                  </td>\r\n                  <td class=\"column\">{{receiversSumDeliveries[rcv.name].min}}</td>\r\n                  <td class=\"column\">{{receiversSumDeliveries[rcv.name].max}}</td>\r\n                  <td class=\"column\" *ngIf=\"rcv.warn === 'no'\">\r\n                    {{receiversSumDeliveries[rcv.name].stock}}\r\n                  </td>\r\n                  <td class=\"column\" *ngIf=\"rcv.warn === 'count' || rcv.warn === 'unknown'\">\r\n                    <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                  </td>\r\n                  <td style=\"min-width: 80px !important;\" class=\"column\">-</td>\r\n                  <td>-</td>\r\n                </tr>\r\n                <tr\r\n                  *ngIf=\"isToday && !receiversDeliveryModels[rcv.name]._shouldDisabled && productsList[rcv.name] !== undefined && productsList[rcv.name].length > 0\">\r\n                  <td class=\"buttonItem\"></td>\r\n                  <td class=\"codeItem\" colspan=\"2\">\r\n                    <md-input-container>\r\n                      <input mdInput type=\"text\" [(disabled)]=\"receiversDeliveryModels[rcv.name]._shouldDisabled\"\r\n                             class=\"pnc\" placeholder=\"Product name/code\" [mdAutocomplete]=\"auto\"\r\n                             [formControl]=\"productNameCodeCtrl\" (focus)=\"showProductList()\"\r\n                             (blur)=\"clearInput($event)\"/>\r\n                      <md-autocomplete #auto=\"mdAutocomplete\">\r\n                        <md-option *ngFor=\"let nameCode of filteredNameCode | async\" [value]=\"nameCode\">\r\n                          {{nameCode}}\r\n                        </md-option>\r\n                      </md-autocomplete>\r\n                    </md-input-container>\r\n                  </td>\r\n                  <td class=\"nameItem\"></td>\r\n                  <td class=\"inputItem\"></td>\r\n                  <td class=\"column\"></td>\r\n                  <td class=\"column\"></td>\r\n                  <td class=\"column\"></td>\r\n                  <td class=\"column\"></td>\r\n                  <td style=\"min-width: 80px !important;\" class=\"column\"></td>\r\n                </tr>\r\n                </tbody>\r\n              </table>\r\n            </md-card-content>\r\n          </md-card>\r\n        </md-card-content>\r\n        <md-card-content>\r\n          <button md-raised-button class=\"ButtonStyle\"\r\n                  *ngIf=\"isToday\"\r\n                  [disabled]=\"!receiversDeliveryModels[rcv.name]._isSubmitted || receiversDeliveryModels[rcv.name]._deliveries.length <= 0\"\r\n                  (click)=\"printDelivery(receiversDeliveryModels[rcv.name])\">Print</button>\r\n          <button md-raised-button class=\"ButtonStyle\"\r\n                  *ngIf=\"isToday\"\r\n                  (click)=\"submitDelivery(receiversDeliveryModels[rcv.name])\">Submit</button>\r\n        </md-card-content>\r\n      </md-card>\r\n    </md-tab>\r\n  </md-tab-group>\r\n  <div *ngIf=\"!dataIsReady\">\r\n    <div class=\"flex-container waiting\" fxLayout=\"row\" fxLayoutAlign=\"center center\">\r\n      <div class=\"flex-item\" fxFlex=\"80\">\r\n        <div class=\"flex-container\" fxLayout=\"column\" fxLayoutAlign=\"center center\">\r\n          <div class=\"flex-item\" fxFlex=\"80\">\r\n            <i style=\"color: white !important;\" class=\"fa fa-circle-o-notch fa-spin fa-3x fa-fw\"></i>\r\n            <span class=\"sr-only\">Loading...</span>\r\n          </div>\r\n          <div class=\"flex-item\" fxFlex=\"20\">\r\n            <br/>\r\n            <span class=\"waitingMessage\">Please wait until we fetch and process delivery data</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</md-card>\r\n"
+module.exports = "<div class=\"row\" style=\"margin: 20px;\">\r\n  <div class=\"col-md-12 alert alert-success\">5)Products should be counted today</div> <!-- ref_type_id = null -->\r\n  <div class=\"col-md-6 alert alert-warning\">1)Products counted but not delivered</div> <!-- ref_type_id = 2-->\r\n  <div class=\"col-md-6 alert alert-pink\">2)Products not counted but delivered and finalized</div>\r\n  <!-- ref_type_id = 3 -->\r\n  <div class=\"col-md-6 alert alert-info\">3)Products should be counted in earlier days</div> <!-- ref_type_id = 4 -->\r\n  <div class=\"col-md-6 alert alert-danger\">4)Products with deliveries less than min stock</div> <!-- ref_type_id = 5 -->\r\n</div>\r\n\r\n<md-card class=\"outerCard\">\r\n  <md-card-title class=\"cardTitle\">{{unitName}} Delivery</md-card-title>\r\n  <!-- show and hide button -->\r\n  <div>\r\n    <md-card class=\"mat-card\" style=\"width:320px; margin-bottom:10px;padding:5px; border-radius:25px;\">\r\n      <label for=\"show-zero-delivery\" style=\"padding:0 10px\">Zero deliveries:</label>\r\n      <md-radio-group [(ngModel)]=\"showZeroDelivery\" (change)=\"changeFilter()\" id=\"show-zero-delivery\">\r\n        <md-radio-button style=\"padding: 0 10px;\" [value]=\"false\">Hide</md-radio-button>\r\n        <md-radio-button style=\"padding: 0 10px;\" [value]=\"true\">Show</md-radio-button>\r\n      </md-radio-group>\r\n    </md-card>\r\n  </div>\r\n  <!-- date picker -->\r\n  <material-datepicker [date]=\"selectedDate\" (onSelect)=\"dateChanged($event)\">\r\n  </material-datepicker>\r\n  <!-- md-tab-group -->\r\n  <md-tab-group *ngIf=\"dataIsReady\" class=\"materialTab\" [(selectedIndex)]=\"selectedIndex\" (selectChange)=\"tabChanged()\">\r\n    <md-tab label=\"All\" *ngIf=\"overallDeliveryModel._deliveries !== undefined\">\r\n      <!-- aggregate table -->\r\n      <md-card class=\"innerCard\">\r\n        <md-card-title>To Do: Delivery</md-card-title>\r\n        <md-card-content>\r\n          <md-card style=\"overflow: auto;\">\r\n            <md-card-content>\r\n              <table class=\"table table-striped\">\r\n                <thead style=\"width: 100%\">\r\n                  <tr>\r\n                    <th [style.width]=\"thereIsProactiveItem ? 'unset' : '30px'\">#</th>\r\n                    <th>Code</th>\r\n                    <th>Product</th>\r\n                    <th>Real Delivery</th>\r\n                    <th>Min Delivery</th>\r\n                    <th>Max Delivery</th>\r\n                    <th>Min Required</th>\r\n                    <th>Max Stock</th>\r\n                    <th>Branches Stock</th>\r\n                  </tr>\r\n                </thead>\r\n                <tbody>\r\n                  <tr *ngFor=\"let delItem of filteredDeliveries;let i = index\">\r\n                    <td *ngIf=\"\" [style.width]=\"thereIsProactiveItem ? 'unset' : '30px'\" class=\"number\">{{i + 1}}</td>\r\n                    <!-- <td *ngIf=\"delItem.id === null\" style=\"width: unset\">\r\n                      <md-chip-list>\r\n                        <md-chip color=\"primary\" selected=\"true\">Added</md-chip>\r\n                      </md-chip-list>\r\n                    </td> -->\r\n                    <td>{{delItem.productCode}}</td>\r\n                    <td class=\"name\">{{delItem.productName}}</td>\r\n                    <td>{{delItem.realDelivery}}</td>\r\n                    <td *ngIf=\"delItem.minDelivery !== null\">{{delItem.minDelivery}}</td>\r\n                    <td *ngIf=\"delItem.minDelivery === null\"><i class=\"fa fa-question warnColoring\"\r\n                        aria-hidden=\"true\"></i></td>\r\n                    <td *ngIf=\"delItem.maxDelivery !== null\">{{delItem.maxDelivery}}</td>\r\n                    <td *ngIf=\"delItem.maxDelivery === null\"><i class=\"fa fa-question warnColoring\"\r\n                        aria-hidden=\"true\"></i></td>\r\n                    <td>{{delItem.min}}</td>\r\n                    <td>{{delItem.max}}</td>\r\n                    <td *ngIf=\"delItem.stock !== null\">{{delItem.stock}}</td>\r\n                    <td *ngIf=\"delItem.stock === null\"><i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                    </td>\r\n                  </tr>\r\n                  <tr>\r\n                    <td [style.width]=\"thereIsProactiveItem ? 'unset' : '30px'\" class=\"number\"></td>\r\n                    <td class=\"sum\" colspan=\"2\">Sum</td>\r\n                    <td>{{receiversSumDeliveries['All'].realDelivery}}</td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].minDelivery !== null\">\r\n                      {{receiversSumDeliveries['All'].minDelivery}}</td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].minDelivery === null\"><i\r\n                        class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].maxDelivery !== null\">\r\n                      {{receiversSumDeliveries['All'].maxDelivery}}</td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].maxDelivery === null\"><i\r\n                        class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                    <td>{{receiversSumDeliveries['All'].min}}</td>\r\n                    <td>{{receiversSumDeliveries['All'].max}}</td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].stock !== null\">{{receiversSumDeliveries['All'].stock}}\r\n                    </td>\r\n                    <td *ngIf=\"receiversSumDeliveries['All'].stock === null\"><i class=\"fa fa-question warnColoring\"\r\n                        aria-hidden=\"true\"></i></td>\r\n                  </tr>\r\n                </tbody>\r\n              </table>\r\n            </md-card-content>\r\n          </md-card>\r\n        </md-card-content>\r\n        <md-card-content>\r\n          <button md-raised-button class=\"ButtonStyle\" *ngIf=\"isToday\"\r\n            [(disabled)]=\"overallDeliveryModel._shouldDisabled\"\r\n            (click)=\"printDelivery(overallDeliveryModel)\">Print</button>\r\n        </md-card-content>\r\n      </md-card>\r\n    </md-tab>\r\n    <!-- receiver table -->\r\n    <md-tab *ngFor=\"let rcv of receivers\" class=\"delayedTab\">\r\n      <ng-template md-tab-label>\r\n        <i *ngIf=\"rcv.warn === 'count'\" class=\"fa fa-exclamation warnColoring\" aria-hidden=\"true\"></i>\r\n        {{rcv.name}}\r\n      </ng-template>\r\n      <ng-template md-tab-label *ngIf=\"rcv.warn === 'login'\">\r\n        <i class=\"fa fa-exclamation warnColoring\" aria-hidden=\"true\"></i>\r\n        <i class=\"fa fa-exclamation warnColoring\" aria-hidden=\"true\"></i> {{rcv.name}}\r\n      </ng-template>\r\n      <ng-template md-tab-label *ngIf=\"rcv.warn === 'count'\">\r\n        <i class=\"fa fa-exclamation warnColoring\" aria-hidden=\"true\"></i> {{rcv.name}}\r\n      </ng-template>\r\n      <ng-template md-tab-label *ngIf=\"rcv.warn === 'no'\">\r\n        {{rcv.name}}\r\n      </ng-template>\r\n      <md-card class=\"innerCard\"\r\n        *ngIf=\"!isWaiting[rcv.name] && receiversDeliveryModels[rcv.name] !== undefined && receiversDeliveryModels[rcv.name] !== null\">\r\n        <md-card-title>To Do: Delivery</md-card-title>\r\n        <md-card-content>\r\n          <md-card style=\"min-width: 600px !important; overflow-x: auto;\">\r\n            <md-card-content>\r\n              <table class=\"table table-striped\">\r\n                <thead style=\"width: 100%\">\r\n                  <tr>\r\n                    <th style=\"width: 30px\">#</th>\r\n                    <th>Code</th>\r\n                    <th>Product</th>\r\n                    <th>Real Delivery</th>\r\n                    <th>Min Delivery</th>\r\n                    <th>Max Delivery</th>\r\n                    <th>Min Required</th>\r\n                    <th>Max Stock</th>\r\n                    <th>Current Stock</th>\r\n                    <th>Last Count</th>\r\n                    <th>Last Count Date</th>\r\n                    <th>Days to Next Counting</th>\r\n                  </tr>\r\n                </thead>\r\n                <tbody>\r\n                  <tr *ngFor=\"let delItem of filteredBranchDeliveries[rcv.name];let i = index\"\r\n                    [ngClass]=\"[delItem.realDelivery ? countToday(delItem.stockDate) ? 'normalColoring' : 'warnColoring' : 'zeroColoring']\">\r\n                    <td style=\"width: 40px\" class=\"buttonItem\" *ngIf=\"delItem.state !== 'added'\" [ngClass]=\"[\r\n                  delItem.ref_type_id === delivery_types.COUNTING_TODAY ? 'number-success' : '',\r\n                  delItem.ref_type_id === delivery_types.COUNTED_BUT_NOT_DELIVERED ? 'number-warning' : '',\r\n                  delItem.ref_type_id === delivery_types.NOT_COUNTED_BUT_DELIVERED_AND_FINALIZED ? 'number-pink' : '',\r\n                  delItem.ref_type_id === delivery_types.NOT_COUNTED_AND_NOT_DELIVERED ? 'number-info' : '',\r\n                  delItem.ref_type_id === delivery_types.DELIVERED_LESS_THAN_MIN_STOCK ? 'number-danger' : ''\r\n                  ]\">{{i+1}}</td>\r\n                    <td style=\"width: 40px\" class=\"buttonItem\" *ngIf=\"delItem.id === null && !delItem.ref_type_id\">\r\n                      <button md-mini-fab (click)=\"removeDeliveryItem(delItem)\">\r\n                        <i class=\"fa fa-times\" aria-hidden=\"true\"></i>\r\n                      </button>\r\n                    </td>\r\n                    <td class=\"buttonItem\"\r\n                      *ngIf=\"delItem.id !== null && !delItem.ref_type_id && delItem.state === 'added'\">\r\n                      <md-chip-list>\r\n                        <md-chip color=\"primary\" selected=\"true\">Added</md-chip>\r\n                      </md-chip-list>\r\n                    </td>\r\n                    <td class=\"codeItem\">\r\n                      {{delItem.productCode}}\r\n                    </td>\r\n                    <td class=\"nameItem name\"\r\n                      [ngClass]=\"[(countToday(delItem.stockDate)) ? 'normalColoring' : 'warnColoring']\">\r\n                      {{delItem.productName}}\r\n                    </td>\r\n                    <td class=\"inputItem\">\r\n                      <md-input-container>\r\n                        <input mdInput type=\"number\" min=\"0\"\r\n                          [ngClass]=\"[(rcv.warn ||((delItem.minDelivery > delItem.realDelivery || delItem.maxDelivery < delItem.realDelivery ) && isToday)) ? 'notEqualValues' : 'equalValues']\"\r\n                          [(disabled)]=\"!isToday\" placeholder=\"Real Delivery\" [ngModel]=\"delItem.realDelivery\"\r\n                          (change)=\"checkRealDeliveryValue($event, delItem)\" />\r\n                      </md-input-container>\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"delItem.stock !== null && delItem.id !== null\">\r\n                      {{delItem.minDelivery}}\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"delItem.stock === null || delItem.id === null\">\r\n                      <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"delItem.stock !== null && delItem.id !== null\">\r\n                      {{delItem.maxDelivery}}\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"delItem.stock === null || delItem.id === null\">\r\n                      <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                    </td>\r\n                    <td class=\"column\">{{delItem.min}}\r\n                    </td>\r\n                    <td class=\"column\">{{delItem.max}}\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"delItem.stock !== null && delItem.id !== null\">\r\n                      {{delItem.stock}}\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"delItem.stock === null || delItem.id === null\">\r\n                      <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                    </td>\r\n                    <td class=\"column\">\r\n                      {{delItem.oldCount}}\r\n                    </td>\r\n                    <td style=\"min-width: 80px !important;\" class=\"column\">\r\n                      {{delItem.stockDate}}\r\n                    </td>\r\n                    <td *ngIf=\"delItem.untilNextCountingDay!==null\" class=\"column\">{{delItem.untilNextCountingDay}}</td>\r\n                    <td *ngIf=\"delItem.untilNextCountingDay===null\" class=\"column\"><i\r\n                        class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i></td>\r\n                  </tr>\r\n                  <tr>\r\n                    <td [style.width]=\"thereIsProactiveItem ? 'unset' : '30px'\" class=\"number\"></td>\r\n                    <td class=\"sum\" colspan=\"3\">Sum</td>\r\n                    <td class=\"inputItem\">{{receiversSumDeliveries[rcv.name].realDelivery}}</td>\r\n                    <td class=\"column\" *ngIf=\"rcv.warn === 'no'\">\r\n                      {{receiversSumDeliveries[rcv.name].minDelivery}}\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"rcv.warn === 'count' || rcv.warn === 'unknown'\">\r\n                      <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"rcv.warn === 'no'\">\r\n                      {{receiversSumDeliveries[rcv.name].maxDelivery}}\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"rcv.warn === 'count' || rcv.warn === 'unknown'\">\r\n                      <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                    </td>\r\n                    <td class=\"column\">{{receiversSumDeliveries[rcv.name].min}}</td>\r\n                    <td class=\"column\">{{receiversSumDeliveries[rcv.name].max}}</td>\r\n                    <td class=\"column\" *ngIf=\"rcv.warn === 'no'\">\r\n                      {{receiversSumDeliveries[rcv.name].stock}}\r\n                    </td>\r\n                    <td class=\"column\" *ngIf=\"rcv.warn === 'count' || rcv.warn === 'unknown'\">\r\n                      <i class=\"fa fa-question warnColoring\" aria-hidden=\"true\"></i>\r\n                    </td>\r\n                    <td style=\"min-width: 80px !important;\" class=\"column\">-</td>\r\n                    <td>-</td>\r\n                  </tr>\r\n                  <tr\r\n                    *ngIf=\"isToday && !receiversDeliveryModels[rcv.name]._shouldDisabled && productsList[rcv.name] !== undefined && productsList[rcv.name].length > 0\">\r\n                    <td class=\"buttonItem\"></td>\r\n                    <td class=\"codeItem\" colspan=\"2\">\r\n                      <md-input-container>\r\n                        <input mdInput type=\"text\" [(disabled)]=\"receiversDeliveryModels[rcv.name]._shouldDisabled\"\r\n                          class=\"pnc\" placeholder=\"Product name/code\" [mdAutocomplete]=\"auto\"\r\n                          [formControl]=\"productNameCodeCtrl\" (focus)=\"showProductList()\" (blur)=\"clearInput($event)\" />\r\n                        <md-autocomplete #auto=\"mdAutocomplete\">\r\n                          <md-option *ngFor=\"let nameCode of filteredNameCode | async\" [value]=\"nameCode\">\r\n                            {{nameCode}}\r\n                          </md-option>\r\n                        </md-autocomplete>\r\n                      </md-input-container>\r\n                    </td>\r\n                    <td class=\"nameItem\"></td>\r\n                    <td class=\"inputItem\"></td>\r\n                    <td class=\"column\"></td>\r\n                    <td class=\"column\"></td>\r\n                    <td class=\"column\"></td>\r\n                    <td class=\"column\"></td>\r\n                    <td style=\"min-width: 80px !important;\" class=\"column\"></td>\r\n                  </tr>\r\n                </tbody>\r\n              </table>\r\n            </md-card-content>\r\n          </md-card>\r\n        </md-card-content>\r\n        <md-card-content>\r\n          <button md-raised-button class=\"ButtonStyle\"\r\n                  *ngIf=\"isToday\"\r\n                  [disabled]=\"!receiversDeliveryModels[rcv.name]._isSubmitted || receiversDeliveryModels[rcv.name]._deliveries.length <= 0\"\r\n                  (click)=\"printDelivery(receiversDeliveryModels[rcv.name])\">Print</button>\r\n                <button md-raised-button class=\"ButtonStyle\"\r\n                  [disabled]=\"receiversDeliveryModels[rcv.name]._isPrinted\"\r\n                  *ngIf=\"isToday\"\r\n                  (click)=\"submitDelivery(receiversDeliveryModels[rcv.name])\">Submit</button>\r\n        </md-card-content>\r\n      </md-card>\r\n    </md-tab>\r\n  </md-tab-group>\r\n  <!-- loading -->\r\n  <div *ngIf=\"!dataIsReady\">\r\n    <div class=\"flex-container waiting\" fxLayout=\"row\" fxLayoutAlign=\"center center\">\r\n      <div class=\"flex-item\" fxFlex=\"80\">\r\n        <div class=\"flex-container\" fxLayout=\"column\" fxLayoutAlign=\"center center\">\r\n          <div class=\"flex-item\" fxFlex=\"80\">\r\n            <i style=\"color: white !important;\" class=\"fa fa-circle-o-notch fa-spin fa-3x fa-fw\"></i>\r\n            <span class=\"sr-only\">Loading...</span>\r\n          </div>\r\n          <div class=\"flex-item\" fxFlex=\"20\">\r\n            <br />\r\n            <span class=\"waitingMessage\">Please wait until we fetch and process delivery data</span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</md-card>"
 
 /***/ }),
 
@@ -5530,7 +5802,7 @@ module.exports = "<md-card>\r\n  <md-card-header>\r\n    <md-card-title>\r\n    
 /***/ 807:
 /***/ (function(module, exports) {
 
-module.exports = "<md-card style=\"background-color: #607D8B; border-radius: 7px; text-align: left; margin: 10px;\">\r\n  <md-card-title class=\"cardTitle hidden-mobile\">{{unitName}} Inventory</md-card-title>\r\n  <md-card class=\"innerCard\">\r\n\r\n      <md-card-title class=\"hidden-mobile\">To Do: Inventory Takings</md-card-title>\r\n    <md-card-header class=\"hidden-mobile\">      <material-datepicker [(date)]=\"selectedDate\" (onSelect)=\"dateChanged()\">\r\n    </material-datepicker></md-card-header>\r\n    <md-card-content>\r\n      <md-card style=\"overflow: auto;\">\r\n        <md-card-content>\r\n          <table class=\"table table-responsive\">\r\n            <thead style=\"width:100%\">\r\n              <tr>\r\n                <th style=\"width:30px\">#</th>\r\n                <th [ngStyle]=\"{'width.px': noButton ? 0 : 24}\">&nbsp;</th>\r\n                <th class=\"name\">Product</th>\r\n                <th>Code</th>\r\n                <th>Unopened Packs</th>\r\n                <th  class=\"hidden-mobile\">Last Count</th>\r\n              </tr>\r\n            </thead>\r\n            <tbody class=\"scrollable\" *ngIf=\"inventoryModel !== null && inventoryModel !== undefined && inventoryModel._inventories.length > 0\">\r\n              <tr *ngFor=\"let invItem of inventoryModel._inventories;let i = index\" [@itemState]=\"invItem.state\"\r\n                  [ngClass]=\"[invItem.unopenedPack ? 'counted': '',\r\n                            (!invItem.shouldCountToday && invItem.shouldIncluded) ? 'warnColoring' : 'normalColoring',\r\n                            invItem.unopenedPack > invItem.stockMax ? 'packMoreThanMax' : '']\">\r\n                  <td class=\"number\">{{i+1}}</td>\r\n                  <td [ngStyle]=\"{'width.px': noButton ? 0 : 24}\" *ngIf=\"invItem.shouldIncluded\">&nbsp;</td>\r\n                  <td *ngIf=\"!invItem.shouldIncluded\">\r\n                    <button md-mini-fab (click)=\"removeInventoryItem(invItem)\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>\r\n                  </td>\r\n                <td class=\"name\">\r\n                  {{invItem.productName}}\r\n                </td>\r\n                  <td>\r\n                    {{invItem.productCode}}\r\n                  </td>\r\n                <td>\r\n                  <md-input-container>\r\n                    <input mdInput type=\"number\" [(ngModel)]=\"invItem.unopenedPack\" placeholder=\"Packs\"\r\n                           (ngModelChange)=\"checkDisability(invItem)\"\r\n                           [disabled]=\"!isSameDates || invItem.is_disabled\"\r\n                           min=\"0\"/>\r\n                  </md-input-container>\r\n                </td>\r\n                  <td *ngIf=\"invItem.lastCount !== null\" class=\"hidden-mobile\"\r\n                                [ngClass]=\"[(this.isSameDates && !invItem.shouldCountToday && invItem.shouldIncluded) ? 'warnColoring' : 'normalColoring']\">\r\n                    {{invItem.lastCount | date: 'd MMM yy'}}\r\n                  </td>\r\n                  <td *ngIf=\"invItem.lastCount === null\">\r\n                    -\r\n                  </td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n          <table class=\"table\">\r\n            <tr *ngIf=\"isSameDates\">\r\n              <td class=\"buttonItem\">&nbsp;</td>\r\n              <td class=\"inputItem\">\r\n                <md-input-container>\r\n                  <input mdInput type=\"number\" placeholder=\"Unopened Packs\" #unopenedPack/>\r\n                </md-input-container>\r\n              </td>\r\n              <td class=\"inputItem\" colspan=\"2\">\r\n                <md-input-container>\r\n                  <input mdInput type=\"text\" class=\"pnc\" placeholder=\"Product name/code\" [mdAutocomplete]=\"auto\" [formControl]=\"productNameCodeCtrl\" #autoNameCode (focus)=\"showProductList()\"/>\r\n                  <md-autocomplete #auto=\"mdAutocomplete\">\r\n                    <md-option *ngFor=\"let nameCode of filteredNameCode | async\" [value]=\"nameCode\">\r\n                      {{nameCode}}\r\n                    </md-option>\r\n                  </md-autocomplete>\r\n                </md-input-container>\r\n              </td>\r\n              <td style=\"min-width: 80px !important;\" class=\"column\">\r\n              </td>\r\n            </tr>\r\n          </table>\r\n        </md-card-content>\r\n      </md-card>\r\n    </md-card-content>\r\n    <md-card-content>\r\n        <button md-raised-button class=\"ButtonStyle\" *ngIf=\"isSameDates\" [disabled]=\"submitDisability()\"\r\n          (click)=\"isUpdateMode ? enableEditMode() : submitInventories()\">{{isUpdateMode ? 'Update' : 'Submit'}}</button>\r\n    </md-card-content>\r\n  </md-card>\r\n</md-card>\r\n"
+module.exports = "<!-- products categories -->\r\n<div class=\"row\" style=\"margin: 20px;\">\r\n      <div class=\"col-md-12 alert alert-success\">5)Products should be counted today</div>  <!-- ref_type_id = null -->\r\n\t  <div class=\"col-md-6 alert alert-warning\">1)Products counted but not delivered</div> <!-- ref_type_id = 2-->\r\n\t  <div class=\"col-md-6 alert alert-pink\">2)Products not counted but delivered and finalized</div> <!-- ref_type_id = 3 -->\r\n\t  <div class=\"col-md-6 alert alert-info\">3)Products should be counted in earlier days</div> <!-- ref_type_id = 4 -->\r\n\t  <div class=\"col-md-6 alert alert-danger\">4)Products with deliveries less than min stock</div> <!-- ref_type_id = 5 -->\r\n</div>\r\n<md-card style=\"background-color: #607D8B; border-radius: 7px; text-align: left; margin: 10px;\">\r\n  <md-card-title class=\"cardTitle hidden-mobile\">{{unitName}} Inventory</md-card-title>\r\n  <md-card class=\"innerCard\">\r\n\r\n    <md-card-title class=\"hidden-mobile\">To Do: Inventory Takings</md-card-title>\r\n    <md-card-header class=\"hidden-mobile\">\r\n      <material-datepicker [(date)]=\"selectedDate\" (onSelect)=\"dateChanged()\">\r\n      </material-datepicker>\r\n    </md-card-header>\r\n    <md-card-content>\r\n      <md-card style=\"overflow: auto;\">\r\n        <md-card-content>\r\n          <table class=\"table table-responsive\">\r\n            <thead style=\"width:100%\">\r\n              <tr>\r\n                <th style=\"width:30px\">#</th>\r\n                <th [ngStyle]=\"{'width.px': noButton ? 0 : 24}\">&nbsp;</th>\r\n                <th class=\"name\">Product</th>\r\n                <th>Code</th>\r\n                <th>Unopened Packs</th>\r\n                <th class=\"hidden-mobile\">Last Count</th>\r\n              </tr>\r\n            </thead>\r\n            <tbody class=\"scrollable\"\r\n              *ngIf=\"inventoryModel !== null && inventoryModel !== undefined && inventoryModel._inventories.length > 0\">\r\n              <tr *ngFor=\"let invItem of inventoryModel._inventories;let i = index\" [@itemState]=\"invItem.state\"\r\n                [ngClass]=\"[invItem.unopenedPack ? 'counted': '',\r\n                            (!invItem.shouldCountToday && invItem.shouldIncluded) ? 'warnColoring' : 'normalColoring',\r\n                            invItem.unopenedPack > invItem.stockMax ? 'packMoreThanMax' : ''\r\n                            ]\">\r\n                <td [ngClass]=\"[\r\n                    invItem.ref_type_id === delivery_types.COUNTING_TODAY ? 'number-success' : '',\r\n                    invItem.ref_type_id === delivery_types.COUNTED_BUT_NOT_DELIVERED ? 'number-warning' : '',\r\n                    invItem.ref_type_id === delivery_types.NOT_COUNTED_BUT_DELIVERED_AND_FINALIZED ? 'number-pink' : '',\r\n                    invItem.ref_type_id === delivery_types.NOT_COUNTED_AND_NOT_DELIVERED ? 'number-info' : '',\r\n                    invItem.ref_type_id === delivery_types.DELIVERED_LESS_THAN_MIN_STOCK ? 'number-danger' : ''\r\n                ]\">{{i+1}}</td>\r\n                <td [ngStyle]=\"{'width.px': noButton ? 0 : 24}\" *ngIf=\"invItem.shouldIncluded\">&nbsp;</td>\r\n                <td *ngIf=\"!invItem.shouldIncluded\">\r\n                  <button md-mini-fab (click)=\"removeInventoryItem(invItem)\"><i class=\"fa fa-times\"\r\n                      aria-hidden=\"true\"></i></button>\r\n                </td>\r\n                <td class=\"name\">\r\n                  {{invItem.productName}}\r\n                </td>\r\n                <td>\r\n                  {{invItem.productCode}}\r\n                </td>\r\n                <td>\r\n                  <md-input-container>\r\n                    <input mdInput type=\"number\" [(ngModel)]=\"invItem.unopenedPack\" placeholder=\"Packs\"\r\n                      (ngModelChange)=\"checkDisability(invItem)\" [disabled]=\"!isSameDates || invItem.is_disabled\"\r\n                      min=\"0\" />\r\n                  </md-input-container>\r\n                </td>\r\n                <td *ngIf=\"invItem.lastCount !== null\" class=\"hidden-mobile\"\r\n                  [ngClass]=\"[(this.isSameDates && !invItem.shouldCountToday && invItem.shouldIncluded) ? 'warnColoring' : 'normalColoring']\">\r\n                  {{invItem.lastCount | date: 'd MMM yy'}}\r\n                </td>\r\n                <td *ngIf=\"invItem.lastCount === null\">\r\n                  -\r\n                </td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n          <table class=\"table\">\r\n            <tr *ngIf=\"isSameDates\">\r\n              <td class=\"buttonItem\">&nbsp;</td>\r\n              <td class=\"inputItem\">\r\n                <md-input-container>\r\n                  <input mdInput type=\"number\" placeholder=\"Unopened Packs\" #unopenedPack />\r\n                </md-input-container>\r\n              </td>\r\n              <td class=\"inputItem\" colspan=\"2\">\r\n                <md-input-container>\r\n                  <input mdInput type=\"text\" class=\"pnc\" placeholder=\"Product name/code\" [mdAutocomplete]=\"auto\"\r\n                    [formControl]=\"productNameCodeCtrl\" #autoNameCode (focus)=\"showProductList()\" />\r\n                  <md-autocomplete #auto=\"mdAutocomplete\">\r\n                    <md-option *ngFor=\"let nameCode of filteredNameCode | async\" [value]=\"nameCode\">\r\n                      {{nameCode}}\r\n                    </md-option>\r\n                  </md-autocomplete>\r\n                </md-input-container>\r\n              </td>\r\n              <td style=\"min-width: 80px !important;\" class=\"column\">\r\n              </td>\r\n            </tr>\r\n          </table>\r\n        </md-card-content>\r\n      </md-card>\r\n    </md-card-content>\r\n    <md-card-content>\r\n      <button md-raised-button class=\"ButtonStyle\" *ngIf=\"isSameDates\" [disabled]=\"submitDisability()\"\r\n        (click)=\"isUpdateMode ? enableEditMode() : submitInventories()\">{{isUpdateMode ? 'Update' : 'Submit'}}</button>\r\n    </md-card-content>\r\n  </md-card>\r\n</md-card>\r\n"
 
 /***/ }),
 
@@ -5544,7 +5816,7 @@ module.exports = "<md-card style=\"margin:16px !important; padding: 24px 16px !i
 /***/ 809:
 /***/ (function(module, exports) {
 
-module.exports = "<md-toolbar color=\"primary\" style=\"font-weight:200;font-size:100%; overflow: hidden;max-width:100vw\">\r\n  <span><a style=\"font-size:120%\" class=\"toolbar\" [routerLink]=\"['']\">Siirgista Internal Delivery</a></span>\r\n  <span class=\"fill-remaining-space\"></span>\r\n  <span *ngIf=\"!auth\"><a  class=\"toolbar\" [routerLink]=\"['login']\"><span class=\"fa fa-sign-in\"></span> Login</a></span>\r\n  <span *ngIf=\"auth\"><a  class=\"toolbar\" (click)=\"logout()\">{{user}} <i class=\"fa fa-sign-out\"></i> Logout</a></span>\r\n  <span *ngIf=\"auth\" class=\"hidden-mobile\" style=\"margin-left:20px\">{{remainedTime}}</span>\r\n</md-toolbar>\r\n<nav *ngIf=\"auth\" class=\"hidden-mobile\" md-tab-nav-bar>\r\n  <a md-tab-link *ngIf=\"isAdmin\" [routerLink]=\"['units']\" routerLinkActive #unitsLink=\"routerLinkActive\" [active]=\"unitsLink.isActive\">Units</a>\r\n  <a md-tab-link *ngIf=\"isAdmin\" [routerLink]=\"['products']\" routerLinkActive #productsLink=\"routerLinkActive\" [active]=\"productsLink.isActive\">Products</a>\r\n  <a md-tab-link *ngIf=\"isAdmin\" [routerLink]=\"['override']\" routerLinkActive #overrideLink=\"routerLinkActive\" [active]=\"overrideLink.isActive\">Override Rules</a>\r\n  <a md-tab-link *ngIf=\"isBranch\" [routerLink]=\"['inventory']\" routerLinkActive #inventoryLink=\"routerLinkActive\" [active]=\"inventoryLink.isActive\">Inventory</a>\r\n  <a md-tab-link *ngIf=\"isPrep\" [routerLink]=\"['delivery']\" routerLinkActive #deliveryLink=\"routerLinkActive\" [active]=\"deliveryLink.isActive\">Delivery</a>\r\n  <a md-tab-link *ngIf=\"isAdmin\" [routerLink]=\"['reports']\" routerLinkActive #reportsLink=\"routerLinkActive\" [active]=\"reportsLink.isActive\">Reports</a>\r\n</nav>\r\n"
+module.exports = "<md-toolbar color=\"primary\" style=\"font-weight:200;font-size:100%; overflow: hidden;max-width:100vw\">\r\n  <span><a style=\"font-size:120%\" class=\"toolbar\" [routerLink]=\"['']\">Siirgista Internal Delivery</a></span>\r\n  <div style=\"margin: 20px;\">\r\n    {{currentDate | date:'yyyy-MM-dd HH-mm-ss'}}\r\n  </div>\r\n  <span class=\"fill-remaining-space\"></span>\r\n  <span *ngIf=\"!auth\"><a  class=\"toolbar\" [routerLink]=\"['login']\"><span class=\"fa fa-sign-in\"></span> Login</a></span>\r\n  <span *ngIf=\"auth\"><a  class=\"toolbar\" (click)=\"logout()\">{{user}} <i class=\"fa fa-sign-out\"></i> Logout</a></span>\r\n  <span *ngIf=\"auth\" class=\"hidden-mobile\" style=\"margin-left:20px\">{{remainedTime}}</span>\r\n</md-toolbar>\r\n<nav *ngIf=\"auth\" class=\"hidden-mobile\" md-tab-nav-bar>\r\n  <a md-tab-link *ngIf=\"isAdmin\" [routerLink]=\"['units']\" routerLinkActive #unitsLink=\"routerLinkActive\" [active]=\"unitsLink.isActive\">Units</a>\r\n  <a md-tab-link *ngIf=\"isAdmin\" [routerLink]=\"['products']\" routerLinkActive #productsLink=\"routerLinkActive\" [active]=\"productsLink.isActive\">Products</a>\r\n  <a md-tab-link *ngIf=\"isAdmin\" [routerLink]=\"['override']\" routerLinkActive #overrideLink=\"routerLinkActive\" [active]=\"overrideLink.isActive\">Override Rules</a>\r\n  <a md-tab-link *ngIf=\"isBranch\" [routerLink]=\"['inventory']\" routerLinkActive #inventoryLink=\"routerLinkActive\" [active]=\"inventoryLink.isActive\">Inventory</a>\r\n  <a md-tab-link *ngIf=\"isPrep\" [routerLink]=\"['delivery']\" routerLinkActive #deliveryLink=\"routerLinkActive\" [active]=\"deliveryLink.isActive\">Delivery</a>\r\n  <a md-tab-link *ngIf=\"isAdmin\" [routerLink]=\"['reports']\" routerLinkActive #reportsLink=\"routerLinkActive\" [active]=\"reportsLink.isActive\">Reports</a>\r\n</nav>\r\n"
 
 /***/ }),
 

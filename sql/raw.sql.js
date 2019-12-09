@@ -21,6 +21,7 @@ module.exports = {
     create:   sql('db/create.sql'),
     drop:     sql('db/drop.sql'),
     test:     sql('db/test.sql'),
+    dropSchema:     sql('db/dropSchema.sql')
   },
   units: {
     create:   sql('units/create.sql'),
@@ -71,6 +72,14 @@ module.exports = {
     deliveryReportByBranch: sql('branch_stock_delivery_date/deliveryReportByBranch.sql'),
     inventoryCountingReport: sql('branch_stock_delivery_date/inventoryCountingReport.sql'),
     getMaxCountProductInBranch: sql('branch_stock_delivery_date/getMaxCountProductInBranch.sql'),
+
+    getMaxCountingDate: sql('branch_stock_delivery_date/getMaxCountingDate.sql'),
+    countedButNotDelivered: sql('branch_stock_delivery_date/delivery_types/countedButNotDelivered.sql'),
+    countingToday: sql('branch_stock_delivery_date/delivery_types/countingToday.sql'),
+    deliveredLessThanMinStock: sql('branch_stock_delivery_date/delivery_types/deliveredLessThanMinStock.sql'),
+    notCountedAndNotDelivered: sql('branch_stock_delivery_date/delivery_types/notCountedAndNotDelivered.sql'),
+    notCountedButDeliveredAndFinalized: sql('branch_stock_delivery_date/delivery_types/notCountedButDeliveredAndFinalized.sql'),
+
   },
   prices: {
       create: sql('prices/create.sql'),
