@@ -78,6 +78,7 @@ router.post('/unit/:uid', apiResponse('Unit', 'update', true, ['params.uid', 'bo
 router.delete('/unit/:uid', apiResponse('Unit', 'delete', true, ['params.uid']));
 //Product API
 router.put('/product', apiResponse('Product', 'insert', true, ['body']));
+router.get('/product/all', apiResponse('Product', 'getAllProducts', false, []));
 router.get('/product', apiResponse('Product', 'select', true, ['user.username'], undefined));
 router.post('/product/:pid', apiResponse('Product', 'update', true, ['body', 'params.pid', 'user.username']));
 router.delete('/product/:pid', apiResponse('Product', 'delete', true, ['params.pid', 'user.username']));
