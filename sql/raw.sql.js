@@ -36,6 +36,7 @@ module.exports = {
     create:      sql('products/create.sql'),
     drop:        sql('products/drop.sql'),
     select:      sql('products/select.sql'),
+    getAll:      sql('products/getAll.sql'),
     getByUnitId: sql('products/getByUnitId.sql'),
     getByBranchId: sql('products/getByBranchId.sql'),
     getByName:   sql('products/getByName.sql'),
