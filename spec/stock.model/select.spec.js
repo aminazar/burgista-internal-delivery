@@ -243,6 +243,7 @@ describe("select", () => {
                 fin_prep.is_branch,
                 fin_prep.uid,
                 fin_prep.is_kitchen,
+                false,
                 moment(`${moment().format('YYYY-MM-DD')} 22:00:00`).format('YYYY-MM-DD HH:mm:ss')
             );
 
@@ -280,6 +281,7 @@ describe("select", () => {
                 fin_prep.is_branch,
                 fin_prep.uid,
                 fin_prep.is_kitchen,
+                false,
                 moment(`${moment().format('YYYY-MM-DD')} 22:00:00`).format('YYYY-MM-DD HH:mm:ss')
             );
 
@@ -334,6 +336,7 @@ describe("select", () => {
                 fin_prep.is_branch,
                 fin_prep.uid,
                 fin_prep.is_kitchen,
+                false,
                 moment(`${moment().format('YYYY-MM-DD')} 22:00:00`).format('YYYY-MM-DD HH:mm:ss')
             );
 
@@ -398,6 +401,7 @@ describe("select", () => {
                 fin_prep.is_branch,
                 fin_prep.uid,
                 fin_prep.is_kitchen,
+                false, // is_reporter
                 moment(`${moment().format('YYYY-MM-DD')} 22:00:00`).format('YYYY-MM-DD HH:mm:ss')
             );
 
@@ -446,6 +450,7 @@ describe("select", () => {
                 fin_prep.is_branch,
                 fin_prep.uid,
                 fin_prep.is_kitchen,
+                false, // is_reporter
                 moment(`${moment().format('YYYY-MM-DD')} 22:00:00`).format('YYYY-MM-DD HH:mm:ss')
             );
 
@@ -494,6 +499,7 @@ describe("select", () => {
                 fin_prep.is_branch,
                 fin_prep.uid,
                 fin_prep.is_kitchen,
+                false, // is_reporter
                 moment(`${moment().format('YYYY-MM-DD')} 22:00:00`).format('YYYY-MM-DD HH:mm:ss')
             );
 
@@ -542,6 +548,7 @@ describe("select", () => {
                 fin_prep.is_branch,
                 fin_prep.uid,
                 fin_prep.is_kitchen,
+                false, // is_reporter
                 moment(`${moment().format('YYYY-MM-DD')} 22:00:00`).format('YYYY-MM-DD HH:mm:ss')
             );
 

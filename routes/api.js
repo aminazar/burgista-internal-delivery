@@ -56,7 +56,7 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
 }
 
 //Login API & last login API
-router.post('/login', passport.authenticate('local', {}), apiResponse('Unit', 'saveDateAfterLogin', false, ['user.name', 'user.username', 'user.is_branch', 'user.uid', 'user.is_kitchen']));
+router.post('/login', passport.authenticate('local', {}), apiResponse('Unit', 'saveDateAfterLogin', false, ['user.name', 'user.username', 'user.is_branch', 'user.uid', 'user.is_kitchen', 'user.is_reporter']));
 router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
 router.get('/logout', (req, res) => {
   req.logout();
