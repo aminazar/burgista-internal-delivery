@@ -92,7 +92,7 @@ router.put('/stock', apiResponse('Stock', 'saveData', false, ['body', 'user.uid'
 router.post('/stock/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'user.uid', 'params.bsddid']));
 router.put('/stock/batch', apiResponse('Stock', 'batchCU', false, ['body', 'user.uid']));
 //Delivery API
-router.get('/delivery/:date/:branchId', apiResponse('Stock', 'deliverySelect', false, ['user.uid', 'params.branchId', 'params.date', 'user.is_kitchen']));
+router.get('/delivery/:date/:branchId', apiResponse('Stock', 'deliverySelect', false, ['user.uid', 'params.branchId', 'params.date', 'user.is_kitchen', 'user.is_reporter']));
 router.put('/delivery/:uid', apiResponse('Stock', 'saveData', false, ['body', 'params.uid']));
 router.post('/delivery/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'notUsed', 'params.bsddid']));
 
