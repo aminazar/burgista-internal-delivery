@@ -19,6 +19,8 @@ const initDb =  isDev ? pgp(config.pgConnection + config.initDb) : db;
 const testDb = pgp(testConnectionString);
 const pgm = require('pg-monitor');
 const color = require("cli-color");
+require('dotenv').config()
+
 const pgmTheme = {
     time: color.bgBlack.whiteBright,
     value: color.black,
@@ -33,6 +35,7 @@ const pgmTheme = {
 pgm.setTheme(pgmTheme); // selecting your own theme;
 pgm.attach(options);
 
+
 module.exports = {
   bcrypt: bCrypt,
   pgp: pgp,
@@ -46,4 +49,6 @@ module.exports = {
   test_db_name: test_db_name,
   isProd: isProd,
   isDev: isDev,
+  masterKey: process.env.MASTER_KEY
+  
 };
