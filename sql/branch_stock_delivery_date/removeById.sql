@@ -1,0 +1,1 @@
+delete from branch_stock_delivery_date where bsddid=${id}

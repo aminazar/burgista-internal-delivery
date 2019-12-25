@@ -62,6 +62,7 @@ module.exports = {
   },
   branch_stock_delivery_date: {
     create: sql('branch_stock_delivery_date/create.sql'),
+    removeById: sql('branch_stock_delivery_date/removeById.sql'),
     drop: sql('branch_stock_delivery_date/drop.sql'),
     delete: sql('branch_stock_delivery_date/delete.sql'),
     get: sql('branch_stock_delivery_date/get.sql'),
