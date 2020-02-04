@@ -55,6 +55,18 @@ function apiResponse(className, functionName, adminOnly = false, reqFuncs = []) 
   });
 }
 
+
+// Date
+router.get('/date', (req, res) => {
+  let className = 'Stock';
+  let hourAdjustment = process.env[className + 'HourAdj'] ? +process.env[className + 'HourAdj'] : 0;
+  let date = (req.query.testDate ? moment(req.query.testDate) : moment()).tz('Europe/London').add(-hourAdjustment, 'h').toDate();
+  res.status(200)
+    .json(date);
+});
+// checking access time
+router.get('/checkAccessTime', apiResponse('Stock', 'checkingTime', false, ['user.is_branch']));
+router.put('/checkBranchStockFinalized', apiResponse('Stock', 'checkStockOfBranchIsFinalized', false, ['user.uid', 'body.date']));
 //Login API & last login API
 router.post('/login', passport.authenticate('local', {}), apiResponse('Unit', 'saveDateAfterLogin', false, ['user.name', 'user.username', 'user.is_branch', 'user.uid', 'user.is_kitchen', 'user.is_reporter']));
 router.post('/loginCheck', apiResponse('Unit', 'loginCheck', false, ['body.username', 'body.password']));
@@ -104,12 +116,5 @@ router.get('/reports/branch_delivery/:branchId/:start_date/:end_date', apiRespon
 router.get('/reports/inventory_counting/:branchId', apiResponse('Stock', 'inventoryReport', true, ['params.branchId']));
 router.get('/reports/products/:branchId', apiResponse('Product', 'getForProductsReport', true, ['params.branchId']));
 router.get('/reports/all_products/', apiResponse('Product', 'getForProductsReport', true));
-// Date
-router.get('/date', (req, res) => {
-  let className = 'Stock';
-  let hourAdjustment = process.env[className + 'HourAdj'] ? +process.env[className + 'HourAdj'] : 0;
-  let date = (req.query.testDate ? moment(req.query.testDate) : moment()).tz('Europe/London').add(-hourAdjustment, 'h').toDate();
-  res.status(200)
-    .json(date);
-});
+
 module.exports = router;
