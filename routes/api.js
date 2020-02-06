@@ -105,6 +105,7 @@ router.post('/stock/:bsddid', apiResponse('Stock', 'saveData', false, ['body', '
 router.delete('/stock/:bsddid', apiResponse('Stock', 'removeStock', false, ['params.bsddid']));
 router.put('/stock/batch', apiResponse('Stock', 'batchCU', false, ['body', 'user.uid']));
 //Delivery API
+router.put('/delivery/batch/:uid', apiResponse('Stock', 'batchCU', false, ['body', 'params.uid']));
 router.get('/delivery/:date/:branchId', apiResponse('Stock', 'deliverySelect', false, ['user.uid', 'params.branchId', 'params.date', 'user.is_kitchen', 'user.is_reporter']));
 router.put('/delivery/:uid', apiResponse('Stock', 'saveData', false, ['body', 'params.uid']));
 router.post('/delivery/:bsddid', apiResponse('Stock', 'saveData', false, ['body', 'notUsed', 'params.bsddid']));
