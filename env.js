@@ -49,6 +49,7 @@ module.exports = {
   test_db_name: test_db_name,
   isProd: isProd,
   isDev: isDev,
-  masterKey: process.env.MASTER_KEY
-  
+  masterKey: process.env.MASTER_KEY,
+  fromTime: process.env.FROM_TIME,
+  untilTime: process.env.UNTIL_TIME
 };
