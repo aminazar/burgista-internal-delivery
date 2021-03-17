@@ -4,6 +4,9 @@ const options = {
   promiseLib: promise,
 };
 const pgp = require('pg-promise')(options);
+pgp.pg.defaults.ssl = {
+  rejectUnauthorized: false
+}
 const app = require('express')();
 let env = app.get('env');
 if(env==='test')
